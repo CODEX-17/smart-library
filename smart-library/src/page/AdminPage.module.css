@@ -1,0 +1,135 @@
+@font-face {
+    font-family: bold;
+    src: url('../assets/fonts/Montserrat-Bold.ttf');
+}
+
+@font-face {
+    font-family: normal;
+    src: url('../assets/fonts/Montserrat-Regular.ttf');
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+.sidebar {
+    background-color: #38b6ff;
+    flex: 300px;
+    animation: slideRight 0.5s ease;
+}
+
+.main {
+    flex: 100%;
+    padding: 2%;
+}
+
+.profileContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5%;
+  gap: 5%;
+  margin: 5%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.213);
+}
+
+.profileContainer img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.profileContainer h2 {
+  font-size: 12pt;
+  margin: 0;
+  color: white;
+  font-family: bold;
+}
+
+.menuContainer {
+  margin: 5%;
+  height: 85%;
+  overflow-y: auto;
+  padding: 2%;
+}
+
+.card {
+  background-color: white;
+  margin-bottom: 10px;
+  height: 40px;
+  padding: 5%;
+  border-radius: 5px;
+  display: flex;
+  gap: 2%;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cardActive {
+  background-color: #1d5b7f;
+  margin-bottom: 10px;
+  height: 40px;
+  padding: 5%;
+  border-radius: 5px;
+  display: flex;
+  gap: 2%;
+  align-items: center;
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: #1d5b7f;
+}
+
+.card p, .cardActive p {
+  margin: 0;
+  font-family: bold;
+  font-size: 10pt;
+  color: #38b6ff;
+}
+
+
+@media (max-width: 425px) {
+  .sidebar {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: 38b6ff;
+  }
+
+
+}
+
+
+@keyframes pop {
+    0% {
+      transform: scale(0.5);
+    }
+    50% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideRight {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }

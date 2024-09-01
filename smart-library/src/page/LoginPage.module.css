@@ -1,0 +1,191 @@
+@font-face {
+    font-family: bold;
+    src: url('../assets/fonts/Montserrat-Bold.ttf');
+}
+
+@font-face {
+    font-family: normal;
+    src: url('../assets/fonts/Montserrat-Regular.ttf');
+}
+
+.container {
+    background-color: #FFE7A0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: normal;
+}
+
+.content {
+    flex: 80%;
+    width: 80%; 
+    display: flex;
+    gap: 2%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.adminModal {
+    background-color: #38b6ff;
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    width: 20%;
+    position: relative;
+    animation: fade 0.5s ease-in-out;
+}
+
+.adminModal h1 {
+    font-family: bold;
+    color: white;
+    margin-bottom: 50px;
+}
+
+.adminModal .inputBox {
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 2%;
+    outline: none;
+    width: 80%;
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.adminModal button {
+    background-color: white;
+    color: #38b6ff;
+    font-family: bold;
+    border: none;
+    width: 80%;
+    height: 40px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+} 
+
+.adminModal button:hover {
+    opacity: 0.8;
+}
+
+.studentModal {
+    background-color: white;
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    width: 20%;
+    position: relative;
+    animation: fade 0.5s ease-in-out;
+}
+
+.studentModal h1 {
+    font-family: bold;
+    color: #38b6ff;
+    margin-bottom: 50px;
+}
+
+.studentModal .inputBox {
+    background-color: rgb(228, 227, 227);
+    border: none;
+    border-radius: 5px;
+    padding: 2%;
+    outline: none;
+    width: 80%;
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.studentModal button {
+    background-color: #38b6ff;
+    color: white;
+    font-family: bold;
+    border: none;
+    width: 80%;
+    height: 40px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+} 
+
+.studentModal button:hover {
+    opacity: 0.8;
+}
+
+.footer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 20%;
+    background-color: #38b6ff;
+    animation: fade 0.5s ease-in-out;
+}
+
+#bookLogo {
+    width: 200px;
+    height: 200px;
+}
+
+#linkClick {
+    cursor: pointer;
+}
+
+#linkClick:hover {
+    color: white;
+}
+
+.footer h1 {
+    font-family: bold;
+    margin: 0;
+}
+
+.footer h2 {
+    margin: 0;
+}
+
+@media (max-width: 1843px) {
+    .adminModal, .studentModal {
+        width: 80%;
+    }
+
+
+}
+
+
+@keyframes pop {
+    0% {
+      transform: scale(0.5);
+    }
+    50% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
