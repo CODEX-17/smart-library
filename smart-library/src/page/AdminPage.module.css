@@ -12,17 +12,18 @@
     width: 100%;
     height: 100vh;
     display: flex;
+    overflow-y: hidden;
 }
 
 .sidebar {
     background-color: #38b6ff;
     flex: 300px;
     animation: slideRight 0.5s ease;
+    z-index: 2;
 }
 
 .main {
     flex: 100%;
-    padding: 2%;
 }
 
 .profileContainer {
@@ -91,6 +92,50 @@
   color: #38b6ff;
 }
 
+.headBar {
+  position: relative;
+  display: flex;
+  height: 100px;
+  max-height: 100px;
+  align-items: center;
+  justify-content: center;
+  padding: 2%;
+  border-bottom: 1px solid #38b6ff;
+}
+
+#searchBar {
+  width: 80%;
+  height: 30px;
+  border: 1px solid #38b6ff;
+  border-radius: 5px;
+  padding: 1%;
+  display: flex;
+  align-items: center;
+}
+
+#searchBar input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-family: bold;
+  color: #38b6ff;
+}
+
+#searchBar input::placeholder {
+  color: #1d5b7f;
+  opacity: 0.5;
+}
+
+#burgerIcon {
+  position: absolute;
+  left: 10px;
+}
+
+.content {
+  height: 80%;
+  padding: 1%;
+}
+
 
 @media (max-width: 425px) {
   .sidebar {
@@ -99,7 +144,6 @@
     position: absolute;
     background-color: 38b6ff;
   }
-
 
 }
 

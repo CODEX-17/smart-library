@@ -3,6 +3,8 @@ import style from './AdminPage.module.css'
 import sample from '../assets/sl-blue.png'
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrDashboard } from "react-icons/gr";
+import { FaSearch } from "react-icons/fa";
+import AnalyticsComponents from '../components/AnalyticsComponents';
 
 const AdminPage = () => {
 
@@ -28,12 +30,31 @@ const AdminPage = () => {
                             <GrDashboard size={25} color='#38b6ff'/>
                             <p>Dashboard</p>
                         </div>
-                        <div className={style.card}>
-                            card
+
+                        <div 
+                            className={activeMenu === 'dashboard' ? style.cardActive : style.card}
+                            onClick={() => setActiveMenu('dashboard')}
+                        >
+                            <GrDashboard size={25} color='#38b6ff'/>
+                            <p>Dashboard</p>
                         </div>
-                        <div className={style.card}>
-                            card
+
+                        <div 
+                            className={activeMenu === 'dashboard' ? style.cardActive : style.card}
+                            onClick={() => setActiveMenu('dashboard')}
+                        >
+                            <GrDashboard size={25} color='#38b6ff'/>
+                            <p>Dashboard</p>
                         </div>
+
+                        <div 
+                            className={activeMenu === 'dashboard' ? style.cardActive : style.card}
+                            onClick={() => setActiveMenu('dashboard')}
+                        >
+                            <GrDashboard size={25} color='#38b6ff'/>
+                            <p>Dashboard</p>
+                        </div>
+                       
 
                     </div>
                 </div>
@@ -41,9 +62,30 @@ const AdminPage = () => {
         }
 
       <div className={style.main}>
-        {
-            !isShowSideBar && <GiHamburgerMenu color='#38b6ff' size={25} cursor={'pointer'} onClick={() => setIsShowSideBar(!isShowSideBar)}/>
-        }
+        <div className={style.headBar}>
+            {
+                !isShowSideBar && 
+                    <GiHamburgerMenu
+                        id={style.burgerIcon}
+                        color='#38b6ff' 
+                        size={25} 
+                        cursor={'pointer'} 
+                        onClick={() => setIsShowSideBar(!isShowSideBar)}
+                    />
+            }
+            <div id={style.searchBar}>
+                <input type="text" placeholder='Search...'/>
+                <FaSearch size={20} color='#38b6ff'/>
+            </div>
+            
+        </div>
+        <div className={style.content}>
+            {
+                activeMenu === 'dashboard' && (
+                    <AnalyticsComponents/>
+                )
+            }
+        </div>
         
       </div>
     </div>

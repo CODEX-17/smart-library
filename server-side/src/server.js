@@ -1,0 +1,35 @@
+const express = require('express')
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const http = require('http')
+const mysql = require('mysql')
+const passwordHash = require('password-hash')
+
+
+const corsOptions = {
+    origin: '*', 
+    credentials: true,
+}
+
+//middleware//
+const app = express()
+app.use(express.json())
+app.use(cors())
+app.use(cors(corsOptions))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.static('uploads'))
+const server = http.createServer(app)
+
+const accountRoutes = require('./Routes/accountRoutes')
+const imageRoutes = require('./Routes/imageRoutes')
+
+app.use('/account', accountRoutes)
+app.use('/image', imageRoutes)
+
+// database connection//
+const port = process.env.PORT || 5001
+
+server.listen(port, ()=> {
+    console.log('Listening to port: ', port)
+})
