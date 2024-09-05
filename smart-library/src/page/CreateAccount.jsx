@@ -4,12 +4,13 @@ import logo from '../assets/logo-yellow.png'
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import axios from 'axios'
+import LoadingComponents from '../components/LoadingComponents';
 
 const CreateAccount = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [tempPassword, setTempPassword] = useState('')
+  const [acctType, setAcctType] = useState('admin')
   const [hastCode, setHashCode] = useState('')
   const [inputtedHash, setInputtedHash] = useState('')
   const [image, setImage] = useState(null)
@@ -84,6 +85,7 @@ const CreateAccount = () => {
 
         formData.append('email', email)
         formData.append('password', password)
+        formData.append('acctype', acctType)
 
         if (image) {
           formData.append('file', image)
@@ -145,6 +147,11 @@ const CreateAccount = () => {
 
   return (
     <div className={style.container}>
+
+      <div className={style.loading}>
+        <LoadingComponents/>
+      </div>
+
       {
         isToast && (
           <div className={style.toast}>
@@ -178,6 +185,23 @@ const CreateAccount = () => {
                 </div>
               }
               <p className={style.info}>Passwords must include a mix of uppercase and lowercase letters, numbers, and special characters to ensure strong security.</p>
+              <div className={style.acctTypeContainer}>
+                <label>Account Type:</label>
+                <input 
+                  type="radio" 
+                  checked={ acctType === 'admin' ? true : false } 
+                  onClick={() => setAcctType('admin')}
+                />
+                <p>Admin account</p>
+                <input 
+                  type="radio" 
+                  checked={ acctType === 'student' ? true : false } 
+                  onClick={() => setAcctType('student')}
+                />
+                <p>Student account</p>
+              </div>
+              
+
             </div>
             <div className={style.right}>
               <div className={style.circleUpload} onClick={() => inputFile.current.click()}>

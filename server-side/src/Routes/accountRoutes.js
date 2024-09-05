@@ -19,8 +19,7 @@ const upload = multer({ storage: storageImage });
 //CreateAccounts
 router.post('/createAccount', upload.single('file'), async (req, res) => {
 
-    const { email , password, imageID } = req.body
-    const acctype = 'admin'
+    const { email , password, imageID, acctype } = req.body
     const query = 'INSERT INTO accounts(email, password, acctype, imageID) VALUES(?,?,?,?)'
 
     try {
@@ -31,7 +30,6 @@ router.post('/createAccount', upload.single('file'), async (req, res) => {
                 console.log(error)
                 return res.status(400).send(error)
             }
-
 
             //If theirs an image file
             if (req.file) {
