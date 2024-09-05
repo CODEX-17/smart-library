@@ -11,7 +11,7 @@ const CreateAccount = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [acctType, setAcctType] = useState('admin')
-  const [hastCode, setHashCode] = useState('')
+  const [loadingState, setLoadingState] = useState(true)
   const [inputtedHash, setInputtedHash] = useState('')
   const [image, setImage] = useState(null)
 
@@ -25,6 +25,10 @@ const CreateAccount = () => {
 
 
   useEffect(() => {
+    
+    setTimeout(() => {
+      setLoadingState(false)
+    }, 2000);
 
     if (password && email) {
 
@@ -78,6 +82,9 @@ const CreateAccount = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    setLoadingState(true)
+
     if (password) {
 
         const uniqueID = generateUniqueId()
@@ -104,6 +111,10 @@ const CreateAccount = () => {
             console.log(message)
 
             setIsToast(true)
+
+            setTimeout(() => {
+              setLoadingState(false)
+            }, 2000);
 
             setTimeout(() => {
               setIsToast(false)
@@ -147,10 +158,14 @@ const CreateAccount = () => {
 
   return (
     <div className={style.container}>
+      {
+        loadingState && (
+          <div className={style.loading}>
+            <LoadingComponents/>
+          </div>
+        )
+      }
 
-      <div className={style.loading}>
-        <LoadingComponents/>
-      </div>
 
       {
         isToast && (

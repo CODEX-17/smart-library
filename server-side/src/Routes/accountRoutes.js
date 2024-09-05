@@ -1,11 +1,23 @@
 const express = require('express')
 const router = express.Router()
+const crypto = require('crypto');
 const db = require('../db')
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
 const passwordHash = require('password-hash')
+require('dotenv').config();
 
+const nodemailer = require('nodemailer');
+const emailPassword = process.env.EMAIL_PASSWORD;
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'pamparor@gmail.com',
+      pass: emailPassword
+    }
+  });
 
 const storageImage = multer.diskStorage({
     destination: './uploads',
@@ -99,5 +111,88 @@ router.post('/checkHash', async (req, res) => {
     }
 
 })
+
+//Forget password
+router.post('/forgotPassword', async (req, res) => {
+    const { email } = req.body;
+    console.log(email)
+
+    try {
+
+    const [user] = await new Promise((resolve, reject) => {
+        db.query("SELECT * FROM accounts WHERE email=?", [email], (error, data, field) => {
+            if (error) return reject(error)
+            resolve(data)
+        })
+    })
+
+      if (user.length < 0) {
+        console.log('User not found')
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Generate a reset token
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      const resetTokenExpires = Date.now() + 3600000; // 1 hour from now
+  
+      // Save the token and expiry date in the database
+      await db.query('UPDATE accounts SET reset_token = ?, reset_token_expires = ? WHERE email = ?', [resetToken, resetTokenExpires, email]);
+  
+      // Send reset email
+      const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+      const mailOptions = {
+        to: email,
+        from: 'pamparor@gmail.com',
+        subject: 'Password Reset',
+        text: `You requested a password reset. Please click this link to reset your password: ${resetUrl}`
+      }; 
+  
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).json({ message: 'Error sending email' });
+        }
+        res.status(200).json({ message: 'Reset email sent' });
+      });
+  
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.post('/reset-password/:token', async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+  
+    console.log(token, password)
+
+    try {
+
+     const [user] = await new Promise((resolve, reject) => {
+        db.query('SELECT * FROM accounts WHERE reset_token = ? AND reset_token_expires > ?', [token, Date.now()], (error, data, field) => {
+            if (error) return reject(error)
+            resolve(data)
+        })
+     })
+
+
+     console.log(user)
+
+      if (user.length < 0) {
+        return res.status(400).json({ message: 'Token is invalid or has expired' });
+      }
+  
+      // Hash new password and update database
+      const hashedPassword = await passwordHash.generate(password);
+      await db.query('UPDATE accounts SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE reset_token = ?', [hashedPassword, token]);
+  
+      res.status(200).json({ message: 'Password has been reset' });
+  
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+});
 
 module.exports = router

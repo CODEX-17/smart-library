@@ -1,11 +1,12 @@
 import React from 'react'
 import style from './LoadingComponents.module.css'
+import loadingAnim from '../assets/loading.gif'
 
 const LoadingComponents = () => {
   return (
     <div className={style.container}>
       <div className={style.card}>
-            dsad
+        <img src={loadingAnim} alt="animation" />
       </div>
     </div>
   )

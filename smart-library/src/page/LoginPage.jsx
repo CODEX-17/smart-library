@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
 
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const [isShowPassword, setIsShowPassword] = useState(false)
     const [loginType, setLoginType] = useState('admin')
     const navigate = useNavigate()
@@ -27,14 +30,16 @@ const LoginPage = () => {
             <div className={style.content}>
                 <div className={ loginType === 'admin' ? style.adminModal : style.studentModal}>
                     <h1>{loginType === 'admin' ? 'Admin Login' : 'Student Login'}</h1>
-                    <input className={style.inputBox} type="email" placeholder='Enter email'/>
-                    <input className={style.inputBox} type={isShowPassword ? "text" : "password"} placeholder='Enter password'/>
+                    <input className={style.inputBox} type="email" placeholder='Enter email' onChange={(e) => setEmail(e.target.value)}/>
+                    <input className={style.inputBox} type={isShowPassword ? "text" : "password"} placeholder='Enter password' onChange={(e) => setPassword(e.target.value)}/>
                     <div className='d-flex gap-2 mb-2'>
                         <input type="checkbox" value={false} onClick={() => setIsShowPassword(!isShowPassword)}/>
                         Show password
                     </div>
                     <button onClick={handleLogin}>Login</button>
-                    <p id={style.linkClick}>Forget password?</p>
+                    <p id={style.linkClick} onClick={() => {
+                        navigate('forgetPassword')
+                    }}>Forget password?</p>
                 </div>
                 <div className='d-flex gap-2'>
                     <PiUserSwitchFill size={25} color='#38b6ff'/>
