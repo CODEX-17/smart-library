@@ -2,8 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const http = require('http')
-const mysql = require('mysql')
-const passwordHash = require('password-hash')
+
 
 
 const corsOptions = {
