@@ -1,9 +1,19 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import style from './SearchBookPage.module.css'
 import bookLogo from '../assets/logo-yellow.png'
 import { FaSearch } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const SearchBookPage = () => {
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!localStorage.getItem('user')) {
+        navigate('/')
+    }
+  },[])
+
   return (
     <div className={style.container}>
       <div className={style.header}>

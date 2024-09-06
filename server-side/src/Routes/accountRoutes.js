@@ -80,7 +80,7 @@ router.post('/createAccount', upload.single('file'), async (req, res) => {
 
 
 //Check Hash
-router.post('/checkHash', async (req, res) => {
+router.post('/checkAccount', async (req, res) => {
 
     const {email, password} = req.body
     const query = 'SELECT * FROM accounts WHERE email=?'
@@ -95,12 +95,13 @@ router.post('/checkHash', async (req, res) => {
         
         if (user) {
            const hashPassword = user.password 
-
+            
             if (hashPassword) {
                 if (passwordHash.verify(password, hashPassword)) {
-                    console.log(true)
+                    return res.status(200).send(user)
                 } else {
                     console.log(false)
+                    return res.status(400).send(false)
                 }
             }
             

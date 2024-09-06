@@ -70,7 +70,10 @@
     margin-bottom: 20px;
 } 
 
-.adminModal button:hover {
+.adminModal button:hover,
+.adminModal button:disabled,
+.studentModal button:hover,
+.studentModal button:disabled {
     opacity: 0.8;
 }
 
@@ -114,10 +117,6 @@
     border-radius: 5px;
     margin-bottom: 20px;
 } 
-
-.studentModal button:hover {
-    opacity: 0.8;
-}
 
 .footer {
     width: 100%;
