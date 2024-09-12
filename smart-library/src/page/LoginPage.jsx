@@ -3,7 +3,7 @@ import style from './LoginPage.module.css'
 import bookLogo from '../assets/logo-white.png'
 import { PiUserSwitchFill } from "react-icons/pi";
 import LoadingComponents from '../components/LoadingComponents';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios'
 
 const LoginPage = () => {
@@ -15,6 +15,7 @@ const LoginPage = () => {
     const [loginType, setLoginType] = useState('admin')
     const [loadingState, setLoadingState] = useState(false)
     const [isShowErrorMessage, setisShowErrorMessage] = useState(false)
+    const adminAccess = useParams()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -44,23 +45,40 @@ const LoginPage = () => {
         console.log('click')
         try {
            const result = await axios.post('http://localhost:5001/account/checkAccount', {email, password})
-           let userData = result.data
-           const imageID = userData.imageID
-           if (imageID !== 'default') {
-                const fetchData = await axios.get('http://localhost:5001/image/getImageByImageID/' + imageID)
-                const imageDetail = fetchData.data[0]
-                userData.image = 'http://localhost:5001/' + imageDetail.filename
-           }
-           
-           if (result && userData.acctype === loginType) {
-                localStorage.setItem("user", JSON.stringify(userData))
-                navigate('/admin')
+           console.log(result)
+           if (result) {
+                let userData = result.data
+                const imageID = userData.imageID
+
+                if (imageID !== 'default') {
+                        const fetchData = await axios.get('http://localhost:5001/image/getImageByImageID/' + imageID)
+                        const imageDetail = fetchData.data[0]
+                        userData.image = 'http://localhost:5001/' + imageDetail.filename
+                }
+
+                if (userData.acctype === loginType) {
+                    localStorage.setItem("user", JSON.stringify(userData))
+                    if (loginType === 'admin') {
+                        navigate('/admin')
+                    }else {
+                        navigate('/searchBook')
+                    }
+                    
+                }else {
+                    setisShowErrorMessage(true)
+                    setTimeout(() => {
+                        setisShowErrorMessage(false)
+                    }, 3000);
+                }
            }else {
                 setisShowErrorMessage(true)
                 setTimeout(() => {
                     setisShowErrorMessage(false)
-                }, 3000);
+                }, 3000); 
            }
+           
+
+
         } catch (error) {
             console.log(error)
             setisShowErrorMessage(true)

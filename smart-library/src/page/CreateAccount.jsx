@@ -12,6 +12,42 @@ const CreateAccount = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [acctType, setAcctType] = useState('student')
+  const [firstname, setFirstname] = useState('')
+  const [middlename, setMiddlename] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [contact, setContact] = useState('')
+  const [gender, setGender] = useState('')
+  const [streetAddress, setStreetAddress] = useState('')
+  const [city, setCity] = useState('')
+  const [birthdate, setBirthdate] = useState('')
+  const [cardNumber, setCardNumber] = useState('')
+
+  const cityArray = [
+    "ALFONSO",
+    "AMADEO",
+    "BACOOR",
+    "CARMONA",
+    "CAVITE-CITY",
+    "MAGALLANES",
+    "ROSARIO",
+    "DASMARINAS-CITY",
+    "GEN.-MARIANO-ALVAREZ",
+    "GENERAL-EMILIO-AGUINALDO",
+    "GENERAL-TRIAS",
+    "IMUS",
+    "INDANG",
+    "KAWIT",
+    "MARAGONDON",
+    "MENDEZ",
+    "NAIC",
+    "NOVELETA",
+    "SILANG",
+    "TAGAYTAY-CITY",
+    "TANZA",
+    "TERNATE",
+    "TRECE-MARTIRES-CITY"
+  ]
+
   const [loadingState, setLoadingState] = useState(true)
   const [image, setImage] = useState(null)
 
@@ -29,13 +65,12 @@ const CreateAccount = () => {
 
 
   useEffect(() => {
-    console.log(adminAccess)
     
     setTimeout(() => {
       setLoadingState(false)
     }, 2000);
 
-    if (password && email) {
+    if (password) {
 
       if (password.length > 12) {
         setValidLenghtChar(true)
@@ -57,13 +92,41 @@ const CreateAccount = () => {
       
     }
 
-    if (email.length > 1 && validLenghtChar && mixChar && specialChar) {
+    if (cardNumber.length > 1  &&
+      firstname.length > 1  &&
+      middlename.length > 1  &&
+      lastname.length > 1  &&
+      contact.length > 1  &&
+      email.length > 1  &&
+      password.length > 1  &&
+      acctType.length > 1  &&
+      gender.length > 1  &&
+      streetAddress.length > 1  &&
+      birthdate.length > 1  &&
+      city.length > 1  && 
+      email.length > 1 && 
+      validLenghtChar && 
+      mixChar && 
+      specialChar) {
       setBtnDisabled(false)
     }else {
       setBtnDisabled(true)
     }
 
-  },[password,email])
+  },[
+    cardNumber,
+    firstname,
+    middlename,
+    lastname,
+    contact,
+    email,
+    password,
+    acctType,
+    gender,
+    streetAddress,
+    birthdate,
+    city
+  ])
 
   const generateUniqueId = () => {
     const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -95,9 +158,18 @@ const CreateAccount = () => {
         const uniqueID = generateUniqueId()
         const formData = new FormData
 
+        formData.append('card_number', cardNumber)
+        formData.append('firstname', firstname)
+        formData.append('middlename', middlename)
+        formData.append('lastname', lastname)
+        formData.append('contact', contact)
         formData.append('email', email)
         formData.append('password', password)
         formData.append('acctype', acctType)
+        formData.append('gender', gender)
+        formData.append('street_address', streetAddress)
+        formData.append('birthdate', birthdate)
+        formData.append('city', city)
 
         if (image) {
           formData.append('file', image)
@@ -123,7 +195,8 @@ const CreateAccount = () => {
 
             setTimeout(() => {
               setIsToast(false)
-            }, 10000);
+              navigate('/login')
+            }, 5000);
 
         })
         .catch((error) => {
@@ -218,29 +291,29 @@ const CreateAccount = () => {
               <div className='d-flex flex-column'>
                 <div className="input-group mb-2">
                     <span className="input-group-text">Library Card Number</span>
-                    <input className="form-control" type='email' onChange={(e) => setEmail(e.target.value)} required></input>
+                    <input className="form-control" type='text' onChange={(e) => setCardNumber(e.target.value)} required></input>
                 </div>
                 <div className="input-group mb-2">
                     <span className="input-group-text">Firstname</span>
-                    <input className="form-control" aria-label="With textarea" onChange={(e) => setPassword(e.target.value)} required></input>
+                    <input className="form-control" aria-label="With textarea" onChange={(e) => setFirstname(e.target.value)} required></input>
                 </div>
                 <div className="input-group mb-2">
                     <span className="input-group-text">Middlename</span>
-                    <input className="form-control" aria-label="With textarea" onChange={(e) => setPassword(e.target.value)} required></input>
+                    <input className="form-control" aria-label="With textarea" onChange={(e) => setMiddlename(e.target.value)} required></input>
                 </div>
                 <div className="input-group mb-2">
                     <span className="input-group-text">Lastname</span>
-                    <input className="form-control" aria-label="With textarea" onChange={(e) => setPassword(e.target.value)} required></input>
+                    <input className="form-control" aria-label="With textarea" onChange={(e) => setLastname(e.target.value)} required></input>
                 </div>
                 <div className='d-flex gap-2'>
                   <div className="input-group mb-2">
                       <span className="input-group-text">Contact Number</span>
-                      <input className="form-control" type='tel' aria-label="With textarea" onChange={(e) => setPassword(e.target.value)} required></input>
+                      <input className="form-control" type='tel' aria-label="With textarea" onChange={(e) => setContact(e.target.value)} required></input>
                   </div>
                   <div className="input-group mb-2">
                     <span className="input-group-text">Gender</span>
-                      <select className='form-select'>
-                        <option value="" selected>Select gender</option>
+                      <select className='form-select' onChange={(e) => setGender(e.target.value)}>
+                        <option value="">Select gender</option>
                         <option value="male" >Male</option>
                         <option value="female" >Female</option>
                       </select>
@@ -248,20 +321,23 @@ const CreateAccount = () => {
                 </div>
                 <div className="input-group mb-2">
                     <span className="input-group-text">Street Address</span>
-                    <input className="form-control" aria-label="With textarea" onChange={(e) => setPassword(e.target.value)} required></input>
+                    <input className="form-control" aria-label="With textarea" onChange={(e) => setStreetAddress(e.target.value)} required></input>
                 </div>
                 <div className='d-flex gap-2'>
                   <div className="input-group mb-2">
                       <span className="input-group-text">City</span>
-                      <select className='form-select'>
-                        <option value="" selected>Select city</option>
-                        <option value="male" >Male</option>
-                        <option value="female" >Female</option>
+                      <select className='form-select' onChange={(e) => setCity(e.target.value)}>
+                        <option value="">Select city</option>
+                        {
+                          cityArray.map((city, index) => (
+                            <option value={city} key={index}>{city}</option>
+                          ))
+                        }
                       </select>
                   </div>
                   <div className="input-group mb-2">
                     <span className="input-group-text">Birthdate</span>
-                    <input className="form-control" type='date' aria-label="With textarea" onChange={(e) => setPassword(e.target.value)} required></input>
+                    <input className="form-control" type='date' aria-label="With textarea" onChange={(e) => setBirthdate(e.target.value)} required></input>
                   </div>
                 </div>
             

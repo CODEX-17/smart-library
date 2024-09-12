@@ -22,9 +22,11 @@ const server = http.createServer(app)
 
 const accountRoutes = require('./Routes/accountRoutes')
 const imageRoutes = require('./Routes/imageRoutes')
+const branchRoutes = require('./Routes/branchRoutes')
 
 app.use('/account', accountRoutes)
 app.use('/image', imageRoutes)
+app.use('/branch', branchRoutes)
 
 // database connection//
 const port = process.env.PORT || 5001

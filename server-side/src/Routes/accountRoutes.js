@@ -28,55 +28,73 @@ const storageImage = multer.diskStorage({
 
 const upload = multer({ storage: storageImage });
 
-//CreateAccounts
+// CreateAccounts
 router.post('/createAccount', upload.single('file'), async (req, res) => {
 
-    const { email , password, imageID, acctype } = req.body
-    const query = 'INSERT INTO accounts(email, password, acctype, imageID) VALUES(?,?,?,?)'
+    const { 
+        card_number, 
+        firstname, 
+        middlename, 
+        lastname, 
+        contact, 
+        email, 
+        password, 
+        acctype, 
+        gender, 
+        street_address, 
+        birthdate, 
+        city, 
+        imageID
+    } = req.body;
+
+    const query = `
+        INSERT INTO accounts(
+            card_number, firstname, middlename, lastname, contact, email, password, 
+            acctype, gender, street_address, birthdate, city, imageID
+        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
+    `;
 
     try {
         const hashedPassword = passwordHash.generate(password);
 
-        db.query(query,[email, hashedPassword, acctype, imageID], (error, data, field) => {
+        console.log(hashedPassword)
+
+        db.query(query, [
+            card_number, firstname, middlename, lastname, contact, email, 
+            hashedPassword, acctype, gender, street_address, birthdate, city, imageID
+        ], (error, data, field) => {
             if (error) {
-                console.log(error)
-                return res.status(400).send(error)
+                console.log(error);
+                return res.status(400).send(error);
             }
 
-            //If theirs an image file
+            // If there's an image file
             if (req.file) {
+                const queryImage = 'INSERT INTO image(filename, path, imageID) VALUES(?,?,?)';
+                const { filename, path } = req.file;
 
-                const queryImage = 'INSERT INTO image(filename, path, imageID) VALUES(?,?,?)'
-                const { filename, path } = req.file
+                db.query(queryImage, [filename, path, imageID], (error, data, field) => {
+                    if (error) {
+                        console.log(error);
+                        return res.status(400).send(error);
+                    }
 
-             
-                    db.query(queryImage, [filename, path, imageID], (error, data, field) => {
-                        if (error) {
-                            console.log(error)
-                            return res.status(400).send(error)
-                        }
-
-                        return res.status(200).json({
-                            message: 'Successfull created account.'
-                        })
-                    })
-        
-            }else {
+                    return res.status(200).json({
+                        message: 'Successfully created account with image.'
+                    });
+                });
+            } else {
                 res.status(200).json({
-                    message: 'Successfull created account.'
-                })
+                    message: 'Successfully created account.'
+                });
             }
-
-            
-
-        })
-
+        });
     } catch (error) {
-        console.log(error)
-        res.status(400).send(error)
+        console.log(error);
+        res.status(400).send(error);
     }
+});
 
-})
 
 
 //Check Hash
@@ -92,10 +110,12 @@ router.post('/checkAccount', async (req, res) => {
                 resolve(data)
             })
         })
+
+        
         
         if (user) {
            const hashPassword = user.password 
-            
+       
             if (hashPassword) {
                 if (passwordHash.verify(password, hashPassword)) {
                     return res.status(200).send(user)
@@ -105,6 +125,8 @@ router.post('/checkAccount', async (req, res) => {
                 }
             }
             
+        }else {
+            return res.status(400).send(false)
         }
 
     } catch (error) {

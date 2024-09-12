@@ -1,0 +1,237 @@
+@font-face {
+    font-family: bold;
+    src: url('../assets/fonts/Montserrat-Bold.ttf');
+}
+
+@font-face {
+    font-family: normal;
+    src: url('../assets/fonts/Montserrat-Regular.ttf');
+}
+
+.container {
+    background-color: #38b6ff;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    font-family: normal;
+    overflow: hidden;
+    animation: fade 0.5s ease-in-out;
+}
+
+.left {
+  flex: 15%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  z-index: 3;
+  animation: slideRight 0.5s ease-in-out;
+}
+
+.profileDiv {
+  position: relative;
+  flex: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #38b6ff;
+}
+
+.profileDiv h1 {
+  font-size: 15pt;
+  font-family: bold;
+  color: white;
+  margin: 0;
+  margin-bottom: 2%;
+}
+
+.profileDiv button {
+  background-color: white;
+  color: #38b6ff;
+  width: 80%;
+  border-radius: 10px;
+  font-family: bold;
+  margin-bottom: 2%;
+}
+
+.profileDiv img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  padding: 2%;
+  margin-bottom: 5%;
+  background-color: white;
+}
+
+.menuDiv {
+  flex: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 2%;
+  padding: 5%;
+}
+
+.menuDiv button {
+  width: 80%;
+  color: white;
+  border-radius: 10px;
+  font-family: bold;
+  font-size: 10pt;
+}
+
+.right {
+  flex: 100%;
+}
+
+#hamburgerMenu {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+}
+
+#hamburgerMenuProfile {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+
+.header {
+    position: relative;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex: 20%;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    animation: fade 0.5s ease-in-out;
+}
+
+.header h1 {
+    font-family: bold;
+    margin: 0;
+}
+
+.header h2 {
+    margin: 0;
+}
+
+#bookLogo {
+    width: 200px;
+    height: 200px;
+}
+
+.content {
+    flex: 80%;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchBarDiv {
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+  gap: 2%;
+}
+
+.searchBarDiv input {
+  margin-bottom: 10px;
+}
+
+.searchBarDiv button {
+    border: none;
+    background-color: #ffa600;
+    width: 100%;
+    border-radius: 10px;
+    height: 40px;
+    color: white;
+    font-family: bold;
+    font-size: 12pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.searchBarDiv button:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 1440px) {
+  .left {
+      flex: 30%;
+  }
+}
+
+@media (max-width: 768px) {
+  .left {
+      flex: 60%;
+  }
+}
+
+@media (max-width: 425px) {
+    .left {
+      flex: 100%;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+
+    .searchBarDiv button {
+        width: 80%;
+    }
+
+
+}
+
+
+@keyframes pop {
+    0% {
+      transform: scale(0.5);
+    }
+    50% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideRight {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+
