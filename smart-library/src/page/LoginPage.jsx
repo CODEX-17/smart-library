@@ -21,6 +21,15 @@ const LoginPage = () => {
         if (email, password) {
             setEnableButton(false)
         }
+
+        if (localStorage.getItem('user')) {
+            const accountDetails = JSON.parse(localStorage.getItem('user'))
+            if (accountDetails?.acctype === 'admin') {
+                navigate('/admin')
+            }else {
+                navigate('/searchBook')
+            }
+        }
     },[email, password])
 
     const handleChangeLoginType = () => {
@@ -83,9 +92,15 @@ const LoginPage = () => {
                         Show password
                     </div>
                     <button onClick={handleLogin} disabled={enableButton}>Login</button>
-                    <p id={style.linkClick} onClick={() => {
-                        navigate('forgetPassword')
-                    }}>Forget password?</p>
+                    <div className='d-flex gap-5'>
+                         <p id={style.linkClick} onClick={() => {
+                            navigate('/forgetPassword')
+                        }}>Forget password?</p>
+                        <p id={style.linkClick} onClick={() => {
+                            navigate('/createAccount')
+                        }}>Create Account</p>
+                    </div>
+                   
                     {
                         isShowErrorMessage &&  <p style={{ color: 'red' }}>Account doesn't exist!</p>
                     }

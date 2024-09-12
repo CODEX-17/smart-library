@@ -38,6 +38,7 @@
   font-family: bold;
   color: #38b6ff;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .profileContainer {
@@ -146,7 +147,7 @@
 }
 
 .content {
-  height: 80%;
+  height: 90%;
   padding: 1%;
 }
 
@@ -156,7 +157,7 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    background-color: 38b6ff;
+    background-color: #38b6ff;
   }
 
 }

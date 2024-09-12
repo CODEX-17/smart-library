@@ -119,8 +119,21 @@
 
 .content {
   display: flex;
+  flex-direction: column;
   gap: 2%;
+  overflow-y: auto;
   margin-bottom: 2%;
+  padding-right: 2%;
+}
+
+.contentTop {
+  display: flex;
+  align-items: center;
+  gap: 2%;
+}
+
+.contentBot  {
+  width: 100%;
 }
 
 #imgPreview {
@@ -137,6 +150,7 @@
   align-items: center;
   border-radius: 5px;
   border: 2px solid #ffa600;
+  margin-bottom: 2%;
 }
 
 .acctTypeContainer p {
@@ -150,22 +164,73 @@
   color: #ffa600;
 }
 
-@media (max-width: 768px) {
+.btnMenu {
+  display: flex;
+  gap: 2%;
+}
+
+#btnLogin {
+  background-color: '#38b6ff';
+  width: 40%;
+}
+
+
+@media (max-width: 1440px) {
+
   .content {
+    height: 600px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .circleUpload {
-    border: 2px dashed #ffa600;
-    border-radius: 50%;
-    width: 200px;
+  .head {
     height: 200px;
+  }
+}
+
+@media (max-width: 425px) {
+
+  .contentTop {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    gap: 2%;
+  }
+
+  .acctTypeContainer {
+    font-size: 8pt;
+  }
+
+  .acctTypeContainer label {
+    font-size: 10pt;
+  }
+
+  .checkPassDiv p {
+    font-size: 8pt;
+  }
+
+  #info {
+    font-size: 8pt;
+  }
+
+  .btnMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 2%;
+  }
+
+  #btnLogin {
+    background-color: '#38b6ff';
+    width: 100%;
+    margin-top: 2%;
+  }
+
+  .contentBot span, 
+  .contentTop span,
+  .contentBot input,
+  .contentTop input,
+  .contentBot select
+  {
     font-size: 8pt;
   }
 
