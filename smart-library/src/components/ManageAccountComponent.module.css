@@ -1,0 +1,178 @@
+  @font-face {
+      font-family: bold;
+      src: url('../assets/fonts/Montserrat-Bold.ttf');
+  }
+
+  @font-face {
+      font-family: normal;
+      src: url('../assets/fonts/Montserrat-Regular.ttf');
+  }
+
+  .container {
+      background-color: #38b6ff;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: normal;
+      overflow: hidden;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2%;
+      color: white;
+      animation: fade 0.5s ease-in-out;
+  }
+
+  .container h1 {
+    font-family: bold;
+    margin-bottom: 2%;
+  }
+
+  .container form {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 5%;
+  }
+
+  .headLeft {
+    flex: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .headRight {
+    flex: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .headRight p {
+    margin: 0;
+    font-family: bold;
+  }
+
+  .headRight input {
+    border: none;
+    outline: none;
+    padding: 2%;
+    height: 30px;
+    width: 40%;
+    border-radius: 5px;
+    color: #38b6ff;
+    margin-bottom: 10px;
+  }
+
+  .main {
+    display: flex;
+    width: 60%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2%;
+  }
+
+  .main input {
+    border: none;
+    outline: none;
+    padding: 2%;
+    height: 50px;
+    width: 100%;
+    border-radius: 5px;
+    color: #38b6ff;
+    margin-bottom: 10px;
+  }
+
+  .main select {
+    border: none;
+    outline: none;
+    padding: 2%;
+    height: 50px;
+    width: 100%;
+    border-radius: 5px;
+    color: #38b6ff;
+    margin-bottom: 10px;
+  }
+
+  .main button {
+    background-color: #ffa600;
+    height: 50px;
+    width: 100%;
+    font-family: bold;
+    border-radius: 5px;
+    color: white;
+  }
+
+  .main p {
+    margin: 0;
+    font-family: bold;
+  }
+
+  #imgDiv {
+    border: 4px dashed white;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: bold;
+    user-select: none;
+  }
+
+
+
+  @keyframes pop {
+      0% {
+        transform: scale(0.5);
+      }
+      50% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  
+    @keyframes slideRight {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+  
+    @keyframes slideDown {
+      0% {
+        transform: translateY(-100%);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+  
+    @keyframes fade {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  
+  

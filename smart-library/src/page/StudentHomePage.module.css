@@ -18,6 +18,20 @@
     animation: fade 0.5s ease-in-out;
 }
 
+#defaultProfile {
+  background-color: white;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: bold;
+  font-size: 50pt;
+  border-radius: 50%;
+  color: #38b6ff;
+  margin-bottom: 2%;
+}
+
 .left {
   flex: 15%;
   display: flex;
@@ -37,6 +51,7 @@
   align-items: center;
   justify-content: center;
   background-color: #38b6ff;
+  user-select: none;
 }
 
 .profileDiv h1 {
@@ -45,6 +60,7 @@
   color: white;
   margin: 0;
   margin-bottom: 2%;
+  user-select: none;
 }
 
 .profileDiv button {
@@ -63,6 +79,7 @@
   padding: 2%;
   margin-bottom: 5%;
   background-color: white;
+  user-select: none;
 }
 
 .menuDiv {
@@ -111,6 +128,7 @@
     justify-content: center;
     background-color: white;
     animation: fade 0.5s ease-in-out;
+    user-select: none;
 }
 
 .header h1 {
@@ -134,63 +152,154 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    position: relative;
+}
+
+.toast {
+  background-color: #387F39;
+  position: absolute;
+  top: 20px;
+  right: 100px;
+  padding: 20px;
+  border-radius: 5px;
+  font-size: 10pt;
+  font-family: bold;
+  color: white;
+  z-index: 3;
+  animation: pop 0.5s ease;
+}
+
+.titleDiv {
+  display: flex;
+  width: 80%;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.titleDiv h1 {
+  font-family: bold;
+  color: white;
+  user-select: none;
+}
+
+.tableDiv {
+  width: 80%;
+  padding: 1%;
+  margin-top: 2%;
 }
 
 .searchBarDiv {
   display: flex;
-  width: 50%;
-  flex-direction: column;
-  gap: 2%;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2%;
 }
 
-.searchBarDiv input {
-  margin-bottom: 10px;
+.searchBarDiv select {
+  width: 20%;
+  border: none;
+  outline: none;
+  font-family: bold;
+  font-size: 12pt;
+  color: #38b6ff;
+  border-radius: 10px;
+  padding: 10px;
 }
 
-.searchBarDiv button {
-    border: none;
-    background-color: #ffa600;
-    width: 100%;
-    border-radius: 10px;
-    height: 40px;
-    color: white;
-    font-family: bold;
-    font-size: 12pt;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+
+#searchBar {
+  border: none;
+  outline: none;
+  font-family: bold;
+  font-size: 12pt;
+  color: #38b6ff;
+  padding: 10px;
+  padding-left: 20px;
+  width: 100%;
+  border-radius: 10px;
 }
 
-.searchBarDiv button:hover {
-    opacity: 0.8;
+#searchBar::placeholder {
+  color: #38b6ff61;
 }
+
+.table {
+  font-family: bold;
+  margin-bottom: 1%;
+  color: #38b6ff;
+}
+
+#btnBorrow {
+  background-color: #387F39;
+  width: 30%;
+  border-radius: 10px;
+}
+
 
 @media (max-width: 1440px) {
   .left {
       flex: 30%;
   }
+
+  .content {
+    margin-top: 2%;
+    justify-content: flex-start;
+  }
+
+  .titleDiv h1 {
+    font-size: 15pt;
+  }
+
+  #searchBar {
+    font-size: 10pt;
+  }
+
+  .searchBarDiv select {
+    font-size: 10pt;
+  }
+
+  .table {
+    font-size: 10pt;
+  }
+
+  .left {
+    width: 30%;
+    height: 100%;
+    position: absolute;
+  }
+
+  #btnBorrow {
+    width: 80%;
+  }
 }
 
 @media (max-width: 768px) {
   .left {
-      flex: 60%;
+    width: 40%;
   }
 }
 
 @media (max-width: 425px) {
     .left {
-      flex: 100%;
       width: 100%;
-      height: 100%;
-      position: absolute;
     }
 
-    .searchBarDiv button {
-        width: 80%;
+    .right {
+      width: 100%;
     }
 
+    .searchBarDiv {
+      flex-direction: column;
+    }
+
+    .searchBarDiv select {
+      width: 100%;
+    }
+    
+    .table {
+      font-size: 5pt;
+    }
 
 }
 

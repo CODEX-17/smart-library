@@ -23,10 +23,18 @@ const server = http.createServer(app)
 const accountRoutes = require('./Routes/accountRoutes')
 const imageRoutes = require('./Routes/imageRoutes')
 const branchRoutes = require('./Routes/branchRoutes')
+const bookRoutes = require('./Routes/bookRoutes')
+const borrow = require('./Routes/borrowRoutes')
+const genre = require('./Routes/genreRoutes')
+const feedback = require('./Routes/feedbackRoutes')
 
 app.use('/account', accountRoutes)
 app.use('/image', imageRoutes)
 app.use('/branch', branchRoutes)
+app.use('/book', bookRoutes)
+app.use('/borrow', borrow)
+app.use('/genre', genre)
+app.use('/feedback', feedback)
 
 // database connection//
 const port = process.env.PORT || 5001

@@ -29,8 +29,13 @@ const AdminPage = () => {
   useEffect(() => {
     if (!localStorage.getItem('user')) {
         navigate('/')
+    }else {
+        const data = JSON.parse(localStorage.getItem('user'))
+        if (data.acctype !== 'admin') {
+            navigate('/')
+        }
     }
-  
+    
     setUser(JSON.parse(localStorage.getItem('user')))
   },[])
 
@@ -123,24 +128,6 @@ const AdminPage = () => {
                             <PiBooksLight size={25} color='#38b6ff'/>
                             <p>Library Books</p>
                         </div>
-
-                        <div 
-                            className={activeMenu === 'feedback' ? style.cardActive : style.card}
-                            onClick={() => setActiveMenu('feedback')}
-                        >
-                            <VscFeedback size={25} color='#38b6ff'/>
-                            <p>Feedback</p>
-                        </div>
-
-                        <div 
-                            className={activeMenu === 'about' ? style.cardActive : style.card}
-                            onClick={() => setActiveMenu('about')}
-                        >
-                            <TbInfoHexagon size={25} color='#38b6ff'/>
-                            <p>About</p>
-                        </div>
-
-                        
                        
 
                     </div>
@@ -176,12 +163,6 @@ const AdminPage = () => {
             {
                 activeMenu === 'addBook' && (
                     <AddBookComponents/>
-                )
-            }
-
-            {
-                activeMenu === 'feedback' && (
-                    <FeedbackComponents/>
                 )
             }
 
