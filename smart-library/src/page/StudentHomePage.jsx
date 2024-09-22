@@ -253,7 +253,7 @@ const StudentHomePage = () => {
                   <img src={userAccount.image} alt="profile picture" />
                 )
               }
-              <h1>Rumar Pamparo</h1>
+              <h1>{userAccount?.firstname + " " + userAccount?.lastname}</h1>
               <button onClick={() => setActiveBtn('manageAccount')}><MdManageAccounts size={20}/> Manage Account</button>
               <button style={{ backgroundColor: '#C7253E', color: 'white' }} onClick={handleLogout}><IoMdLogOut size={20} color='white'/> Logout</button>
             </div>
