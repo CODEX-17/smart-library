@@ -117,11 +117,11 @@
   cursor: pointer;
 }
 
-
 .header {
     position: relative;
     width: 100%;
     height: auto;
+    max-height: 200px;
     display: flex;
     flex: 20%;
     align-items: center;
@@ -154,6 +154,7 @@
     align-items: center;
     justify-content: flex-start;
     position: relative;
+    padding-top: 2%;
 }
 
 .toast {
@@ -185,6 +186,7 @@
 
 .tableDiv {
   width: 80%;
+  max-height: 400px;
   padding: 1%;
   margin-top: 2%;
 }
@@ -234,6 +236,29 @@
   background-color: #387F39;
   width: 30%;
   border-radius: 10px;
+}
+
+@media (max-width: 2560px) {
+  .header {
+    height: 150px;
+  }
+
+  .header h1 {
+    font-family: bold;
+    font-size: 15pt;
+    margin: 0;
+  }
+
+  .header h2 {
+    font-size: 10pt;
+    margin: 0;
+  }
+
+  #bookLogo {
+    width: 150px;
+    height: 150px;
+  }
+
 }
 
 

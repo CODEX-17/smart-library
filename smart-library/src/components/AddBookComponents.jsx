@@ -70,12 +70,12 @@ const handleSubmit = (e) => {
   return (
     <div className={style.container}>
       {       
-          isToast && (
-            <div className={style.toast}>
-              Successfully add book.
-            </div>
-          )
-        }
+        isToast && (
+          <div className={style.toast}>
+            Successfully add book.
+          </div>
+        )
+      }
       <h1>Add Book</h1>
       <div className={style.content}>
         <form action="" onSubmit={handleSubmit}>

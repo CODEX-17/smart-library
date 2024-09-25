@@ -59,7 +59,7 @@
 }
 
 .profileContainer h2 {
-  font-size: 12pt;
+  font-size: 8pt;
   margin: 0;
   color: white;
   font-family: bold;
@@ -96,6 +96,45 @@
   cursor: pointer;
 }
 
+.divDropDown {
+  margin-bottom: 10px;
+  height: 100px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 2%;
+  padding: 2%;
+  align-items: flex-end;
+  cursor: pointer;
+  animation: slideDown 0.5s ease-in-out;
+}
+
+.divDropDown .card {
+  background-color: white;
+  margin-bottom: 10px;
+  width: 90%;
+  height: 40px;
+  padding: 5%;
+  border-radius: 5px;
+  display: flex;
+  gap: 2%;
+  align-items: center;
+  cursor: pointer;
+}
+
+.divDropDown .cardActive {
+  background-color: #1d5b7f;
+  margin-bottom: 10px;
+  width: 90%;
+  height: 40px;
+  padding: 5%;
+  border-radius: 5px;
+  display: flex;
+  gap: 2%;
+  align-items: center;
+  cursor: pointer;
+}
+
 .card:hover {
   background-color: #1d5b7f;
 }
@@ -110,35 +149,48 @@
 .headBar {
   position: relative;
   display: flex;
-  height: 100px;
-  max-height: 100px;
+  height: 70px;
+  max-height: 70px;
   align-items: center;
   justify-content: center;
-  padding: 2%;
   width: 100%;
+  padding-right: 2%;
   border-bottom: 1px solid #38b6ff;
 }
 
-#searchBar {
-  width: 80%;
-  height: 30px;
-  border: 1px solid #38b6ff;
-  border-radius: 5px;
-  padding: 1%;
+.leftHead {
+  flex: 50%;
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
-#searchBar input {
-  width: 100%;
-  border: none;
-  outline: none;
-  font-family: bold;
+.leftHead h1 {
   color: #38b6ff;
+  font-family: bold;
+  font-size: 15pt;
+  margin: 0;
 }
 
-#searchBar input::placeholder {
-  color: #1d5b7f;
+.rightHead {
+  flex: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.iconDiv {
+  border: 1px solid #D91656;
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+}
+
+.iconDiv:hover {
   opacity: 0.5;
 }
 
@@ -211,6 +263,15 @@
     }
     100% {
       transform: translateX(0);
+    }
+  }
+
+  @keyframes slideDown {
+    0% {
+      transform: translateY(-50%);
+    }
+    100% {
+      transform: translateY(0);
     }
   }
 

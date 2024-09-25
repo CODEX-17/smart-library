@@ -7,17 +7,42 @@ import axios from 'axios';
 const RequestBookComponent = () => {
 
   const [reqList, setReqList] = useState([])
-  const userAccount = JSON.parse(localStorage.getItem('user'))
+  const [bookList, setBookList] = useState([])
 
   useEffect(() => {
-    axios.get('http://localhost:5001/borrow/getBorrow')
+
+    axios.get('http://localhost:5001/book/getBooks')
     .then((res) => {
-      setReqList(res.data)
+      const books = res.data
+      setBookList(res.data)
+
+      axios.get('http://localhost:5001/borrow/getBorrow')
+      .then((res) => {
+        let finalData = res.data
+
+        for (let i = 0; i < finalData.length; i++) {
+
+          for (let x = 0; x < books.length; x++) {
+   
+            if (parseInt(finalData[i].book_id) === books[x].book_id) {
+              console.log(finalData[i])
+              finalData[i].total_copies = books[x].total_copies
+            }
+          }
+          
+        }
+
+        setReqList(finalData)
+
+      })
+      .catch((error) => console.log(error))
+
     })
     .catch((error) => console.log(error))
+
   },[])
 
-  const handleApprovedReq = (id,response) => {
+  const handleUpdateReq = (id, book_id, response) => {
 
     if (id,response) {
 
@@ -28,9 +53,25 @@ const RequestBookComponent = () => {
         }
       }
       
+      if (response === 'approved') {
+        for (let i = 0; i < updateData.length; i++) {
+          if (updateData[i].book_id === book_id) {
+            updateData[i].total_copies -= 1
+          }
+        }
+      }
+
+      if (response === 'returned') {
+        for (let i = 0; i < updateData.length; i++) {
+          if (updateData[i].book_id === book_id) {
+            updateData[i].total_copies += 1
+          }
+        }
+      }
+
       setReqList(updateData)
 
-      axios.post('http://localhost:5001/borrow/updateReq', {response, id})
+      axios.post('http://localhost:5001/borrow/updateReq', {response, id, book_id})
       .then((res) => {
         const result = res.data
         const message = result.message
@@ -40,6 +81,15 @@ const RequestBookComponent = () => {
     
 
 
+  }
+
+  const handleDelete = (id) => {
+    axios.post('http://localhost:5001/borrow/deleteReq', {id})
+    .then((res) => {
+      const result = res.data
+      const message = result.message
+      console.log(message)
+    }).catch((err) => console.log(err))
   }
 
   const requestColumns = [
@@ -80,36 +130,42 @@ const RequestBookComponent = () => {
       sortable: true,
     },
     {
+      name: 'Total Copies',
+      selector: row => row.total_copies,
+      sortable: true,
+    },
+    
+    {
       name: 'Action',
       cell: row => (
         <div className='d-flex gap-2 p-2'>
           {
             row.status === 'pending' && (
               <>
-                <button id={style.btnAction} onClick={() => handleApprovedReq(row.id,'approved')} style={{ backgroundColor: 'rgb(56, 127, 57)' }}>Approved</button>
-                <button id={style.btnAction} onClick={() => handleApprovedReq(row.id,'rejected')} style={{ backgroundColor: '#F5004F' }}>Reject</button>
-                <button id={style.deleteBtn}><AiFillDelete size={15} title='delete'/></button>
+                {
+                  row.total_copies > 0 && <button id={style.btnAction} onClick={() => handleUpdateReq(row.id, row.book_id, 'approved')} style={{ backgroundColor: 'rgb(56, 127, 57)' }}>Approved</button>
+                }
+                <button id={style.btnAction} onClick={() => handleUpdateReq(row.id, row.book_id, 'rejected')} style={{ backgroundColor: '#F5004F' }}>Reject</button>
               </>
             ) ||
             row.status === 'approved' &&
             (
               <>
-                <button id={style.btnAction} onClick={() => handleApprovedReq(row.id,'returned')} style={{ backgroundColor: '#B43F3F' }}>Returned</button>
-                <button id={style.deleteBtn}><AiFillDelete size={15} title='delete'/></button>
+                <button id={style.btnAction} onClick={() => handleUpdateReq(row.id, row.book_id, 'returned')} style={{ backgroundColor: '#B43F3F' }}>Returned</button>
               </>
             ) ||
             row.status === 'returned' &&
             (
               <>
                 <button id={style.btnAction} disabled={true}>Returned</button>
-                <button id={style.deleteBtn}><AiFillDelete size={15} title='delete'/></button>
+                <button id={style.deleteBtn}><AiFillDelete size={15} title='delete' onClick={() => handleDelete(row.id)}/></button>
               </>
             ) ||
             row.status === 'rejected' &&
             (
               <>
                 <button id={style.btnAction} disabled={true}>Rejected</button>
-                <button id={style.deleteBtn}><AiFillDelete size={15} title='delete'/></button>
+                <button id={style.deleteBtn}><AiFillDelete size={15} title='delete' onClick={() => handleDelete(row.id)}/></button>
               </>
             )
             

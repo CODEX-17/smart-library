@@ -95,11 +95,67 @@ router.post('/createAccount', upload.single('file'), async (req, res) => {
     }
 });
 
+// Update account
+router.post('/updateAccount', upload.single('file'), async (req, res) => {
+
+    const {
+        id,
+        firstname, 
+        middlename, 
+        lastname, 
+        contact, 
+        gender, 
+        street_address, 
+        birthdate, 
+        city, 
+        imageID
+    } = req.body;
+
+    const query = `
+        UPDATE accounts SET firstname=?, middlename=?, lastname=?, contact=?, gender=?, street_address=?, birthdate=?, city=?, imageID=? WHERE id=?
+    `;
+
+    try {
+
+        db.query(query, [firstname, middlename, lastname, contact, gender, street_address, birthdate, city, imageID, id], (error, data, field) => {
+            if (error) {
+                console.log(error);
+                return res.status(400).send(error);
+            }
+
+            // If there's an image file
+            if (req.file) {
+                const queryImage = 'INSERT INTO image(filename, path, imageID) VALUES(?,?,?)';
+                const { filename, path } = req.file;
+
+                db.query(queryImage, [filename, path, imageID], (error, data, field) => {
+                    if (error) {
+                        console.log(error);
+                        return res.status(400).send(error);
+                    }
+
+                    return res.status(200).json({
+                        message: 'Successfully created account with image.'
+                    });
+                });
+            } else {
+                res.status(200).json({
+                    message: 'Successfully created account.'
+                });
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error);
+    }
+});
+
 
 //Check Hash
 router.post('/checkAccount', async (req, res) => {
 
     const {email, password} = req.body
+    console.log(req.body)
     const query = 'SELECT * FROM accounts WHERE email=?'
 
     try {
@@ -111,11 +167,11 @@ router.post('/checkAccount', async (req, res) => {
         })
 
         
-        
         if (user) {
            const hashPassword = user.password 
        
             if (hashPassword) {
+                console.log('result:' + passwordHash.verify(password, hashPassword))
                 if (passwordHash.verify(password, hashPassword)) {
                     return res.status(200).send(user)
                 } else {
@@ -132,6 +188,28 @@ router.post('/checkAccount', async (req, res) => {
         console.log(error)
     }
 
+})
+
+//Change password with hash
+router.post('/changePassword', async (req, res) => {
+
+    const {email, newPassword} = req.body
+
+    const hashedPassword = passwordHash.generate(newPassword);
+
+    const query = 'UPDATE accounts SET password=? WHERE email=?'
+
+    db.query(query, [hashedPassword, email], (error, data, field) => {
+        if (error) {
+            console.log(error)
+            res.status(400).send(error)
+        }
+
+        console.log('Successfully update password.')
+        res.status(200).json({
+            message: 'Successfully update password.'
+        })
+    })
 })
 
 //Forget password

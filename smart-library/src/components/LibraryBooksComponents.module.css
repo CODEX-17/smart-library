@@ -1,0 +1,200 @@
+@font-face {
+    font-family: bold;
+    src: url('../assets/fonts/Montserrat-Bold.ttf');
+}
+
+@font-face {
+    font-family: normal;
+    src: url('../assets/fonts/Montserrat-Regular.ttf');
+}
+
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-y: hidden;
+    font-family: normal;
+    animation: fade 0.5s ease-in-out;
+    position: relative;
+    color: #38b6ff;
+}
+
+.toast {
+    background-color: #387F39;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 10pt;
+    font-family: bold;
+    color: white;
+    animation: pop 0.5s ease;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content h1 {
+    font-family: bold;
+}
+
+
+.tableDiv {
+    border: 2px solid #38b6ff;
+    border-radius: 10px;
+    padding: 1%;
+    width: 70%;
+}
+
+#btnAction {
+    border-radius: 5px;
+    padding: 2%;
+    width: 40px;
+    height: 40px;
+    background-color: #EE4E4E;
+}
+
+#searchBar {
+  border: 2px solid #38b6ff;
+  outline: none;
+  font-family: normal;
+  font-size: 10pt;
+  color: #38b6ff;
+  padding: 1%;
+  width: 100%;
+  border-radius: 10px;
+}
+
+#searchBar::placeholder {
+  color: #38b6ff;
+}
+
+.table {
+  font-family: bold;
+  margin-bottom: 1%;
+  color: #38b6ff;
+  font-size: 10pt
+}
+
+.modal {
+    background-color: white;
+    border: 2px solid #38b6ff;
+    padding: 1%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    position: absolute;
+    width: 50%;
+    height: 90%;
+    z-index: 3;
+    animation: pop 0.5s ease-in-out;
+}
+
+.modalHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 20pt;
+    padding: 2%;
+    font-family: bold;
+}
+
+.modal form {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalContent {
+    width: 100%;
+    height: 100%;
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalContent p {
+    margin: 0;
+    font-family: bold;
+}
+
+.modalContent input {
+    border: 2px solid #38b6ff;
+    border-radius: 5px;
+    width: 100%;
+    outline: none;
+    padding: 1%;
+    padding-left: 2%;
+    color: #38b6ff;
+    font-family: bold;
+}
+
+.modalContent select {
+    border: 2px solid #38b6ff;
+    border-radius: 5px;
+    width: 100%;
+    outline: none;
+    padding: 1%;
+    padding-left: 2%;
+    color: #38b6ff;
+    font-family: bold;
+} 
+
+.modalContent button {
+    border-radius: 5px;
+    font-family: bold;
+}
+
+#badge {
+    background-color: #38b6ff;
+    color: white;
+    padding-right: 2%;
+    padding-left: 2%;
+    border-radius: 5px;
+    font-size: 15pt;
+}
+
+
+@keyframes pop {
+    0% {
+      transform: scale(0.5);
+    }
+    50% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideRight {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }

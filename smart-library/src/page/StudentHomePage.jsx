@@ -75,7 +75,20 @@ const StudentHomePage = () => {
     .catch((error) => console.log(error))
 
     axios.get('http://localhost:5001/book/getBooks')
-    .then((res) => {setBookList(res.data)})
+    .then((res) => {
+      setBookList(() => {
+        const oldData = res.data
+        let updated = []
+
+        for (let i = 0; i < oldData.length; i++) {
+          if (oldData[i].total_copies > 0 ) {
+            updated.push(oldData[i])
+          }
+        }
+
+        return updated
+      })
+    })
     .catch((error) => console.log(error))
 
     axios.get('http://localhost:5001/borrow/getBorrowByAcctID/' + userAccount.id)
@@ -161,7 +174,7 @@ const StudentHomePage = () => {
     },
     {
       name: 'Action',
-      cell: row => <button id={style.btnBorrow} style={{ backgroundColor: '#A02334' }} onClick={() => handleDeleteReq(row.book_id)}>Delete</button>,
+      cell: row => <button id={style.btnBorrow} style={{ backgroundColor: '#A02334' }} onClick={() => handleDeleteReq(row.id)}>Delete</button>,
     },
   ];
 
@@ -169,14 +182,14 @@ const StudentHomePage = () => {
     if (row) {
 
       const finalData = {
-        book_id: generateUniqueId(),
+        book_id: row.book_id,
         title: row.title,
         author_name: row.author_name,
         acct_id: userAccount.id,
         acct_name: generateFullname(userAccount.firstname, userAccount.middlename, userAccount.lastname),
         date: currentDate,
         time: currentTime,
-        status: 'pending'
+        status: 'pending',
       }
 
       setReqList((oldData) => [...oldData, finalData])
@@ -189,6 +202,31 @@ const StudentHomePage = () => {
           console.log(message)
           setToastMessage(message)
 
+          //updateTotalCopies in variable
+          setBookList(() => {
+            let updated = []
+    
+            for (let i = 0; i < bookList.length; i++) {
+              if (bookList[i].total_copies > 0 ) {
+                let data = bookList[i]
+
+                if (data.book_id === finalData.book_id) {
+                  if (finalData.total_copies > 0) {
+                    data.total_copies = finalData.total_copies
+                  }else {
+                    continue
+                  }
+                }else {
+                  updated.push(data)
+                }
+
+                
+              }
+            }
+    
+            return updated
+          })
+
           setTimeout(() => {
             setIsToast(false)
           }, 5000);
@@ -200,9 +238,22 @@ const StudentHomePage = () => {
   };
 
   const handleDeleteReq = (id) => {
-    setReqList(reqList.filter((req) => req.book_id !== id))
 
-    axios.post('http://localhost:5001/borrow/updateReq')
+    setReqList(reqList.filter((req) => req.id !== id))
+
+    axios.post('http://localhost:5001/borrow/deleteReq', {id})
+    .then((res) => {
+      const result = res.data
+      const message = result.message
+
+      setToastMessage(message)
+      setIsToast(false)
+
+      setTimeout(() => {
+        setIsToast(false)
+      }, 5000);
+
+    }).catch((err) => console.log(err))
   }
 
   const [filterText, setFilterText] = useState('');
