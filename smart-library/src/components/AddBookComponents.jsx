@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import style from './AddBookComponents.module.css'
 import axios from 'axios'
+import { useForm } from 'react-hook-form';
 
-
-const AddBookComponents = () => {
+const AddBookComponents = ({ handleCloseForm, handleNoticationConfig, selectedBranch }) => {
 
 const [branchList, setBranchList] = useState([])
 const [genreList, setGenreList] = useState([])
-const [isToast, setIsToast] = useState(false)
 
-const [bookName, setBookName] = useState('')
-const [author, setAuthor] = useState('')
-const [publication, setPublication] = useState('')
-const [genre, setGenre] = useState('')
-const [branch, setBranch] = useState('')
-const [totalCopies, setTotalCopies] = useState(0)
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm({
+  defaultValues: {
+    amount: 0,
+    quantity: 0,
+    call_no: 0,
+    total_value: 0,
+  }
+});
 
 useEffect(() => {
 
@@ -28,102 +33,150 @@ useEffect(() => {
 
 },[])
 
-const handleClear = () => {
-  setBookName('')
-  setAuthor('')
-  setBranch('')
-  setGenre('')
-  setPublication('')
-}
+const onSubmit = (data) => {
+  let updated = data
+  updated.branch = selectedBranch
 
-const handleSubmit = (e) => {
-  e.preventDefault()
-  const data = {
-    title: bookName,
-    author_name: author,
-    publication,
-    genre,
-    branch,
-    total_copies: totalCopies
-  }
-
-  axios.post('http://localhost:5001/book/addBook', data)
+  axios.post('http://localhost:5001/book/addBook', updated)
   .then((res) =>{
     const result = res.data
     const message = result.message
-
-    console.log(message)
-    setIsToast(true)
-    handleClear()
-
-    setTimeout(() => {
-      setIsToast(false)
-    }, 5000);
-
+    handleNoticationConfig(message, true)
+    handleCloseForm(false)
   })
   .catch((err) => console.log(err))
 }
 
-
-
+const handleClose = () => {
+  handleCloseForm(false)
+}
 
   return (
     <div className={style.container}>
-      {       
-        isToast && (
-          <div className={style.toast}>
-            Successfully add book.
-          </div>
-        )
-      }
-      <h1>Add Book</h1>
       <div className={style.content}>
-        <form action="" onSubmit={handleSubmit}>
-            <p>Book Name</p>
-            <input type="text" value={bookName} required onChange={(e) => setBookName(e.target.value)}/>
-            <p>Author</p>
-            <input type="text" value={author} required onChange={(e) => setAuthor(e.target.value)}/>
-            <p>Book Publication</p>
-            <input type="text" value={publication} required onChange={(e) => setPublication(e.target.value)}/>
-            <p>Number of copies</p>
-            <input type="number" value={totalCopies} required onChange={(e) => setTotalCopies(e.target.value)}/>
-            <p>Genre</p>
-            <select id={style.select} value={genre} class="form-select" style={
-                {
-                    border: '2px solid #38b6ff',
-                    color: '#38b6ff'
-                }
-            } required onChange={(e) => setGenre(e.target.value)}>
-              <option value="">Select genre</option>
-              {
-                genreList.map((genre, index) => (
-                  <option value={genre.genre_name} key={index}>{genre.genre_name}</option>
-                )) 
-              }
-                
-            </select>
-            <p className='mt-2'>Branch</p>
-            <select id={style.select} value={branch} class="form-select" style={
-                {
-                    border: '2px solid #38b6ff',
-                    color: '#38b6ff'
-                }
-            } required onChange={(e) => setBranch(e.target.value)}>
-              <option value="">Select branch</option>
-              {
-                branchList.map((branch, index) => (
-                  <option value={branch.branch_name} key={index}>{branch.branch_name}</option>
-                )) 
-              }
-                
-            </select>
-            <div className={style.botMenu}>
-                <button type='submit'>Add Book</button>
-                <button style={{
-                    width: '20%',
-                    backgroundColor: '#ffa600'
-                }} onClick={handleClear}>Clear</button>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className='d-flex w-100 gap-2 mb-2'>
+            <div className='d-flex flex-column w-100'>
+              <label>Item number <b>*</b></label>
+              <input 
+                type="number" 
+                placeholder='ex. 0000'
+                {...register('item_no', { 
+                  required: 'Item number is required',
+                  minLength: {
+                    value: 4,
+                    message: "Item number must be 4 digit only.",
+                  },
+                  maxLength: {
+                    value: 4,
+                    message: "Item number must be 4 digit.",
+                  }
+                })}
+              />
+              {errors.item_no && <p>{errors.item_no.message}</p>}
             </div>
+            <div className='d-flex flex-column w-100'>
+              <label>Accession number <b>*</b></label>
+              <input 
+                type="text" 
+                placeholder='ex. 801111 pl' 
+                {...register('access_no', { required: 'Accession number is required.' })}
+              />
+              {errors.access_no && <p>{errors.access_no.message}</p>}
+            </div>
+          </div>
+          
+          <div className='d-flex flex-column w-100 mb-2'>
+            <label>Book title <b>*</b></label>
+            <input 
+              type="text" 
+              placeholder='Alamat ng saging' 
+              {...register('title', { required: 'Book title is required.'})}
+            />
+            {errors.title && <p>{errors.title.message}</p>}
+          </div>
+
+          <div className='d-flex flex-column w-100 mb-2'>
+            <label>Author name <b>*</b></label>
+            <input 
+              type="text" 
+              placeholder='Juan Dela Cruz'
+              {...register('author', { required: 'Author name is required.' })}
+            />
+            {errors.author && <p>{errors.author.message}</p>}
+          </div>
+
+          <div className='d-flex gap-2 w-100 mb-2'>
+            <div className='d-flex flex-column w-100'>
+              <label>Genre <b>*</b></label>
+              <select 
+                {...register('genre', { required: 'Genre is required.' })}
+              >
+                <option value="">Select genre</option>
+                {
+                  genreList.map((genre, index) => (
+                    <option value={genre.genre_name} key={index}>{genre.genre_name}</option>
+                  )) 
+                }
+              </select>
+              {errors.genre && <p>{errors.genre.message}</p>}
+            </div>
+          </div>
+
+          <div className='d-flex w-100 gap-2 mb-2'>
+            <div className='d-flex flex-column w-100'>
+              <label>Amount</label>
+              <input
+                type="number"
+                {...register('amount')}
+              />
+              {errors.amount && <p>{errors.amount.message}</p>}
+            </div>
+            
+            <div className='d-flex flex-column w-100'>
+              <label>Quantity</label>
+              <input type="number" {...register('quantity')}/>
+            </div>
+          </div>
+          <div className='d-flex w-100 gap-2 mb-2'>
+            <div className='d-flex flex-column w-100'>
+              <label>Call number</label>
+              <input 
+                type="number" 
+                {...register('call_no', {
+                  pattern: {
+                    value: /^09\d{9}$/,
+                    message: "Contact number must start with 09 and be 11 digits",
+                  },
+                  minLength: {
+                    value: 11,
+                    message: "Contact number must be 11 digits",
+                  },
+                  maxLength: {
+                    value: 11,
+                    message: "Contact number must be 11 digits",
+                  },
+                }
+                )}/>
+                {errors.call_no && <p>{errors.call_no.message}</p>}
+            </div>
+            <div className='d-flex flex-column w-100'>
+              <label>Total Value</label>
+              <input type="number" {...register('total_value')}/>
+            </div>
+            <div className='d-flex flex-column w-100'>
+              <label>Date Acquired</label>
+              <input type="date" {...register('date_acquired')}/>
+            </div>
+          </div>
+
+          <div className={style.botMenu}>
+              <button type='submit'>Submit</button>
+              <button style={{
+                  width: '20%',
+                  backgroundColor: '#B8001F'
+              }} onClick={handleClose}>Close</button>
+          </div>
         </form>
       </div>
     </div>

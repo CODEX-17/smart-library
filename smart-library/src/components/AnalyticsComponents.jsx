@@ -56,6 +56,8 @@ const AnalyticsComponents = () => {
       const date = reqList[i].date
       const status = reqList[i].status
 
+      console.log(date === currentDate) 
+
       if (date === currentDate && status === 'returned') {
         todaysReturn++
       }
@@ -68,29 +70,36 @@ const AnalyticsComponents = () => {
       <div className={style.cardAnalyticsBar}>
         <div className={style.card} style={{ backgroundColor: '#387F39' }}>
             <div className={style.cardHead}>
-                <h1>{bookList?.length}</h1>
-                <MdOutlineMenuBook size={50}/>
+              <MdOutlineMenuBook size={50}/>
+              <h1>{bookList?.length}</h1>
             </div>
             <p>Total number of books</p>
         </div>
         <div className={style.card} style={{ backgroundColor: '#FFB200' }}>
             <div className={style.cardHead}>
-                <h1>{acctList?.length}</h1>
-                <RiUser3Fill size={50}/>
+              <RiUser3Fill size={50}/>
+              <h1>{acctList?.length}</h1>
             </div>
             <p>Total number of users/clients</p>
         </div>
         <div className={style.card} style={{ backgroundColor: '#2E236C' }}>
             <div className={style.cardHead}>
-                <h1>{computeTodaysBorrow()}</h1>
-                <MdAssignmentReturn size={50}/>
+              <MdAssignmentReturn size={50}/> 
+              <h1>{reqList?.length}</h1>
+            </div>
+            <p>Total request books</p>
+        </div>
+        <div className={style.card} style={{ backgroundColor: '#2E236C' }}>
+            <div className={style.cardHead}>
+              <MdAssignmentReturn size={50}/> 
+              <h1>{computeTodaysBorrow()}</h1>
             </div>
             <p>Borrowed book today</p>
         </div>
         <div className={style.card} style={{ backgroundColor: '#B60071' }}>
             <div className={style.cardHead}>
-                <h1>{computeTodaysReturn()}</h1>
-                <MdAssignmentReturned size={50}/>
+              <MdAssignmentReturned size={50}/>
+              <h1>{computeTodaysReturn()}</h1>
             </div>
             <p>Return book today</p>
         </div>

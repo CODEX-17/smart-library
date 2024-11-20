@@ -39,33 +39,54 @@ router.post('/deleteBooks', (req, res) => {
 
 router.post('/addBook', (req, res) => {
     
-    const { title,author_name,publication,genre,branch,total_copies } = req.body
-    const query = 'INSERT INTO books(title,author_name,publication,genre,branch,total_copies) VALUES(?,?,?,?,?,?)'
+    const { item_no, title, author, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired } = req.body
+    const query = 'INSERT INTO books(item_no, title, author_name, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired) VALUES(?,?,?,?,?,?,?,?,?,?,?)'
 
-    
-    db.query(query,[title,author_name,publication,genre,branch,total_copies], (error, data, field) => {
+    db.query(query,[ item_no, title, author, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired], (error, data, field) => {
         if (error) {
             console.error(error)
             res.status(404).send(error)
         } else {
-            console.log('Successfully add book.')
-            res.status(200).json('Successfully add book.')
+            console.log('Successfully added book.')
+            res.status(200).json({
+                message: 'Successfully added book.',
+            })
         }
     })
 })
 
 router.post('/updateBooks', (req, res) => {
-    
-    const { title, authorName, publication, category, branch, totalCopies, bookID } = req.body
-    const query = 'UPDATE books SET title=?,author_name=?,publication=?,genre=?,branch=?,total_copies=? WHERE book_id=?'
 
-    db.query(query,[title, authorName, publication, category, branch, totalCopies, bookID], (error, data, field) => {
+    const { book_id, item_no, title, author, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired } = req.body
+    const query = `
+  UPDATE books 
+  SET 
+    item_no=?, 
+    title=?, 
+    author_name=?, 
+    access_no=?, 
+    genre=?, 
+    branch=?, 
+    quantity=?, 
+    amount=?, 
+    call_no=?, 
+    total_value=?, 
+    date_acquired=? 
+  WHERE 
+    book_id=?
+`;
+
+    console.log(req.body)
+
+    db.query(query,[ item_no, title, author, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired, book_id], (error, data, field) => {
         if (error) {
             console.error(error)
             res.status(404).send(error)
         } else {
-            console.log('Successfully update book.')
-            res.status(200).json('Successfully update book.')
+            console.log('Successfully updated book.')
+            res.status(200).json({
+                message: 'Successfully updated book.',
+            })
         }
     })
 })

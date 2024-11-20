@@ -11,10 +11,11 @@ import { IoSync } from "react-icons/io5";
 import { IoMdLogOut } from "react-icons/io";
 import AnalyticsComponents from '../components/AnalyticsComponents';
 import { useNavigate } from 'react-router-dom';
-import AddBookComponents from '../components/AddBookComponents';
+import ImportMenuComponents from '../components/ImportMenuComponents'
 import RequestBookComponent from '../components/RequestBookComponent';
 import CatalogueComponents from '../components/CatalogueComponents';
 import LibraryBooksComponents from '../components/LibraryBooksComponents';
+import { MdOutlineTableChart } from "react-icons/md";
 
 const AdminPage = () => {
 
@@ -101,7 +102,42 @@ const AdminPage = () => {
                             </div>
                         }
 
+                        <div 
+                            className={activeMenu === 'tables' ? style.cardActive : style.card}
+                            onClick={() => setActiveMenu('tables')}
+                        >
+                            <MdOutlineTableChart size={25} color='#38b6ff'/>
+                            <p>Tables</p>
+                        </div>
 
+                        {
+                            activeMenu === 'tables' &&
+                            <div className={style.divDropDown}>
+                                <div 
+                                    className={activeMenu === 'addBook' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('addBook')}
+                                >
+                                    <BiBookAdd size={25} color='#38b6ff'/>
+                                    <p>Genre</p>
+                                </div>
+
+                                <div 
+                                    className={activeMenu === 'reqBook' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('reqBook')}
+                                >
+                                    <LiaBookSolid size={25} color='#38b6ff'/>
+                                    <p>Branch</p>
+                                </div>
+
+                                <div 
+                                    className={activeMenu === 'reqBook' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('reqBook')}
+                                >
+                                    <LiaBookSolid size={25} color='#38b6ff'/>
+                                    <p>Feedback</p>
+                                </div>
+                            </div>
+                        }
 
                         <div 
                             className={activeMenu === 'catalogue' ? style.cardActive : style.card}
@@ -169,7 +205,7 @@ const AdminPage = () => {
 
             {
                 activeMenu === 'addBook' && (
-                    <AddBookComponents/>
+                    <ImportMenuComponents/>
                 )
             }
 

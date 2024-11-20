@@ -5,6 +5,7 @@ import { AiFillDelete } from "react-icons/ai";
 import { MdEditSquare } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
 
 const LibraryBooksComponents = () => {
 
@@ -15,13 +16,50 @@ const LibraryBooksComponents = () => {
     const [isToast, setIsToast] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
 
-    const [bookID, setBookID] = useState(0)
-    const [title, setTitle] = useState('')
-    const [authorName, setAuthorName] = useState('')
-    const [publication, setPublication] = useState('')
-    const [category, setCategory] = useState('')
-    const [branch, setBranch] = useState('')
-    const [totalCopies, setTotalCopies] = useState(0)
+    const [selectedBook, setSelectedBook]= useState(null)
+
+    const url = 'http://localhost:5001/'
+
+    const {
+        handleSubmit,
+        register,
+        reset,
+        formState: { errors },
+    } = useForm({
+        defaultValues: {
+            book_id: selectedBook?.book_id,
+            item_no: selectedBook?.item_no,
+            access_no: selectedBook?.access_no,
+            title: selectedBook?.title,
+            author:  selectedBook?.author_name,
+            branch:  selectedBook?.branch,
+            genre:  selectedBook?.genre,
+            amount:  selectedBook?.amount,
+            quantity:  selectedBook?.quantity,
+            call_no:  selectedBook?.call_no,
+            total_value:  selectedBook?.total_value,
+            date_acquired:  selectedBook?.date_acquired,
+        }
+    })
+
+    useEffect(() => {
+        if (selectedBook) {
+            reset({
+                book_id: selectedBook.book_id,
+                item_no: selectedBook.item_no,
+                title: selectedBook.title,
+                author:  selectedBook.author_name,
+                branch:  selectedBook.branch,
+                genre:  selectedBook.genre,
+                amount:  selectedBook.amount,
+                quantity:  selectedBook.quantity,
+                call_no:  selectedBook.call_no,
+                total_value:  selectedBook.total_value,
+                date_acquired:  selectedBook.date_acquired,
+                access_no: selectedBook.access_no,
+            });
+        }
+    }, [selectedBook, reset]);
 
     useEffect(() => {
 
@@ -47,23 +85,27 @@ const LibraryBooksComponents = () => {
 
     const customStyles = {
         table: {
-        style: {
-            color: 'red'
-        },
+            style: {
+                color: 'red'
+            },
         },
         headCells: {
-        style: {
-            fontWeight: 'bold',
-            fontSize: '12pt',
-        },
+            style: {
+                fontWeight: 'bold',
+                fontSize: '10pt',
+            },
         },
     }
 
     const column = [
-        
         {
-            name: 'Book ID',
-            selector: row => row.book_id,
+            name: 'Item no.',
+            selector: row => row.item_no,
+            sortable: true,
+        },
+        {
+            name: 'access no.',
+            selector: row => row.access_no,
             sortable: true,
         },
         {
@@ -77,12 +119,7 @@ const LibraryBooksComponents = () => {
             sortable: true,
         },
         {
-            name: 'Publication',
-            selector: row => row.publication,
-            sortable: true,
-        },
-        {
-            name: 'Category',
+            name: 'Genre',
             selector: row => row.genre,
             sortable: true,
         },
@@ -93,7 +130,12 @@ const LibraryBooksComponents = () => {
         },
         {
             name: 'Total Copies',
-            selector: row => row.total_copies,
+            selector: row => row.quantity,
+            sortable: true,
+        },
+        {
+            name: 'Date Acquired',
+            selector: row => row.date_acquired,
             sortable: true,
         },
         
@@ -112,10 +154,10 @@ const LibraryBooksComponents = () => {
     
     // Filter the data based on the search query
     const filteredData = bookList.filter(item => 
-        item.book_id && item.book_id === filterText || 
+        item.item_no && item.item_no === filterText || 
         item.title && item.title.toLowerCase().includes(filterText.toLowerCase()) ||
         item.author_name && item.author_name.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.publication && item.publication.toLowerCase().includes(filterText.toLowerCase()) ||
+        item.access_no && item.access_no.toLowerCase().includes(filterText.toLowerCase()) ||
         item.genre && item.genre.toLowerCase().includes(filterText.toLowerCase())
     );
 
@@ -144,42 +186,22 @@ const LibraryBooksComponents = () => {
     }
 
     const handleEdit = (data) => {
-        if (data) {
-            setIsShowEditModal(true)
-            setBookID(data.book_id)
-            setTitle(data.title)
-            setAuthorName(data.author_name)
-            setPublication(data.publication)
-            setCategory(data.genre)
-            setBranch(data.branch)
-            setTotalCopies(data.total_copies)
-        }
+        setSelectedBook(data)
+        setIsShowEditModal(true)
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    const onSubmit = (data) => {
+       console.log(data)
+        const book_id = data.book_id
 
-        axios.post('http://localhost:5001/book/updateBooks', { title, authorName, publication, category, branch, totalCopies, bookID })
+        axios.post(`${url}book/updateBooks`, data)
         .then((res) => {
             const result = res.data
             const message = result.message
 
-           setBookList((oldData) => {
-                let updated = [...oldData]
-
-                for (let i = 0; i < updated.length; i++) {
-                    if (updated[i].book_id === bookID) {
-                        updated[i].title = title
-                        updated[i].author_name = authorName
-                        updated[i].publication = publication
-                        updated[i].genre = category
-                        updated[i].branch = branch
-                        updated[i].total_copies = totalCopies
-                    }
-                }
-
-                return updated
-           })
+            let updated = bookList.filter((book) => book.book_id !== book_id)
+            updated.push(data)
+            setBookList(updated)
 
             setToastMessage(message)
             setIsToast(true)
@@ -202,58 +224,152 @@ const LibraryBooksComponents = () => {
             )
         }
         {
-            isShowEditModal && (
+            (isShowEditModal && selectedBook) && (
                 <div className={style.modal}>
-                    <div className={style.modalHead}>
-                        <div id={style.badge}>
-                            Book ID: {bookID}
+                    <div className='w-100 d-flex align-items-center justify-content-end'>
+                        <div className={style.closeDiv}>
+                            <IoMdClose 
+                                size={25} 
+                                title='closed' 
+                                cursor={'pointer'} 
+                                onClick={() => setIsShowEditModal(false)}
+                            />
+                        </div>
+                    </div>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className='d-flex w-100 gap-2 mb-2'>
+                            <div className='d-flex flex-column w-100'>
+                                <label>Item number <b>*</b></label>
+                                <input 
+                                    type="number" 
+                                    placeholder='ex. 0000'
+                                    {...register('item_no', { 
+                                    required: 'Item number is required',
+                                    minLength: {
+                                        value: 4,
+                                        message: "Item number must be 4 digit only.",
+                                    },
+                                    maxLength: {
+                                        value: 4,
+                                        message: "Item number must be 4 digit.",
+                                    }
+                                    })}
+                                />
+                                {errors.item_no && <p>{errors.item_no.message}</p>}
+                            </div>
+                            <div className='d-flex flex-column w-100'>
+                                <label>Accession number <b>*</b></label>
+                                <input 
+                                    type="text" 
+                                    placeholder='ex. 801111 pl' 
+                                    {...register('access_no', { required: 'Accession number is required.' })}
+                                />
+                                {errors.access_no && <p>{errors.access_no.message}</p>}
+                            </div>
                         </div>
                         
-                        <IoMdClose size={25} title='closed' cursor={'pointer'} onClick={() => setIsShowEditModal(false)}/>
-                    </div>
-                    <form action="" onSubmit={handleSubmit}>
-                        <div className={style.modalContent}>
-                            <div className='w-100 mb-2'>
-                                <p>Title</p>
-                                <input type="text" value={title} required onChange={(e) => setTitle(e.target.value)}/>
-                            </div>
-                            <div className='w-100 mb-2'>
-                                <p>Author Name</p>
-                                <input type="text" value={authorName} required onChange={(e) => setAuthorName(e.target.value)}/>
-                            </div>
-                            <div className='w-100 mb-2'>
-                                <p>Publication</p>
-                                <input type="text" value={publication} required onChange={(e) => setPublication(e.target.value)}/>
-                            </div>
-                            <div className='w-100 d-flex gap-2 mb-2'>
-                                <div className='w-50'>
-                                    <p>Category</p>
-                                    <select value={category} required onChange={(e) => setCategory(e.target.value)}>
-                                        {
-                                            genreList.map((genre, index) => (
-                                                <option key={index} value={genre.genre_name}>{genre.genre_name}</option>
-                                            ))
-                                        }                              
-                                    </select>
-                                </div>
-                                <div className='w-50'>
-                                    <p>Branch</p>
-                                    <select value={branch} required onChange={(e) => setBranch(e.target.value)}>
-                                        {
-                                            branchList.map((branch, index) => (
-                                                <option key={index} value={branch.branch_name}>{branch.branch_name}</option>
-                                            ))
-                                        }                              
-                                    </select>
-                                </div>
-                            </div>
-                            <div className='w-100 mb-5'>
-                                <p>Total Copies</p>
-                                <input type="number" value={totalCopies} required onChange={(e) => setTotalCopies(e.target.value)}/>
-                            </div>
+                        <div className='d-flex flex-column w-100 mb-2'>
+                            <label>Book title <b>*</b></label>
+                            <input 
+                            type="text"
+                            id='title' 
+                            placeholder='Alamat ng saging' 
+                            {...register('title', { required: 'Book title is required.'})}
+                            />
+                            {errors.title && <p>{errors.title.message}</p>}
+                        </div>
 
-                            <button type='submit'>Update</button>
+                        <div className='d-flex flex-column w-100 mb-2'>
+                            <label>Author name <b>*</b></label>
+                            <input 
+                            type="text"
+                            id='author'
+                            placeholder='Juan Dela Cruz'
+                            {...register('author', { required: 'Author name is required.' })}
+                            />
+                            {errors.author && <p>{errors.author.message}</p>}
+                        </div>
+
+                        <div className='d-flex gap-2 w-100 mb-2'>
+                            <div className='d-flex flex-column w-100'>
+                                <label>Genre <b>*</b></label>
+                                <select 
+                                    {...register('genre', { required: 'Genre is required.' })}
+                                >
+                                    <option value="">Select genre</option>
+                                    {
+                                        genreList.map((genre, index) => (
+                                            <option value={genre.genre_name} key={index}>{genre.genre_name}</option>
+                                        )) 
+                                    }
+                                </select>
+                                {errors.genre && <p>{errors.genre.message}</p>}
+                            </div>
+                            <div className='d-flex flex-column w-100'>
+                                <label>Branch <b>*</b></label>
+                                <select 
+                                    {...register('branch', { required: 'branch is required.' })}
+                                >
+                                    <option value="">Select genre</option>
+                                    {
+                                        branchList.map((branch, index) => (
+                                            <option value={branch.branch_name} key={index}>{branch.branch_name}</option>
+                                        )) 
+                                    }
+                                </select>
+                                {errors.genre && <p>{errors.genre.message}</p>}
+                            </div>
+                        </div>
+
+                        <div className='d-flex w-100 gap-2 mb-2'>
+                            <div className='d-flex flex-column w-100'>
+                            <label>Amount</label>
+                            <input
+                                type="number"
+                                {...register('amount')}
+                            />
+                            {errors.amount && <p>{errors.amount.message}</p>}
+                            </div>
                             
+                            <div className='d-flex flex-column w-100'>
+                            <label>Quantity</label>
+                            <input type="number" {...register('quantity')}/>
+                            </div>
+                        </div>
+                        <div className='d-flex w-100 gap-2 mb-2'>
+                            <div className='d-flex flex-column w-100'>
+                            <label>Call number</label>
+                            <input 
+                                type="number" 
+                                {...register('call_no', {
+                                pattern: {
+                                    value: /^09\d{9}$/,
+                                    message: "Contact number must start with 09 and be 11 digits",
+                                },
+                                minLength: {
+                                    value: 11,
+                                    message: "Contact number must be 11 digits",
+                                },
+                                maxLength: {
+                                    value: 11,
+                                    message: "Contact number must be 11 digits",
+                                },
+                                }
+                                )}/>
+                                {errors.call_no && <p>{errors.call_no.message}</p>}
+                            </div>
+                            <div className='d-flex flex-column w-100'>
+                            <label>Total Value</label>
+                            <input type="number" {...register('total_value')}/>
+                            </div>
+                            <div className='d-flex flex-column w-100'>
+                            <label>Date Acquired</label>
+                            <input type="date" {...register('date_acquired')}/>
+                            </div>
+                        </div>
+
+                        <div className='d-flex w-100 mt-2'>
+                            <button type='submit'>Update</button>
                         </div>
                     </form>
                 </div>

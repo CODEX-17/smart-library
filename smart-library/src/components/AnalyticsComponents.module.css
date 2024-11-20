@@ -25,27 +25,36 @@
 .card {
     width: 17%;
     max-width: 230px;
-    min-width: 150px;
+    min-width: 200px;
+    min-height: 150px;
     border-radius: 10px;
-    padding: 2%;
+    padding: 10px;
     color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 10px;
+    gap: 10px;
 }
 
 .cardHead {
     width: 80%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 10px;
 }
 
 .cardHead h1 {
     font-family: bold;
     margin: 0;
+    font-size: x-large;
+}
+
+.card p {
+  font-size: small;
+  margin: 0;
 }
 
 

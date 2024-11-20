@@ -89,13 +89,13 @@
 .modal {
     background-color: white;
     border: 2px solid #38b6ff;
-    padding: 1%;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
     position: absolute;
     width: 50%;
-    height: 90%;
+    height: auto;
     z-index: 3;
     animation: pop 0.5s ease-in-out;
 }
@@ -112,27 +112,20 @@
 
 .modal form {
     display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-}
-
-.modalContent {
-    width: 100%;
-    height: 100%;
-    padding: 2%;
-    display: flex;
     flex-direction: column;
+    height: 100%;
     align-items: center;
     justify-content: center;
 }
 
-.modalContent p {
+.modal p {
     margin: 0;
-    font-family: bold;
+    font-family: normal;
+    font-size: small;
+    color: red;
 }
 
-.modalContent input {
+.modal input {
     border: 2px solid #38b6ff;
     border-radius: 5px;
     width: 100%;
@@ -141,32 +134,47 @@
     padding-left: 2%;
     color: #38b6ff;
     font-family: bold;
+    height: 40px;
 }
 
-.modalContent select {
+.modal input::placeholder {
+  font-family: normal;
+  font-size: small;
+  color: #38b6ffa2;
+}
+
+.modal select {
+  width: 100%;
+  outline: none;
+  color: #38b6ff;
+  font-family: bold;
+  border: 2px solid #38b6ff;
+  border-radius: 5px;
+  height: 40px;
+  margin-bottom: 10px;
+  font-size: small;
+}
+
+.modal label {
+  font-family: bold;
+  font-size: medium;
+}
+
+.modal button {
+    border-radius: 5px;
+    font-family: bold;
+}
+
+.closeDiv {
     border: 2px solid #38b6ff;
     border-radius: 5px;
-    width: 100%;
-    outline: none;
-    padding: 1%;
-    padding-left: 2%;
-    color: #38b6ff;
-    font-family: bold;
-} 
-
-.modalContent button {
-    border-radius: 5px;
-    font-family: bold;
 }
 
-#badge {
-    background-color: #38b6ff;
-    color: white;
-    padding-right: 2%;
-    padding-left: 2%;
-    border-radius: 5px;
-    font-size: 15pt;
+.closeDiv:hover {
+  background-color: #38b6ff;
+  color: white;
 }
+
 
 
 @keyframes pop {

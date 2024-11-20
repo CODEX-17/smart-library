@@ -89,6 +89,12 @@ const CreateAccount = () => {
       }else {
         setSpecialChar(false)
       }
+
+      if (password === '') {
+        setValidLenghtChar(true)
+        setSpecialChar(true)
+        setMixChar(true)
+      }
       
     }
 
@@ -144,9 +150,9 @@ const CreateAccount = () => {
     
   }
 
- const hasNumberAndSymbols = (value) => {
+  const hasNumberAndSymbols = (value) => {
     return /[0-9]/.test(value) && /[!@#$%^&*()]/.test(value)
- }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
