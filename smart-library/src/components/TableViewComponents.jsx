@@ -81,7 +81,6 @@ const TableViewComponents = ({ currentTable }) => {
         name: 'Action',
         cell: row => (
             <div className='d-flex gap-2 p-2'>
-                <button id={style.btnAction} style={{ backgroundColor: '#387F39' }} onClick={() =>handleEdit(row)}><MdEditSquare size={20} title='edit'/></button>
                 <button id={style.btnAction} style={{ backgroundColor: '#B8001F' }} onClick={() => handleDelete(row)}><AiFillDelete size={20} title='delete'/></button>
             </div>
         ),
@@ -101,8 +100,10 @@ const TableViewComponents = ({ currentTable }) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [isShowEditModal, setIssShowEditModal] = useState(false)
+  const [isShowNotification, setIsShowNotification] = useState(false)
 
-
+  const [message, setMessage] = useState('')
+  const [notifStatus, setNotifStatus] = useState(true)
 
   useEffect( () => {
 
@@ -130,7 +131,7 @@ const TableViewComponents = ({ currentTable }) => {
 
     gettingDatas()
 
-  },[url])
+  },[url, message])
 
   const configData = () => {
     if (currentTable === 'tableFeedback') {
@@ -188,18 +189,34 @@ const TableViewComponents = ({ currentTable }) => {
     
   }
 
+  const notificationConfig = ( message, status) => {
+    setMessage(message)
+    setNotifStatus(status)
+    setIsShowNotification(true)
+
+    setTimeout(() => {
+      setIsShowNotification(false)
+      setMessage('')
+    }, 3000);
+  }
+
 
   return (
     <div className={style.container}>
       {
-        <NotificationComponents/>
+        isShowNotification &&
+        <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+          <NotificationComponents message={message} status={notifStatus}/>
+        </div>
       }
+
       { isShowEditModal && 
         <div className={style.modalEdit}>
           <TableEditModalComponents 
             currentTable={currentTable}
             selectedData={selectedData} 
             setIssShowEditModal={setIssShowEditModal}
+            notificationConfig={notificationConfig}
           /> 
         </div>
       }
