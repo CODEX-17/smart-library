@@ -16,6 +16,10 @@ import RequestBookComponent from '../components/RequestBookComponent';
 import CatalogueComponents from '../components/CatalogueComponents';
 import LibraryBooksComponents from '../components/LibraryBooksComponents';
 import { MdOutlineTableChart } from "react-icons/md";
+import { BiCategory } from "react-icons/bi";
+import { PiGitBranchBold } from "react-icons/pi";
+import { MdOutlineFeedback } from "react-icons/md";
+import TableViewComponents from '../components/TableViewComponents';
 
 const AdminPage = () => {
 
@@ -74,8 +78,13 @@ const AdminPage = () => {
                         </div>
 
                         <div 
-                            className={activeMenu === 'circulation' ? style.cardActive : style.card}
-                            onClick={() => setActiveMenu('circulation')}
+                            className={
+                                (
+                                    activeMenu === 'circulation' || 
+                                    activeMenu === 'addBook' || 
+                                    activeMenu === 'reqBook'
+                                ) ? style.cardActive : style.card}
+                            onClick={() => setActiveMenu('addBook')}
                         >
                             <IoSync size={25} color='#38b6ff'/>
                             <p>Circulation</p>
@@ -103,37 +112,43 @@ const AdminPage = () => {
                         }
 
                         <div 
-                            className={activeMenu === 'tables' ? style.cardActive : style.card}
-                            onClick={() => setActiveMenu('tables')}
+                            className={
+                                (
+                                    activeMenu === 'tableGenre' ||
+                                    activeMenu === 'tableBranch' ||
+                                    activeMenu === 'tableFeedback'
+                                ) ? style.cardActive : style.card
+                            }
+                            onClick={() => setActiveMenu('tableGenre')}
                         >
                             <MdOutlineTableChart size={25} color='#38b6ff'/>
                             <p>Tables</p>
                         </div>
 
                         {
-                            activeMenu === 'tables' &&
+                            (activeMenu === 'tables' || activeMenu === 'tableGenre' || activeMenu === 'tableBranch' || activeMenu === 'tableFeedback') &&
                             <div className={style.divDropDown}>
                                 <div 
-                                    className={activeMenu === 'addBook' ? style.cardActive : style.card}
-                                    onClick={() => setActiveMenu('addBook')}
+                                    className={activeMenu === 'tableGenre' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('tableGenre')}
                                 >
-                                    <BiBookAdd size={25} color='#38b6ff'/>
+                                    <BiCategory size={25} color='#38b6ff'/>
                                     <p>Genre</p>
                                 </div>
 
                                 <div 
-                                    className={activeMenu === 'reqBook' ? style.cardActive : style.card}
-                                    onClick={() => setActiveMenu('reqBook')}
+                                    className={activeMenu === 'tableBranch' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('tableBranch')}
                                 >
-                                    <LiaBookSolid size={25} color='#38b6ff'/>
+                                    <PiGitBranchBold size={25} color='#38b6ff'/>
                                     <p>Branch</p>
                                 </div>
 
                                 <div 
-                                    className={activeMenu === 'reqBook' ? style.cardActive : style.card}
-                                    onClick={() => setActiveMenu('reqBook')}
+                                    className={activeMenu === 'tableFeedback' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('tableFeedback')}
                                 >
-                                    <LiaBookSolid size={25} color='#38b6ff'/>
+                                    <MdOutlineFeedback size={25} color='#38b6ff'/>
                                     <p>Feedback</p>
                                 </div>
                             </div>
@@ -197,35 +212,28 @@ const AdminPage = () => {
             
         </div>
         <div className={style.content}>
-            {
-                activeMenu === 'dashboard' && (
-                    <AnalyticsComponents/>
-                )
-            }
+
+            { activeMenu === 'dashboard' && <AnalyticsComponents/> }
+
+            { activeMenu === 'addBook' && <ImportMenuComponents/> }
+
+            { activeMenu === 'reqBook' && <RequestBookComponent/> }
+
+            { activeMenu === 'catalogue' && <CatalogueComponents/> }
+
+            { activeMenu === 'libBook' && <LibraryBooksComponents/> }
 
             {
-                activeMenu === 'addBook' && (
-                    <ImportMenuComponents/>
+                ( 
+                    activeMenu === 'tables' ||
+                    activeMenu === 'tableGenre' || 
+                    activeMenu === 'tableBranch' || 
+                    activeMenu === 'tableFeedback' 
+                ) && (
+                    <TableViewComponents currentTable={activeMenu}/>
                 )
             }
-
-            {
-                activeMenu === 'reqBook' && (
-                    <RequestBookComponent/>
-                )
-            }
-
-            {
-                activeMenu === 'catalogue' && (
-                    <CatalogueComponents/>
-                )
-            }
-
-            {
-                activeMenu === 'libBook' && (
-                    <LibraryBooksComponents/>
-                )
-            }
+            
         </div>
         
       </div>

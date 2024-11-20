@@ -19,4 +19,20 @@ router.post('/addFeedback', (req, res) => {
     })
 })
 
+//API get branch
+router.get('/getFeedBack', (req, res) => {
+
+    const query = 'SELECT * FROM feedback'
+
+    db.query(query, (error, data, field) => {
+        if (error) {
+            console.error(error)
+            res.status(404).send(error)
+        } else {
+            console.log('Successfully getting feedbacks.')
+            res.status(200).json(data)
+        }
+    })
+})
+
 module.exports = router
