@@ -20,18 +20,23 @@ const RequestBookComponent = () => {
       .then((res) => {
         let finalData = res.data
 
-        for (let i = 0; i < finalData.length; i++) {
+        if (finalData.length > 0 && books.length > 0) {
+          for (let i = 0; i < finalData.length; i++) {
 
-          for (let x = 0; x < books.length; x++) {
-   
-            if (parseInt(finalData[i].book_id) === books[x].book_id) {
-              console.log(finalData[i])
-              finalData[i].total_copies = books[x].total_copies
+            const book_id = finalData[i].book_id
+
+            for (let x = 0; x < books.length; x++) {
+              if (books[x].book_id == book_id) {
+                const quantity = books[x].quantity
+                finalData[i].quantity = quantity
+              }
             }
+
           }
           
         }
 
+        console.log(finalData)
         setReqList(finalData)
 
       })
@@ -92,6 +97,8 @@ const RequestBookComponent = () => {
     }).catch((err) => console.log(err))
   }
 
+  
+
   const requestColumns = [
     
     {
@@ -131,7 +138,7 @@ const RequestBookComponent = () => {
     },
     {
       name: 'Total Copies',
-      selector: row => row.total_copies,
+      selector: row => row.quantity,
       sortable: true,
     },
     
@@ -143,7 +150,7 @@ const RequestBookComponent = () => {
             row.status === 'pending' && (
               <>
                 {
-                  row.total_copies > 0 && <button id={style.btnAction} onClick={() => handleUpdateReq(row.id, row.book_id, 'approved')} style={{ backgroundColor: 'rgb(56, 127, 57)' }}>Approved</button>
+                  row.quantity > 0 && <button id={style.btnAction} onClick={() => handleUpdateReq(row.id, row.book_id, 'approved')} style={{ backgroundColor: 'rgb(56, 127, 57)' }}>Approved</button>
                 }
                 <button id={style.btnAction} onClick={() => handleUpdateReq(row.id, row.book_id, 'rejected')} style={{ backgroundColor: '#F5004F' }}>Reject</button>
               </>
@@ -213,19 +220,21 @@ const RequestBookComponent = () => {
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
           />
-          <DataTable 
-            columns={requestColumns}
-            data={filteredData}
-            highlightOnHover
-            pointerOnHover
-            striped
-            pagination
-            paginationPerPage={5}  // Default rows per page
-            paginationRowsPerPageOptions={[5, 10]}  // Custom dropdown options
-            className={style.table}
-            customStyles={customStyles}
-          >
-          </DataTable>
+        
+            <DataTable 
+              columns={requestColumns}
+              data={filteredData}
+              highlightOnHover
+              pointerOnHover
+              striped
+              pagination
+              paginationPerPage={5}  // Default rows per page
+              paginationRowsPerPageOptions={[5, 10]}  // Custom dropdown options
+              className={style.table}
+              customStyles={customStyles}
+            >
+            </DataTable>
+       
         </div>
 
 

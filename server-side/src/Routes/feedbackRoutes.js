@@ -35,5 +35,24 @@ router.get('/getFeedBack', (req, res) => {
     })
 })
 
+//API delete feedback
+router.post('/deleteFeedback', (req, res) => {
+    
+    const { id } = req.body
+    const query = 'DELETE FROM feedback WHERE id=?'
+
+    db.query(query,[id], (error, data, field) => {
+        if (error) {
+            console.error(error)
+            res.status(404).send(error)
+        } else {
+            console.log('Successfully delete feedback.')
+            res.status(200).json({
+                message: 'Successfully delete feedback.'
+            })
+        }
+    })
+})
+
 
 module.exports = router

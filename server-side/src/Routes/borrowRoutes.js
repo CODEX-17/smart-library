@@ -3,25 +3,49 @@ const router = express.Router()
 const db = require('../db')
 
 //API add borrow books
-router.post('/addBorrowBooks', (req, res) => {
+router.post('/addBorrowBooks', async (req, res) => {
 
-    const { book_id,title,author_name,acct_id,acct_name,date,time,status } =  req.body
+    const { 
+        book_id,
+        title,
+        author_name,
+        acct_id,
+        acct_name,
+        date,time,
+        status,
+        book_quantity
+    } =  req.body
 
-    const query = 'INSERT INTO borrow_books(book_id,title,author_name,acct_id,acct_name,date,time,status) VALUES(?,?,?,?,?,?,?,?)'
+    const insertQuery = 'INSERT INTO borrow_books(book_id,title,author_name,acct_id,acct_name,date,time,status) VALUES(?,?,?,?,?,?,?,?)'
+    const updateQuery = 'UPDATE books SET quantity=? WHERE book_id=?'
 
-    db.query(query,[book_id,title,author_name,acct_id,acct_name,date,time,status], (error, data, field) => {
-        if (error) {
-            console.error(error)
-            res.status(404).send(error)
-        } else {
-           
-            console.log('Successfully Added borrow books.')
-            res.status(200).json({
-                message: 'Successfully Added borrow books.'
-            })
+    const insertDatas = [
+        book_id,
+        title,
+        author_name,
+        acct_id,
+        acct_name,
+        date,time,
+        status,
+    ]
 
-        }
-    })
+
+    try {
+        
+        const updatedQuantity = parseInt(book_quantity, 10) - 1
+
+        await db.query(insertQuery, insertDatas)
+        await db.query(updateQuery,[updatedQuantity, book_id])
+
+        res.status(200).json({
+            message: 'Successfully Added borrow books.'
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(404).send(error)
+    }
+
 })
 
 //API add borrow books

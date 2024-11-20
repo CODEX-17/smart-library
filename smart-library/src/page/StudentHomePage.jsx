@@ -1,48 +1,39 @@
 import React, {useEffect, useState} from 'react'
 import style from './StudentHomePage.module.css'
 import bookLogo from '../assets/logo-yellow.png'
-import { FaSearch } from "react-icons/fa";
 import { FaFilter } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { MdManageAccounts } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdLogOut } from "react-icons/io";
-import sample from '../assets/book-blue.png'
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
 import FeedbackComponents from '../components/FeedbackComponents';
 import ManageAccountComponent from '../components/ManageAccountComponent';
+import NotificationComponents from '../components/NotificationComponents';
 
 
 const StudentHomePage = () => {
 
   const navigate = useNavigate()
-  const [isShowNav, setIsShowNav] = useState(true)
+  const [isShowSidebar, setIsShowSidebar] = useState(true)
   const [branchList, setBranchList] = useState([])
   const [activeBtn, setActiveBtn] = useState('borrow')
   const userAccount = JSON.parse(localStorage.getItem('user'))
-  const [isToast, setIsToast] = useState(false)
-  const [toastMessage, setToastMessage] = useState('sample message')
 
   const [filterBranch, setFilterBranch] = useState('all')
 
   const [bookList, setBookList] = useState([])
   const [reqList, setReqList] = useState([])
 
+  const [isShowNotification, setIsShowNotification] = useState(false)
+  const [message, setMessage] = useState('')
+  const [notifStatus, setNotifStatus] = useState(true)
+
+
   const handleLogout = () => {
     localStorage.clear()
     navigate('/')
-  }
-
-  const generateUniqueId = () => {
-    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    const length = 8
-    let result = ''
-    for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * charset.length)
-        result += charset.charAt(randomIndex)
-    }
-    return result
   }
 
   const generateFullname = (first, middle, last) => {
@@ -52,66 +43,87 @@ const StudentHomePage = () => {
     }
   }
 
-  let currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})
-  let currentDate = new Date().toDateString('en-US', { 
-          year: 'numeric', 
-          month: 'short', 
-          day: 'numeric',
-          weekday: 'short' 
-  })
+  const convertDateFormat = (date) => {
+    if (date) {
+      let [ year, month, day ] = date.split('-')
+      month = 
+        month === '1' && 'Jan' || 
+        month === '2' && 'Feb' || 
+        month === '3' && 'Mar' ||
+        month === '4' && 'Apr' || 
+        month === '5' && 'May' || 
+        month === '6' && 'Jun' ||
+        month === '7' && 'Jul' || 
+        month === '8' && 'Aug' || 
+        month === '9' && 'Sep' ||
+        month === '10' && 'Oct' || 
+        month === '11' && 'Nov' || 
+        month === '12' && 'Dec' 
+
+      return `${month}. ${day}, ${year}`
+    }
+  }
+
+  const convertTo12HourFormat = (time) => {
+    if (time) {
+      const [hours, minutes] = time.split(':').map(Number);
+      const period = hours >= 12 ? 'PM' : 'AM';
+      const twelveHour = hours % 12 || 12;
+      return `${twelveHour}:${minutes.toString().padStart(2, '0')} ${period}`;
+    }
+   
+  }
+
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add leading zero
+    const day = String(today.getDate()).padStart(2, '0'); // Add leading zero
+    return `${year}-${month}-${day}`;
+  };
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0'); // Ensure 2 digits
+    const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure 2 digits
+    return `${hours}:${minutes}`;
+  };
 
   useEffect(() => {
+
     if (!localStorage.getItem('user')) {
       navigate('/')
-  }else {
+    }else {
       const data = JSON.parse(localStorage.getItem('user'))
       if (data.acctype !== 'student') {
           navigate('/')
       }
-  }
+    }
 
     axios.get('http://localhost:5001/branch/getBranch')
     .then((res) => {setBranchList(res.data)})
     .catch((error) => console.log(error))
 
     axios.get('http://localhost:5001/book/getBooks')
-    .then((res) => {
-      setBookList(() => {
-        const oldData = res.data
-        let updated = []
-
-        for (let i = 0; i < oldData.length; i++) {
-          if (oldData[i].total_copies > 0 ) {
-            updated.push(oldData[i])
-          }
-        }
-
-        return updated
-      })
-    })
+    .then((res) => setBookList(res.data))
     .catch((error) => console.log(error))
 
     axios.get('http://localhost:5001/borrow/getBorrowByAcctID/' + userAccount.id)
     .then((res) => {setReqList(res.data)})
     .catch((error) => console.log(error))
 
-  },[])
+  },[message])
 
   const columns = [
     
     {
-      name: 'Book Name',
+      name: 'Title',
       selector: row => row.title,
       sortable: true,
     },
     {
       name: 'Author',
       selector: row => row.author_name,
-      sortable: true,
-    },
-    {
-      name: 'Publication',
-      selector: row => row.publication,
       sortable: true,
     },
     {
@@ -126,7 +138,7 @@ const StudentHomePage = () => {
     },
     {
       name: 'Total Copies',
-      selector: row => row.total_copies,
+      selector: row => row.quantity,
       sortable: true,
     },
     {
@@ -159,12 +171,12 @@ const StudentHomePage = () => {
     },
     {
       name: 'Date',
-      selector: row => row.date,
+      selector: row => convertDateFormat(row.date),
       sortable: true,
     },
     {
       name: 'Time',
-      selector: row => row.time,
+      selector: row => convertTo12HourFormat(row.time),
       sortable: true,
     },
     {
@@ -178,8 +190,18 @@ const StudentHomePage = () => {
     },
   ];
 
+  const notificationConfig = ( message, status ) => {
+    setMessage(message)
+    setNotifStatus(status)
+    setIsShowNotification(true)
+
+    setTimeout(() => {
+      setIsShowNotification(false)
+      setMessage('')
+    }, 3000);
+  }
+
   const handleBorrow = (row) => {
-    if (row) {
 
       const finalData = {
         book_id: row.book_id,
@@ -187,53 +209,18 @@ const StudentHomePage = () => {
         author_name: row.author_name,
         acct_id: userAccount.id,
         acct_name: generateFullname(userAccount.firstname, userAccount.middlename, userAccount.lastname),
-        date: currentDate,
-        time: currentTime,
+        date: getCurrentDate(),
+        time: getCurrentTime(),
         status: 'pending',
+        book_quantity: row.quantity,
       }
-
-      setReqList((oldData) => [...oldData, finalData])
-      setIsToast(true)
 
       axios.post('http://localhost:5001/borrow/addBorrowBooks', finalData)
       .then((res) => {
           const result = res.data
           const message = result.message
-          console.log(message)
-          setToastMessage(message)
-
-          //updateTotalCopies in variable
-          setBookList(() => {
-            let updated = []
-    
-            for (let i = 0; i < bookList.length; i++) {
-              if (bookList[i].total_copies > 0 ) {
-                let data = bookList[i]
-
-                if (data.book_id === finalData.book_id) {
-                  if (finalData.total_copies > 0) {
-                    data.total_copies = finalData.total_copies
-                  }else {
-                    continue
-                  }
-                }else {
-                  updated.push(data)
-                }
-
-                
-              }
-            }
-    
-            return updated
-          })
-
-          setTimeout(() => {
-            setIsToast(false)
-          }, 5000);
-
+          notificationConfig(message, true)
       })
-    }
-  
     
   };
 
@@ -293,10 +280,10 @@ const StudentHomePage = () => {
   return (
     <div className={style.container}>
       {
-        isShowNav && (
+        isShowSidebar && (
           <div className={style.left}>
             <div className={style.profileDiv}>
-              <GiHamburgerMenu size={25} color='white' id={style.hamburgerMenuProfile} onClick={() => setIsShowNav(!isShowNav)}/>
+              <GiHamburgerMenu size={25} color='white' id={style.hamburgerMenuProfile} onClick={() => setIsShowSidebar(!isShowSidebar)}/>
               {
                 userAccount.imageID === 'default' ? (
                   <div id={style.defaultProfile}>{userAccount?.firstname.substring(0,1)}</div>
@@ -305,8 +292,10 @@ const StudentHomePage = () => {
                 )
               }
               <h1>{userAccount?.firstname + " " + userAccount?.lastname}</h1>
-              <button onClick={() => setActiveBtn('manageAccount')}><MdManageAccounts size={20}/> Manage Account</button>
-              <button style={{ backgroundColor: '#C7253E', color: 'white' }} onClick={handleLogout}><IoMdLogOut size={20} color='white'/> Logout</button>
+              <div className='d-flex gap-2 mt-2'>
+                <button onClick={() => setActiveBtn('manageAccount')} title='Manage account' ><MdManageAccounts size={18}/></button>
+                <button style={{ backgroundColor: '#C7253E', color: 'white' }} onClick={handleLogout}><IoMdLogOut size={18} color='white'/></button>
+              </div>
             </div>
             <div className={style.menuDiv}>
               <button 
@@ -332,7 +321,7 @@ const StudentHomePage = () => {
       <div className={style.right}>
         <div className={style.header}>
             {
-              !isShowNav && <GiHamburgerMenu size={25} color='#38b6ff' id={style.hamburgerMenu} onClick={() => setIsShowNav(!isShowNav)}/>
+              !isShowSidebar && <GiHamburgerMenu size={25} color='#38b6ff' id={style.hamburgerMenu} onClick={() => setIsShowSidebar(!isShowSidebar)}/>
             }          
             <img id={style.bookLogo} src={bookLogo} alt="logo" />
             <div className='d-flex flex-column'>
@@ -353,18 +342,18 @@ const StudentHomePage = () => {
           }}
         >
           {
-            isToast && (
-              <div className={style.toast}>
-                {toastMessage}
-              </div>
-            )
+            isShowNotification && 
+            <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+              <NotificationComponents message={message} status={notifStatus}/>
+            </div>
           }
 
           {
             activeBtn === 'feedback' && (
               <FeedbackComponents/>
             ) || 
-            (activeBtn === 'request' || activeBtn === 'borrow') &&
+            ( activeBtn === 'request' || activeBtn === 'borrow' ) &&
+
             (
               <div className={style.tableDiv}>
                 <div className={style.titleDiv}>
@@ -393,19 +382,20 @@ const StudentHomePage = () => {
                   )
                 }
 
-                <DataTable
-                  columns={ activeBtn === 'borrow' ? columns : requestColumns }
-                  data={activeBtn === 'borrow' ? filteredData : reqList }
-                  highlightOnHover
-                  pointerOnHover
-                  striped
-                  pagination
-                  paginationPerPage={5}  // Default rows per page
-                  paginationRowsPerPageOptions={[5, 10]}  // Custom dropdown options
-                  className={style.table}
-                  customStyles={customStyles}
-                >
-                </DataTable>
+                <div className={style.table}>
+                  <DataTable
+                    columns={ activeBtn === 'borrow' ? columns : requestColumns }
+                    data={activeBtn === 'borrow' ? filteredData : reqList }
+                    highlightOnHover
+                    pointerOnHover
+                    striped
+                    pagination
+                    paginationPerPage={5}
+                    paginationRowsPerPageOptions={[5, 10]}
+                    customStyles={customStyles}
+                  >
+                  </DataTable>
+                </div>
               </div>
             ) || 
             activeBtn === 'manageAccount' && 

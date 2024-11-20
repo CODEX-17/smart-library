@@ -18,6 +18,25 @@
     animation: fade 0.5s ease-in-out;
 }
 
+button {
+  font-size: small;
+  font-family: bold;
+  background-color: #38b6ff;
+  border: none;
+  border-radius: 5px;
+}
+
+button:hover {
+  opacity: 0.5;
+}
+
+#btnBorrow {
+  background-color: #387F39;
+  font-size: small;
+  width: 100px;
+  border-radius: 5px;
+}
+
 #defaultProfile {
   background-color: white;
   width: 100px;
@@ -55,7 +74,7 @@
 }
 
 .profileDiv h1 {
-  font-size: 15pt;
+  font-size: medium;
   font-family: bold;
   color: white;
   margin: 0;
@@ -66,10 +85,15 @@
 .profileDiv button {
   background-color: white;
   color: #38b6ff;
-  width: 80%;
-  border-radius: 10px;
+  border-radius: 5px;
   font-family: bold;
   margin-bottom: 2%;
+  width: 40px;
+  height: 40px;
+}
+
+.profileDiv button:hover {
+  opacity: 0.5;
 }
 
 .profileDiv img {
@@ -94,9 +118,13 @@
 .menuDiv button {
   width: 80%;
   color: white;
-  border-radius: 10px;
+  border-radius: 5px;
   font-family: bold;
   font-size: 10pt;
+}
+
+.menuDiv button:hover {
+  background-color: rgb(255, 166, 0);
 }
 
 .right {
@@ -157,20 +185,6 @@
     padding-top: 2%;
 }
 
-.toast {
-  background-color: #387F39;
-  position: absolute;
-  top: 20px;
-  right: 100px;
-  padding: 20px;
-  border-radius: 5px;
-  font-size: 10pt;
-  font-family: bold;
-  color: white;
-  z-index: 3;
-  animation: pop 0.5s ease;
-}
-
 .titleDiv {
   display: flex;
   width: 80%;
@@ -194,7 +208,7 @@
 .searchBarDiv {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   margin-bottom: 2%;
 }
 
@@ -205,7 +219,7 @@
   font-family: bold;
   font-size: 12pt;
   color: #38b6ff;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 10px;
 }
 
@@ -219,7 +233,7 @@
   padding: 10px;
   padding-left: 20px;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 #searchBar::placeholder {
@@ -230,13 +244,12 @@
   font-family: bold;
   margin-bottom: 1%;
   color: #38b6ff;
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px;
 }
 
-#btnBorrow {
-  background-color: #387F39;
-  width: 30%;
-  border-radius: 10px;
-}
+
 
 @media (max-width: 2560px) {
   .header {

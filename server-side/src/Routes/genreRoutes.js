@@ -36,5 +36,43 @@ router.post('/updateGenre', (req, res) => {
     })
 })
 
+//API delete genre
+router.post('/deleteGenre', (req, res) => {
+
+    const { id } = req.body
+    const query = 'DELETE FROM genre WHERE id=?'
+
+    db.query(query,[id], (error, data, field) => {
+        if (error) {
+            console.error(error)
+            res.status(404).send(error)
+        } else {
+            console.log('Successfully delete genre.')
+            res.status(200).json({
+                message: 'Successfully delete genre.'
+            })
+        }
+    })
+})
+
+//API add genre
+router.post('/addGenre', (req, res) => {
+    
+    const { genre_name } = req.body
+    const query = 'INSERT INTO genre(genre_name) VALUES(?)'
+
+    db.query(query,[genre_name], (error, data, field) => {
+        if (error) {
+            console.error(error)
+            res.status(404).send(error)
+        } else {
+            console.log('Successfully add genre.')
+            res.status(200).json({
+                message: 'Successfully add genre.'
+            })
+        }
+    })
+})
+
 
 module.exports = router

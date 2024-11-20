@@ -8,6 +8,10 @@ import { IoSearch } from "react-icons/io5";
 import { filter } from 'rxjs';
 import TableEditModalComponents from './TableEditModalComponents';
 import NotificationComponents from './NotificationComponents';
+import DeleteNotifComponents from './DeleteNotifComponents';
+import { FaPlus } from "react-icons/fa";
+import LoadingComponents from './LoadingComponents';
+import AddDataTableModalComponent from './AddDataTableModalComponent';
 
 const TableViewComponents = ({ currentTable }) => {
 
@@ -88,6 +92,7 @@ const TableViewComponents = ({ currentTable }) => {
   ]
 
   const url = 'http://localhost:5001'
+
   const [genreList, setGenreList] = useState([])
   const [branchList, setBranchList] = useState([])
   const [feedbackList, setFeedbackList] = useState([])
@@ -101,6 +106,8 @@ const TableViewComponents = ({ currentTable }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isShowEditModal, setIssShowEditModal] = useState(false)
   const [isShowNotification, setIsShowNotification] = useState(false)
+  const [isShowDeleteNotification, setIsShowDeleteNotification] = useState(false)
+  const [isShowAddModal, setisShowAddModal] = useState(false)
 
   const [message, setMessage] = useState('')
   const [notifStatus, setNotifStatus] = useState(true)
@@ -120,7 +127,14 @@ const TableViewComponents = ({ currentTable }) => {
         setBranchList(branchRes.data)
         setFeedbackList(feedbackRes.data)
 
-        setCurrentDataList(genreRes.data)
+        if (currentTable === 'tableGenre') {
+          setCurrentDataList(genreRes.data)
+        }else if (currentTable === 'tableBranch') {
+          setCurrentDataList(branchRes.data)
+        }else if (currentTable === 'tableFeedback') {
+          setCurrentDataList(feedbackRes.data)
+        }
+        
         
       } catch (error) {
         console.log(error)
@@ -178,17 +192,6 @@ const TableViewComponents = ({ currentTable }) => {
     },
   }
 
-  
-  //Functions
-  const handleEdit = (data) => {
-    setSelectedData(data)
-    setIssShowEditModal(true)
-  }
-
-  const handleDelete = () => {
-    
-  }
-
   const notificationConfig = ( message, status) => {
     setMessage(message)
     setNotifStatus(status)
@@ -200,9 +203,84 @@ const TableViewComponents = ({ currentTable }) => {
     }, 3000);
   }
 
+  
+  //Functions
+  const handleEdit = (data) => {
+    setSelectedData(data)
+    setIssShowEditModal(true)
+  }
+
+  const handleDelete = (data) => {
+    setSelectedData(data)
+    setIsShowDeleteNotification(true)
+  }
+
+  const handleDeleteResponse = (data) => {
+
+    if (data && selectedData) {
+
+      const id = selectedData?.id
+
+      if (currentTable === 'tableGenre') {
+
+        axios.post(`${url}/genre/deleteGenre`, { id })
+        .then((res) => {
+          const result = res.data
+          setMessage(result.message)
+          notificationConfig(result.message, true)
+        })
+        .catch(err => console.log(err))
+
+      }else if (currentTable === 'tableBranch') {
+
+        axios.post(`${url}/branch/deleteBranch`, { id })
+        .then((res) => {
+          const result = res.data
+          setMessage(result.message)
+          notificationConfig(result.message, true)
+        })
+        .catch(err => console.log(err))
+
+      }else if (currentTable === 'tableFeedback') {
+
+        axios.post(`${url}/feedback/deleteFeedback`, { id })
+        .then((res) => {
+          const result = res.data
+          setMessage(result.message)
+          notificationConfig(result.message, true)
+        })
+        .catch(err => console.log(err))
+
+      }
+
+      setIsShowDeleteNotification(false)
+
+    }else {
+      setIsShowDeleteNotification(false)
+    }
+
+  }
+
 
   return (
     <div className={style.container}>
+      {
+        isShowAddModal && 
+        <div style={{ position: 'absolute', zIndex: '20', width: '100%', height: '100%',}}>
+          <AddDataTableModalComponent 
+            currentTable={currentTable} 
+            selectedData={selectedData} 
+            setisShowAddModal={setisShowAddModal}
+            notificationConfig={notificationConfig}
+          />
+        </div>
+      }
+      {
+        isShowDeleteNotification && 
+        <div style={{ position: 'absolute', zIndex: '20', width: '100%', height: '100%',}}>
+          <DeleteNotifComponents handleDeleteResponse={handleDeleteResponse}/>
+        </div>
+      }
       {
         isShowNotification &&
         <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
@@ -221,7 +299,7 @@ const TableViewComponents = ({ currentTable }) => {
         </div>
       }
       {
-        isLoading ? <p>Loading...</p> :
+        isLoading ? <LoadingComponents /> :
         <>
           <div className={style.head}>
             <h1>{
@@ -229,14 +307,25 @@ const TableViewComponents = ({ currentTable }) => {
               currentTable === 'tableFeedback' && 'Feedback Table' ||
               currentTable === 'tableBranch' && 'Branch Table'
             }</h1>
-            <div className={style.searchBar}>
-              <input 
-                type="text" 
-                placeholder='Enter keyword.'
-                value={filterText}
-                onChange={(e) => setFilterText(e.target.value)}
-              />
-              <IoSearch size={20} color='#38b6ff'/>
+            <div className='d-flex gap-2 w-50'>
+              <div className={style.searchBar}>
+                <input 
+                  type="text" 
+                  placeholder='Enter keyword.'
+                  value={filterText}
+                  onChange={(e) => setFilterText(e.target.value)}
+                />
+                <IoSearch size={20} color='#38b6ff'/>
+              </div>
+              {
+                currentTable !== 'tableFeedback' &&
+                <button 
+                  title='add data' 
+                  onClick={() => setisShowAddModal(true)}
+                  >Add <FaPlus size={10}/>
+                </button>
+              }
+              
             </div>
             
           </div>
