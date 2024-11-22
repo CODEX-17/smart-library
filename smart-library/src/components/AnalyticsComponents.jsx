@@ -148,7 +148,6 @@ const AnalyticsComponents = () => {
     colors: ["#399918", "#38b6ff", "#FF6500", "#C40C0C", "#D3D3D3"],
   }
 
-
   return (
     <div className={style.container}>
       <div className={style.cardAnalyticsBar}>
@@ -189,7 +188,7 @@ const AnalyticsComponents = () => {
         </div>
       </div>
       <div className={style.contentCharts}>
-        <div className={style.cardChart}>
+        {/* <div className={style.cardChart}>
           <Chart
             chartType="PieChart"
             data={pieData}
@@ -210,7 +209,7 @@ const AnalyticsComponents = () => {
             width={"100%"}
             height={"100%"}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   )
