@@ -183,7 +183,6 @@ const AdminPage = () => {
             {
                 !isShowSideBar && 
                     <GiHamburgerMenu
-                        id={style.burgerIcon}
                         color='#38b6ff' 
                         size={25} 
                         cursor={'pointer'} 
@@ -191,7 +190,6 @@ const AdminPage = () => {
                     />
             }
 
-            <div className={style.leftHead}>
                 <h1>{
                     activeMenu === 'dashboard' && 'Dashboard' ||
                     activeMenu === 'circulation' && 'Circulation' ||
@@ -200,17 +198,13 @@ const AdminPage = () => {
                     activeMenu === 'catalogue' && 'Catalogue' ||
                     activeMenu === 'libBook' && 'Library Books'
                 }</h1>
-            </div>
-            <div className={style.rightHead}>
+       
+   
                 <div className={style.iconDiv} title='logout' style={{ backgroundColor: '#D91656' }} onClick={handleLogout}>
                     <IoMdLogOut size={15} color='white'/>
                 </div>
-            </div>
-            
-
-            
-            
         </div>
+
         <div className={style.content}>
 
             { activeMenu === 'dashboard' && <AnalyticsComponents/> }

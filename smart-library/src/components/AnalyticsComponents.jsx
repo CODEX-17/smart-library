@@ -129,8 +129,8 @@ const AnalyticsComponents = () => {
   // Material chart options
   const options = {
     chart: {
-      title: "Company Performance",
-      subtitle: "Sales and Expenses over the Years",
+      title: "Request Status",
+      subtitle: "Graph data of request",
     },
   };
 
@@ -188,7 +188,7 @@ const AnalyticsComponents = () => {
         </div>
       </div>
       <div className={style.contentCharts}>
-        {/* <div className={style.cardChart}>
+        <div className={style.cardChart}>
           <Chart
             chartType="PieChart"
             data={pieData}
@@ -209,7 +209,7 @@ const AnalyticsComponents = () => {
             width={"100%"}
             height={"100%"}
           />
-        </div> */}
+        </div>
       </div>
     </div>
   )
