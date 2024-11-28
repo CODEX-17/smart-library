@@ -49,42 +49,52 @@ router.post('/addBorrowBooks', async (req, res) => {
 })
 
 //API add borrow books
-router.post('/updateReq', (req, res) => {
+router.post('/updateReq', async (req, res) => {
 
     const { response, id, book_id } =  req.body
-    console.log(req.body)
-    const query = 'UPDATE borrow_books SET status = ? WHERE id=?'
+    const queryUpdateBorrow = 'UPDATE borrow_books SET status = ? WHERE id=?'
+    const queryUpdateBook = 
+            response === 'approved' ? 
+            'UPDATE books SET quantity = quantity - 1 WHERE book_id=?' :
+            'UPDATE books SET quantity = quantity + 1 WHERE book_id=?'
 
-    db.query(query,[response, id], (error, data, field) => {
-        if (error) {
-            console.error(error)
-            res.status(404).send(error)
-        } else {
+    try {
+        
+        const updateBorrowBooks = await new Promise((resolve, reject) => {
+            db.query(queryUpdateBorrow, [response, id], (error, data, field) => {
+                if (error) {
+                    console.log('Error in updating the borrow table:', error)
+                    reject(error)
+                }
 
-            if (response !== 'rejected') {
+                console.log('Successfully update borrow_book.')
+                resolve('Successfully update borrow_book.')
+            })
+        })
 
-                const queryBook = response === 'approved' ? 
-                    'UPDATE books SET total_copies = total_copies - 1 WHERE book_id=?' 
-                    :
-                    'UPDATE books SET total_copies = total_copies + 1 WHERE book_id=?'
+        const updateBook = await new Promise((resolve, reject) => {
+            db.query(queryUpdateBook, [book_id], (error, data) => {
+                if (error) {
+                    console.log('Error in updating the book table:', error)
+                }
 
-                console.log(queryBook)
+                console.log('Successfully update book.')
+                resolve('Successfully update book.')
+            })
+        })
+        
 
-                db.query(queryBook,[book_id], (error, data, field) => {
-                    if (error) {
-                        console.error(error)
-                        res.status(404).send(error)
-                    } else {
-                        console.log('Successfully update borrow status.')
-                        res.status(200).json({
-                            message: 'Successfully update borrow status.'
-                        })
-                    }
-                })   
-            }
-                
-        }
-    })
+        await Promise.all([updateBorrowBooks, updateBook])
+
+        res.status(200).json({
+            message: 'Successfully update book.'
+        })
+
+    } catch (error) {
+        console.log('Error in updating the request:', error)
+        res.status(500).send(error)
+    }
+
 })
 
 //API add borrow books

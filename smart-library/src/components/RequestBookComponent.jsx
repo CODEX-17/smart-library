@@ -61,7 +61,7 @@ const RequestBookComponent = () => {
       if (response === 'approved') {
         for (let i = 0; i < updateData.length; i++) {
           if (updateData[i].book_id === book_id) {
-            updateData[i].total_copies -= 1
+            updateData[i].quantity -= 1
           }
         }
       }
@@ -69,7 +69,7 @@ const RequestBookComponent = () => {
       if (response === 'returned') {
         for (let i = 0; i < updateData.length; i++) {
           if (updateData[i].book_id === book_id) {
-            updateData[i].total_copies += 1
+            updateData[i].quantity += 1
           }
         }
       }

@@ -11,6 +11,10 @@ import DataTable from 'react-data-table-component';
 import FeedbackComponents from '../components/FeedbackComponents';
 import ManageAccountComponent from '../components/ManageAccountComponent';
 import NotificationComponents from '../components/NotificationComponents';
+import { ImBooks } from "react-icons/im";
+import { CgCloseR } from "react-icons/cg";
+import { useForm } from 'react-hook-form';
+
 
 
 const StudentHomePage = () => {
@@ -19,6 +23,7 @@ const StudentHomePage = () => {
   const [isShowSidebar, setIsShowSidebar] = useState(true)
   const [branchList, setBranchList] = useState([])
   const [activeBtn, setActiveBtn] = useState('borrow')
+  const [selectedData, setSelectedData] = useState(null)
   const userAccount = JSON.parse(localStorage.getItem('user'))
 
   const [filterBranch, setFilterBranch] = useState('all')
@@ -30,6 +35,10 @@ const StudentHomePage = () => {
   const [message, setMessage] = useState('')
   const [notifStatus, setNotifStatus] = useState(true)
 
+  const [isShowBulkModal, setIsShowBulkModal] = useState(false)
+  const [bulk, setBulk] = useState(0)
+
+  const { handleSubmit, register, formState: { errors } } = useForm()
 
   const handleLogout = () => {
     localStorage.clear()
@@ -95,7 +104,7 @@ const StudentHomePage = () => {
       navigate('/')
     }else {
       const data = JSON.parse(localStorage.getItem('user'))
-      if (data.acctype !== 'student') {
+      if (data.acctype !== 'guest') {
           navigate('/')
       }
     }
@@ -114,7 +123,7 @@ const StudentHomePage = () => {
 
   },[message])
 
-  const columns = [
+  const borrowColumns = [
     
     {
       name: 'Title',
@@ -143,7 +152,25 @@ const StudentHomePage = () => {
     },
     {
       name: 'Action',
-      cell: row => <button id={style.btnBorrow} onClick={() => handleBorrow(row)}>Borrow</button>,
+      cell: row => 
+        <div className='d-flex gap-2'>
+          <button 
+            id={style.btnBorrow} 
+            disabled={ row.quantity <=0 ? true : false } 
+            onClick={() => handleBorrow(row)}
+          >Borrow</button>
+          {/* {
+            row.quantity > 1 &&
+            <button 
+              id={style.btnBorrow} 
+              style={{ backgroundColor: '#A02334' }}
+              onClick={() => {setIsShowBulkModal(true), setSelectedData(row)}}
+            >
+              <ImBooks size={25}/> Bulk
+            </button>
+          } */}
+          
+        </div>
     },
   ];
 
@@ -277,8 +304,56 @@ const StudentHomePage = () => {
     },
   };
 
+
+  const handleBulkBorrow = (data) => {
+    axios.post(data)
+  }
+
+  const validationBulkBorrow = (value) => {
+    if (value == 0 || value < 0 || value > selectedData?.quantity) {
+      return `quantity must be greaterthan 0 and lessthan ${selectedData?.quantity}`
+    }else {
+      return true
+    }
+  }
+
   return (
     <div className={style.container}>
+      {
+        isShowBulkModal && 
+        <div className={style.bulkModal}>
+          <div className={style.cardbulk}>
+            <div className={style.head}>
+              <h2>Bulk borrow books</h2>
+              <CgCloseR size={25} cursor={'pointer'} onClick={() => setIsShowBulkModal(false)}/>
+            </div>
+            <div className={style.body}>
+              <form onSubmit={handleSubmit(handleBulkBorrow)}>
+                <div className='d-flex w-100 flex-column mb-3'>
+                  
+                    <div className='d-flex justify-content-between'>
+                      <label>Quantity</label>
+                      <p>Stock(s): {selectedData?.quantity}</p>
+                    </div>
+                    
+                    <input 
+                      type="number" 
+                      min={0} 
+                      max={selectedData?.quantity} 
+                      {...register('bulk_quantity', { 
+                        required: 'Quantity required.',
+                        validate: validationBulkBorrow
+                      })}
+                    />
+                    {errors.bulk_quantity && <p style={{ margin: 0, fontSize: '0.8rem', color: 'red' }}>{errors.bulk_quantity.message}</p>}
+                </div>
+                <button type='submit'>Borrow</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      }
+
       {
         isShowSidebar && (
           <div className={style.left}>
@@ -384,7 +459,7 @@ const StudentHomePage = () => {
 
                 <div className={style.table}>
                   <DataTable
-                    columns={ activeBtn === 'borrow' ? columns : requestColumns }
+                    columns={ activeBtn === 'borrow' ? borrowColumns : requestColumns }
                     data={activeBtn === 'borrow' ? filteredData : reqList }
                     highlightOnHover
                     pointerOnHover

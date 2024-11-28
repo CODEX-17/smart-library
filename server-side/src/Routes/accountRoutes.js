@@ -7,9 +7,16 @@ const path = require('path')
 const fs = require('fs')
 const passwordHash = require('password-hash')
 require('dotenv').config();
+const { v4: uuidv4 } = require('uuid');
 
 const nodemailer = require('nodemailer');
+const { rejects } = require('assert');
 const emailPassword = process.env.EMAIL_PASSWORD;
+
+//generates a unique identifier
+const generateUniqueId = () => {
+    return uuidv4();
+};
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -29,10 +36,13 @@ const storageImage = multer.diskStorage({
 const upload = multer({ storage: storageImage });
 
 // CreateAccounts
-router.post('/createAccount', upload.single('file'), async (req, res) => {
+router.post('/createAccount', upload.single('image'), async (req, res) => {
+
+    const imageID = req.file ? generateUniqueId() : 'default';
 
     const { 
         card_number, 
+        branch,
         firstname, 
         middlename, 
         lastname, 
@@ -43,55 +53,58 @@ router.post('/createAccount', upload.single('file'), async (req, res) => {
         gender, 
         street_address, 
         birthdate, 
-        city, 
-        imageID
+        city
     } = req.body;
 
-    const query = `
+    const queryAccounts = `
         INSERT INTO accounts(
-            card_number, firstname, middlename, lastname, contact, email, password, 
+            card_number, branch, firstname, middlename, lastname, contact, email, password, 
             acctype, gender, street_address, birthdate, city, imageID
-        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
+        ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     `;
 
+    const queryImage = 'INSERT INTO image(filename, path, imageID) VALUES(?,?,?)';
+
     try {
+
         const hashedPassword = passwordHash.generate(password);
 
-        console.log(hashedPassword)
+        const accountQuery = await new Promise((resolve, reject) => {
+            db.query(queryAccounts, [card_number, branch, firstname, middlename, lastname, contact, email, 
+                hashedPassword, acctype, gender, street_address, birthdate, city, imageID], (error, data, field) => {
+                
+                if (error) {
+                    console.log(error)
+                    reject(error)
+                }
 
-        db.query(query, [
-            card_number, firstname, middlename, lastname, contact, email, 
-            hashedPassword, acctype, gender, street_address, birthdate, city, imageID
-        ], (error, data, field) => {
-            if (error) {
-                console.log(error);
-                return res.status(400).send(error);
-            }
+                console.log('Successfully add account.')
+                resolve('Successfully add account.')
+            })
+        })
 
-            // If there's an image file
-            if (req.file) {
-                const queryImage = 'INSERT INTO image(filename, path, imageID) VALUES(?,?,?)';
-                const { filename, path } = req.file;
-
-                db.query(queryImage, [filename, path, imageID], (error, data, field) => {
+        let imageQuery;
+        if (req.file) {
+            const { filename, path } = req.file
+            imageQuery = new Promise((resolve, reject) => {
+                db.query(queryImage, [filename, path, imageID], (error, data) => {
                     if (error) {
-                        console.log(error);
-                        return res.status(400).send(error);
+                        console.error("Error inserting image:", error)
+                        reject(error)
                     }
+                    resolve("Successfully added image.")
+                })
+            })
+        }
 
-                    return res.status(200).json({
-                        message: 'Successfully created account with image.'
-                    });
-                });
-            } else {
-                res.status(200).json({
-                    message: 'Successfully created account.'
-                });
-            }
-        });
+        await Promise.all([accountQuery, imageQuery].filter(Boolean))
+        res.status(200).json({
+            message: 'Successfully created account.'
+        })
+    
     } catch (error) {
-        console.log(error);
-        res.status(400).send(error);
+        console.error("Error creating account:", error)
+        res.status(500).send(error);
     }
 });
 
@@ -304,6 +317,7 @@ router.get('/getAccounts', async (req, res) => {
             console.error(error)
             res.status(404).send(error)
         } else {
+            console.log('Successfully get all accounts.')
             res.status(200).json(data)
         }
     })

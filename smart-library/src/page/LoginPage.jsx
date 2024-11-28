@@ -35,17 +35,17 @@ const LoginPage = () => {
 
     const handleChangeLoginType = () => {
         if (loginType === 'admin') {
-            setLoginType('student')
+            setLoginType('guest')
         }else {
             setLoginType('admin')
         }
     }
 
     const handleLogin = async () => {
-        console.log('click')
+      
         try {
            const result = await axios.post('http://localhost:5001/account/checkAccount', {email, password})
-           console.log(result)
+
            if (result) {
                 let userData = result.data
                 const imageID = userData.imageID
@@ -56,9 +56,9 @@ const LoginPage = () => {
                         userData.image = 'http://localhost:5001/' + imageDetail.filename
                 }
 
-                if (userData.acctype === loginType) {
+                if (userData.acctype === loginType || userData.acctype === 'super' && loginType === 'admin') {
                     localStorage.setItem("user", JSON.stringify(userData))
-                    if (loginType === 'admin') {
+                    if (loginType === 'admin' || userData.acctype === 'super') {
                         navigate('/admin')
                     }else {
                         navigate('/searchBook')
@@ -102,7 +102,7 @@ const LoginPage = () => {
 
             <div className={style.content}>
                 <div className={ loginType === 'admin' ? style.adminModal : style.studentModal}>
-                    <h1>{loginType === 'admin' ? 'Admin Login' : 'Student Login'}</h1>
+                    <h1>{loginType === 'admin' ? 'Admin Login' : 'Guest Login'}</h1>
                     <input className={style.inputBox} type="email" placeholder='Enter email' onChange={(e) => setEmail(e.target.value)}/>
                     <input className={style.inputBox} type={isShowPassword ? "text" : "password"} placeholder='Enter password' onChange={(e) => setPassword(e.target.value)}/>
                     <div className='d-flex gap-2 mb-2'>
@@ -115,7 +115,7 @@ const LoginPage = () => {
                             navigate('/forgetPassword')
                         }}>Forget password?</p>
                         <p id={style.linkClick} onClick={() => {
-                            navigate('/createAccount')
+                            navigate('/createAccount', { state: { type: 'guest' }})
                         }}>Create Account</p>
                     </div>
                    
@@ -126,7 +126,7 @@ const LoginPage = () => {
                 </div>
                 <div className='d-flex gap-2'>
                     <PiUserSwitchFill size={25} color='#38b6ff'/>
-                    <p id={style.linkClick} onClick={handleChangeLoginType}>{loginType === 'admin' ? 'Login as Student' : 'Login as Admin'}</p>
+                    <p id={style.linkClick} onClick={handleChangeLoginType}>{loginType === 'admin' ? 'Login as Guest' : 'Login as Admin'}</p>
                 </div>
                 
             </div>

@@ -18,7 +18,7 @@ import LibraryBooksComponents from '../components/LibraryBooksComponents';
 import { MdOutlineTableChart } from "react-icons/md";
 import { BiCategory } from "react-icons/bi";
 import { PiGitBranchBold } from "react-icons/pi";
-import { MdOutlineFeedback } from "react-icons/md";
+import { MdOutlineFeedback, MdOutlineSupervisorAccount } from "react-icons/md";
 import TableViewComponents from '../components/TableViewComponents';
 
 const AdminPage = () => {
@@ -33,7 +33,7 @@ const AdminPage = () => {
         navigate('/')
     }else {
         const data = JSON.parse(localStorage.getItem('user'))
-        if (data.acctype !== 'admin') {
+        if (data.acctype !== 'admin' && data.acctype !== 'super') {
             navigate('/')
         }
     }
@@ -171,6 +171,18 @@ const AdminPage = () => {
                             <PiBooksLight size={25} color='#38b6ff'/>
                             <p>Library Books</p>
                         </div>
+
+                        {
+                            user?.acctype === 'super' &&
+                            <div 
+                                className={activeMenu === 'createAccountAdmin' ? style.cardActive : style.card}
+                                onClick={() => {setActiveMenu('createAccountAdmin', navigate('/createAccount', { state: { type: 'admin' }}))}}
+                            >
+                                <MdOutlineSupervisorAccount size={25} color='#38b6ff'/>
+                                <p>Create Admin Account</p>
+                            </div>
+                        }
+                        
                        
 
                     </div>

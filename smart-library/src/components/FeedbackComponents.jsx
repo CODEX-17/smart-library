@@ -8,10 +8,10 @@ const FeedbackComponents = () => {
   const [message, setMessage] = useState('')
   let currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})
   let currentDate = new Date().toDateString('en-US', { 
-          year: 'numeric', 
-          month: 'short', 
-          day: 'numeric',
-          weekday: 'short' 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric',
+    weekday: 'short' 
   })
 
   const handleSubmit = () => {
