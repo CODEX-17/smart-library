@@ -26,7 +26,7 @@ const LoginPage = () => {
 
         if (localStorage.getItem('user')) {
             const accountDetails = JSON.parse(localStorage.getItem('user'))
-            if (accountDetails?.acctype === 'admin') {
+            if (accountDetails?.acctype === 'admin' || accountDetails === 'super') {
                 navigate('/admin')
             }else {
                 navigate('/guestHomepage')

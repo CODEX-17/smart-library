@@ -4,10 +4,11 @@ import { HiFilter } from "react-icons/hi";
 import { getGenre } from '../../../../services/genreServices'
 import { getBranch } from '../../../../services/branchServices'
 
-const SidebarCatalogue = ({ setSelectedBranch, setSelectedGenre, selectedGenre }) => {
+const SidebarCatalogue = ({ setSelectedBranch, setSelectedGenre, selectedGenre, setSelectDateAcquired }) => {
 
   const [genreList , setGenreList] = useState([])
   const [branchList, setBranchList] = useState([])
+ 
   
 
   useEffect(() => {
@@ -31,34 +32,33 @@ const SidebarCatalogue = ({ setSelectedBranch, setSelectedGenre, selectedGenre }
 
   const handleSelectGenre = (data) => {
     if (data === 'all') {
-        // Select all genres
         if (selectedGenre.length === genreList.length) {
-            // If all genres are already selected, deselect all
-            setSelectedGenre([]);
+            setSelectedGenre([])
         } else {
-            // Otherwise, select all
-            setSelectedGenre(genreList.map((genre) => genre.genre_name));
+            setSelectedGenre(genreList.map((genre) => genre.genre_name))
         }
     } else {
-        // Toggle individual genre
         if (selectedGenre.includes(data)) {
-            // Remove the genre if it's already selected
-            setSelectedGenre((old) => old.filter((genre) => genre !== data));
+            setSelectedGenre((old) => old.filter((genre) => genre !== data))
         } else {
-            // Add the genre if it's not selected
-            setSelectedGenre((old) => [...old, data]);
+            setSelectedGenre((old) => [...old, data])
         }
     }
-};
+  }
+
+  
+
 
   return (
     <div className={style.container}>
       <div className='d-flex w-100 mb-2 '>
         <h2>Search Filter <HiFilter/></h2>
       </div>
+      
       <div className='d-flex flex-column w-100 gap-2'>
         <label>Branch</label>
         <select onChange={(e) => setSelectedBranch(e.target.value)}>
+            <option value='all'>All Branch</option>
             {
                 branchList.map((branch, index) => (
                     <option value={branch.branch_name} key={index}>{branch.branch_name}</option>
@@ -66,23 +66,37 @@ const SidebarCatalogue = ({ setSelectedBranch, setSelectedGenre, selectedGenre }
             }         
         </select>
       </div>
+      <div className='d-flex w-100 flex-column mt-4 align-items-start justify-content-start'>
+        <label>Date Acquired</label>
+        <div className='d-flex gap-2 w-100 mt-2'>
+            <div className='d-flex flex-column w-50'>
+                <p>Start</p>
+                <input type="date" onChange={(e) => setSelectDateAcquired((oldData) => ({ ...oldData, start: e.target.value }))}/>
+            </div>
+            <div className='d-flex flex-column w-50'>
+                <p>End</p>
+                <input type="date" onChange={(e) => setSelectDateAcquired((oldData) => ({ ...oldData, end: e.target.value }))}/>
+            </div>
+        </div>
+      </div>
       <div className='d-flex flex-column mt-4'>
         <label>Genre</label>
         <div className={style.genreListDiv}>
             <div className='d-flex gap-2' style={{ width: '50%', }}>
-                <input type="checkbox" onClick={() => handleSelectGenre('all')}/>
+                <input id={style.checkbox} type="checkbox" onClick={() => handleSelectGenre('all')}/>
                 <p>{selectedGenre.length === genreList.length ? 'Unselect all' : 'All'}</p>
             </div>
             {
                 genreList.map((data, index) => (
                     <div className='d-flex gap-2' style={{ width: '50%', }} key={index}>
-                        <input type="checkbox" checked={selectedGenre.includes(data.genre_name)} onClick={() => handleSelectGenre(data.genre_name)}/>
+                        <input id={style.checkbox} type="checkbox" checked={selectedGenre.includes(data.genre_name)} onClick={() => handleSelectGenre(data.genre_name)}/>
                         <p>{data.genre_name}</p>
                     </div>
                 ))
             }
         </div>
       </div>
+      
       
     </div>
   )

@@ -42,18 +42,22 @@
 
 .searchBar {
     display: flex;
+    align-items: center;
+    padding-right: 20px;
     gap: 10px;
     width: 100%;
+    border-radius: 5px;
     margin-bottom: 20px;
+    background-color: rgba(128, 128, 128, 0.081);
 }
 
 .searchBar input {
-    width: 90%;
+    width: 100%;
+    height: 40px;
     border: none;
-    border-radius: 5px;
     outline: none;
     padding-left: 10px;
-    background-color: rgba(128, 128, 128, 0.081);
+    background-color: transparent;
 }
 
 .searchBar button {
@@ -69,13 +73,14 @@
 .tableDiv {
   width: 100%;
   height: auto;
+  overflow-x: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .table {
   width: 100%;
   font-family: normal;
   border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .table .ant-table-thead > tr > th {
@@ -86,17 +91,6 @@
 }
 
 
-@media (max-width: 1440px) {
-  .searchBar {
-    width: 75%;
-  }
-
-  .tableDiv {
-    width: 75%;
-  }
-
-}
-  
   
   @keyframes pop {
       0% {

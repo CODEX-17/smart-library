@@ -8,39 +8,58 @@
     src: url('../assets/fonts/Montserrat-Regular.ttf');
 }
 
+
 .container {
     width: 100%;
-    height: 100%;
+    height: 90%;
     display: flex;
-    padding: 5%;
+    padding: 20px;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    overflow-y: hidden;
+    justify-content: center;
     color: #38b6ff;
     position: relative;
+    font-family: normal;
     animation: fade 0.5s ease-in-out;
 }
 
 .container h1 {
     font-family: bold;
+    font-size: 1.5rem;
     margin-bottom: 4%;
 }
 
-.content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2%;
-    width: 100%;
-}
-
-form {
-  width: 100%;
+.card {
+  color: rgb(91, 90, 90);
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  min-width: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding: 40px;
+  border-radius: 5px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.card form {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .toast {
@@ -56,44 +75,50 @@ form {
   animation: pop 0.5s ease;
 }
 
-
 .content p {
-    font-family: bold;
-    font-size: 10pt;
+    font-family: normal;
+    font-size: .8rem;
+    text-align: center;
+    margin: 0;
+}
+
+.content input {
+  font-size: .8rem;
+  background-color: rgba(128, 128, 128, 0.081);
+  color: rgb(91, 90, 90);
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  margin-bottom: 2%;
+  height: 40px;
+  width: 100%;
+  padding-left: 10px;
 }
 
 .content textarea {
     width: 100%;
-    border: 2px solid #38b6ff;
+    border: none;
     outline: none;
-    border-radius: 10px;
-    margin-bottom: 2%;
+    border-radius: 5px;
     max-height: 500px;
     height: 200px;
-    padding: 2%;
-    color: #38b6ff;
+    padding: 10px;
+    font-size: .8rem;
+    background-color: rgba(128, 128, 128, 0.081);
+    color: rgb(91, 90, 90);
 }
 
-.content textarea::placeholder {
+.content textarea::placeholder, .content input::placeholder {
     color: rgba(128, 128, 128, 0.464);
 }
 
 .content button {
-    border-radius: 10px;
+    border-radius: 5px;
     font-family: bold;
-    font-size: 12pt;
+    font-size: 1rem;
 }
 
 
-
-
-@media (max-width: 425px) {
-    .content p {
-        font-size: 8pt;
-    }
-  
-  }
-  
   
   @keyframes pop {
       0% {

@@ -1,3 +1,4 @@
+import { message } from "antd"
 import axios from "axios"
 
 const BASE_URL = 'http://localhost:5001'
@@ -42,4 +43,23 @@ export const deleteFeedback = async (id) => {
         console.log(error)
         return null
     }
+}
+
+export const addFeedback = async (data) => {
+    if (data) {
+        try {
+        
+            const result = await axios.post(`${BASE_URL}/feedback/addFeedback`, data)
+            if (result) {
+                return result.data
+            }
+
+        } catch (error) {
+            console.log(error)
+            return { message: 'failed to add feedback.' }
+        }
+    }else {
+        return { message: 'no data send.' }
+    }
+    
 }

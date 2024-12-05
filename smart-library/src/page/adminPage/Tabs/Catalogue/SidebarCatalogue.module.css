@@ -24,6 +24,18 @@
     font-family: normal;
 }
 
+.container p {
+    margin: 0;
+}
+
+.container input {
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    width: 100%;
+    padding: 10px;
+}
+
 .container label {
     font-family: bold;
     font-size: 1rem;
@@ -62,6 +74,11 @@
 .genreListDiv p {
     margin: 0;
     font-size: .8rem;
+}
+
+.genreListDiv #checkbox {
+    width: auto;
+    height: auto;
 }
 
 
