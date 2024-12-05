@@ -38,6 +38,7 @@
     justify-content: center;
     margin: 10px;
     gap: 10px;
+    position: relative;
 }
 
 .cardHead {

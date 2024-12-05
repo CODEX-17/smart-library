@@ -1,25 +1,31 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import style from './AdminPage.module.css'
-import sample from '../assets/sl-blue.png'
+import AnalyticsComponents from '../../components/AnalyticsComponents';
+import ImportMenuComponents from '../../components/ImportMenuComponents'
+import RequestBookComponent from '../../components/RequestBookComponent';
+import AdminCatalogue from './Tabs/Catalogue/AdminCatalogue';
+import LibraryBooksComponents from '../../components/LibraryBooksComponents';
+import TableViewComponents from '../../components/TableViewComponents';
+import AdminFeedback from './Tabs/Feedback/AdminFeedback';
+import { BiCategory, BiBookAdd } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrDashboard } from "react-icons/gr";
-import { BiBookAdd } from "react-icons/bi";
 import { FiBookOpen } from "react-icons/fi";
 import { LiaBookSolid } from "react-icons/lia";
-import { PiBooksLight } from "react-icons/pi";
 import { IoSync } from "react-icons/io5";
 import { IoMdLogOut } from "react-icons/io";
-import AnalyticsComponents from '../components/AnalyticsComponents';
-import { useNavigate } from 'react-router-dom';
-import ImportMenuComponents from '../components/ImportMenuComponents'
-import RequestBookComponent from '../components/RequestBookComponent';
-import CatalogueComponents from '../components/CatalogueComponents';
-import LibraryBooksComponents from '../components/LibraryBooksComponents';
-import { MdOutlineTableChart } from "react-icons/md";
-import { BiCategory } from "react-icons/bi";
-import { PiGitBranchBold } from "react-icons/pi";
-import { MdOutlineFeedback, MdOutlineSupervisorAccount } from "react-icons/md";
-import TableViewComponents from '../components/TableViewComponents';
+import { 
+    PiGitBranchBold,
+    PiBooksLight
+} from "react-icons/pi";
+import { 
+    MdOutlineFeedback, 
+    MdOutlineSupervisorAccount,
+    MdOutlineTableChart 
+} from "react-icons/md";
+
+
 
 const AdminPage = () => {
 
@@ -115,8 +121,7 @@ const AdminPage = () => {
                             className={
                                 (
                                     activeMenu === 'tableGenre' ||
-                                    activeMenu === 'tableBranch' ||
-                                    activeMenu === 'tableFeedback'
+                                    activeMenu === 'tableBranch'
                                 ) ? style.cardActive : style.card
                             }
                             onClick={() => setActiveMenu('tableGenre')}
@@ -126,7 +131,7 @@ const AdminPage = () => {
                         </div>
 
                         {
-                            (activeMenu === 'tables' || activeMenu === 'tableGenre' || activeMenu === 'tableBranch' || activeMenu === 'tableFeedback') &&
+                            (activeMenu === 'tables' || activeMenu === 'tableGenre' || activeMenu === 'tableBranch' ) &&
                             <div className={style.divDropDown}>
                                 <div 
                                     className={activeMenu === 'tableGenre' ? style.cardActive : style.card}
@@ -142,14 +147,6 @@ const AdminPage = () => {
                                 >
                                     <PiGitBranchBold size={25} color='#38b6ff'/>
                                     <p>Branch</p>
-                                </div>
-
-                                <div 
-                                    className={activeMenu === 'tableFeedback' ? style.cardActive : style.card}
-                                    onClick={() => setActiveMenu('tableFeedback')}
-                                >
-                                    <MdOutlineFeedback size={25} color='#38b6ff'/>
-                                    <p>Feedback</p>
                                 </div>
                             </div>
                         }
@@ -170,6 +167,14 @@ const AdminPage = () => {
                         >
                             <PiBooksLight size={25} color='#38b6ff'/>
                             <p>Library Books</p>
+                        </div>
+
+                        <div 
+                            className={activeMenu === 'feedback' ? style.cardActive : style.card}
+                            onClick={() => setActiveMenu('feedback')}
+                        >
+                            <MdOutlineFeedback size={25} color='#38b6ff'/>
+                            <p>Feedback</p>
                         </div>
 
                         {
@@ -208,7 +213,10 @@ const AdminPage = () => {
                     activeMenu === 'addBook' && 'Add Book / Circulation' ||
                     activeMenu === 'reqBook' && 'Request Books / Circulation' ||
                     activeMenu === 'catalogue' && 'Catalogue' ||
-                    activeMenu === 'libBook' && 'Library Books'
+                    activeMenu === 'libBook' && 'Library Books' ||
+                    activeMenu === 'feedback' && 'Feedbacks' ||
+                    activeMenu === 'tableGenre' && 'Table / Genre' ||
+                    activeMenu === 'tableBranch' && 'Table / Branch'
                 }</h1>
        
    
@@ -225,16 +233,17 @@ const AdminPage = () => {
 
             { activeMenu === 'reqBook' && <RequestBookComponent/> }
 
-            { activeMenu === 'catalogue' && <CatalogueComponents/> }
+            { activeMenu === 'catalogue' && <AdminCatalogue/> }
 
             { activeMenu === 'libBook' && <LibraryBooksComponents/> }
+
+            { activeMenu === 'feedback' && <AdminFeedback/> }
 
             {
                 ( 
                     activeMenu === 'tables' ||
                     activeMenu === 'tableGenre' || 
-                    activeMenu === 'tableBranch' || 
-                    activeMenu === 'tableFeedback' 
+                    activeMenu === 'tableBranch'
                 ) && (
                     <TableViewComponents currentTable={activeMenu}/>
                 )

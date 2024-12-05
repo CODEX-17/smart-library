@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import style from './StudentHomePage.module.css'
-import bookLogo from '../assets/logo-yellow.png'
+import style from './GuestHomePage.module.css'
+import bookLogo from '../../assets/logo-yellow.png'
 import { FaFilter } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { MdManageAccounts } from "react-icons/md";
@@ -8,16 +8,22 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdLogOut } from "react-icons/io";
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
-import FeedbackComponents from '../components/FeedbackComponents';
-import ManageAccountComponent from '../components/ManageAccountComponent';
-import NotificationComponents from '../components/NotificationComponents';
-import { ImBooks } from "react-icons/im";
+import FeedbackComponents from '../../components/FeedbackComponents';
+import ManageAccountComponent from '../../components/ManageAccountComponent';
+import NotificationComponents from '../../components/NotificationComponents';
 import { CgCloseR } from "react-icons/cg";
 import { useForm } from 'react-hook-form';
 
+import { getCurrentUserFullname } from '../../utils/userNameUtil'
+import { 
+  convertDateFormatIntoString, 
+  convertTimeTo12HourFormat,
+  getCurrentDateString,
+  getCurrentTimeString
+} from '../../utils/dateUtils';
 
 
-const StudentHomePage = () => {
+const GuestHomePage = () => {
 
   const navigate = useNavigate()
   const [isShowSidebar, setIsShowSidebar] = useState(true)
@@ -40,63 +46,10 @@ const StudentHomePage = () => {
 
   const { handleSubmit, register, formState: { errors } } = useForm()
 
-  const handleLogout = () => {
+  const handleLogout = () => {  
     localStorage.clear()
     navigate('/')
   }
-
-  const generateFullname = (first, middle, last) => {
-    if (first, middle, last) {
-      const fullname = first + ' ' + middle.substring(0, 1) + '. ' + last
-      return fullname.toUpperCase()
-    }
-  }
-
-  const convertDateFormat = (date) => {
-    if (date) {
-      let [ year, month, day ] = date.split('-')
-      month = 
-        month === '1' && 'Jan' || 
-        month === '2' && 'Feb' || 
-        month === '3' && 'Mar' ||
-        month === '4' && 'Apr' || 
-        month === '5' && 'May' || 
-        month === '6' && 'Jun' ||
-        month === '7' && 'Jul' || 
-        month === '8' && 'Aug' || 
-        month === '9' && 'Sep' ||
-        month === '10' && 'Oct' || 
-        month === '11' && 'Nov' || 
-        month === '12' && 'Dec' 
-
-      return `${month}. ${day}, ${year}`
-    }
-  }
-
-  const convertTo12HourFormat = (time) => {
-    if (time) {
-      const [hours, minutes] = time.split(':').map(Number);
-      const period = hours >= 12 ? 'PM' : 'AM';
-      const twelveHour = hours % 12 || 12;
-      return `${twelveHour}:${minutes.toString().padStart(2, '0')} ${period}`;
-    }
-   
-  }
-
-  const getCurrentDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Add leading zero
-    const day = String(today.getDate()).padStart(2, '0'); // Add leading zero
-    return `${year}-${month}-${day}`;
-  };
-
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0'); // Ensure 2 digits
-    const minutes = now.getMinutes().toString().padStart(2, '0'); // Ensure 2 digits
-    return `${hours}:${minutes}`;
-  };
 
   useEffect(() => {
 
@@ -113,9 +66,9 @@ const StudentHomePage = () => {
     .then((res) => {setBranchList(res.data)})
     .catch((error) => console.log(error))
 
-    axios.get('http://localhost:5001/book/getBooks')
-    .then((res) => setBookList(res.data))
-    .catch((error) => console.log(error))
+      axios.get('http://localhost:5001/book/getBooks')
+      .then((res) => setBookList(res.data))
+      .catch((error) => console.log(error))
 
     axios.get('http://localhost:5001/borrow/getBorrowByAcctID/' + userAccount.id)
     .then((res) => {setReqList(res.data)})
@@ -172,7 +125,7 @@ const StudentHomePage = () => {
           
         </div>
     },
-  ];
+  ]
 
   const requestColumns = [
     
@@ -198,12 +151,12 @@ const StudentHomePage = () => {
     },
     {
       name: 'Date',
-      selector: row => convertDateFormat(row.date),
+      selector: row => convertDateFormatIntoString(row.date),
       sortable: true,
     },
     {
       name: 'Time',
-      selector: row => convertTo12HourFormat(row.time),
+      selector: row => convertTimeTo12HourFormat(row.time),
       sortable: true,
     },
     {
@@ -215,7 +168,7 @@ const StudentHomePage = () => {
       name: 'Action',
       cell: row => <button id={style.btnBorrow} style={{ backgroundColor: '#A02334' }} onClick={() => handleDeleteReq(row.id)}>Delete</button>,
     },
-  ];
+  ]
 
   const notificationConfig = ( message, status ) => {
     setMessage(message)
@@ -229,15 +182,14 @@ const StudentHomePage = () => {
   }
 
   const handleBorrow = (row) => {
-
       const finalData = {
         book_id: row.book_id,
         title: row.title,
         author_name: row.author_name,
         acct_id: userAccount.id,
-        acct_name: generateFullname(userAccount.firstname, userAccount.middlename, userAccount.lastname),
-        date: getCurrentDate(),
-        time: getCurrentTime(),
+        acct_name: getCurrentUserFullname(),
+        date: getCurrentDateString(),
+        time: getCurrentTimeString(),
         status: 'pending',
         book_quantity: row.quantity,
       }
@@ -249,7 +201,7 @@ const StudentHomePage = () => {
           notificationConfig(message, true)
       })
     
-  };
+  }
 
   const handleDeleteReq = (id) => {
 
@@ -288,7 +240,7 @@ const StudentHomePage = () => {
 
     item.branch && item.branch === filterBranch || filterBranch === 'all' &&
     item.genre && item.genre.toLowerCase().includes(filterText.toLowerCase())
-  );
+  )
 
   const customStyles = {
     table: {
@@ -302,8 +254,7 @@ const StudentHomePage = () => {
         fontSize: '12pt',
       },
     },
-  };
-
+  }
 
   const handleBulkBorrow = (data) => {
     axios.post(data)
@@ -487,4 +438,4 @@ const StudentHomePage = () => {
   )
 }
 
-export default StudentHomePage
+export default GuestHomePage

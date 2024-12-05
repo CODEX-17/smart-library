@@ -10,16 +10,28 @@
 
 .container {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
-  gap: 2%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  gap: 20px;
+  position: relative;
+  padding: 20px;
 }
 
-.container select {
-    width: 50%;
+.sidebar {
+  width: 40%;
+  max-width: 500px;
+  min-width: 300px;
+  height: 100%;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+}
+
+.content select {
+    width: 100%;
     padding: 5px;
     border-radius: 5px;
     font-family: bold;
@@ -30,16 +42,18 @@
 
 .searchBar {
     display: flex;
-    gap: 2%;
-    width: 50%;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .searchBar input {
-    width: 80%;
-    border: 2px solid #38b6ff;
+    width: 90%;
+    border: none;
     border-radius: 5px;
     outline: none;
-    padding-left: 2%;
+    padding-left: 10px;
+    background-color: rgba(128, 128, 128, 0.081);
 }
 
 .searchBar button {
@@ -53,22 +67,35 @@
 }
 
 .tableDiv {
-  border: 2px solid #38b6ff;
-  width: 50%;
+  width: 100%;
+  height: auto;
+}
+
+.table {
+  width: 100%;
+  font-family: normal;
   border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table .ant-table-thead > tr > th {
+  background-color: #38b6ff7c; /* Light blue background */
+  color: #ffffff; /* Text color */
+  font-weight: bold; /* Bold font */
+  text-align: center; /* Center align text */
 }
 
 
-
-
-@media (max-width: 768px) {
-    .sidebar {
-      position: absolute;
-      width: 300px;
-      height: 100%;
-    }
-  
+@media (max-width: 1440px) {
+  .searchBar {
+    width: 75%;
   }
+
+  .tableDiv {
+    width: 75%;
+  }
+
+}
   
   
   @keyframes pop {

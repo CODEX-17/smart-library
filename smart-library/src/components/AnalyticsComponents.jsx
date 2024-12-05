@@ -1,15 +1,23 @@
 import React,{ useEffect, useState } from 'react'
 import style from './AnalyticsComponents.module.css'
-import { MdOutlineMenuBook } from "react-icons/md";
 import { RiUser3Fill } from "react-icons/ri";
-import { MdAssignmentReturn } from "react-icons/md";
-import { MdAssignmentReturned } from "react-icons/md";
+import { 
+  MdOutlineMenuBook,
+  MdAssignmentReturn, 
+  MdAssignmentReturned 
+} from "react-icons/md";
+
+import { IoExpandSharp } from "react-icons/io5";
+
 import axios from 'axios';
 import { Chart } from "react-google-charts";
+import SummaryModal from './modal/SummaryModal';
 Chart.version = "current"; 
 
 const AnalyticsComponents = () => {
 
+  const [isShowBorrowSummaryModal, setIsShowBorrowSummaryModal] = useState(false)
+  const [modalType, setModalType] = useState('borrow')
   const [bookList, setBookList] = useState([])
   const [reqList, setReqList] = useState([])
   const [acctList, setAcctList] = useState([])
@@ -150,6 +158,12 @@ const AnalyticsComponents = () => {
 
   return (
     <div className={style.container}>
+      {
+        isShowBorrowSummaryModal && 
+        <div className='d-flex w-100 h-100 position-absolute'>
+          <SummaryModal type={modalType} setIsShowBorrowSummaryModal={setIsShowBorrowSummaryModal}/>
+        </div>
+      }
       <div className={style.cardAnalyticsBar}>
         <div className={style.card} style={{ backgroundColor: '#ADD8E6' }}>
             <div className={style.cardHead}>
@@ -178,6 +192,12 @@ const AnalyticsComponents = () => {
               <h1>{computeTodaysBorrow()}</h1>
             </div>
             <p>Borrowed book today</p>
+            <IoExpandSharp 
+              size={20} 
+              cursor={'pointer'} 
+              style={{ position: 'absolute', bottom: '4%', right: '4%', zIndex: '10' }}
+              onClick={() => { setModalType('borrow'); setIsShowBorrowSummaryModal(true); }}
+            />
         </div>
         <div className={style.card} style={{ backgroundColor: '#B60071' }}>
             <div className={style.cardHead}>
@@ -185,6 +205,12 @@ const AnalyticsComponents = () => {
               <h1>{computeTodaysReturn()}</h1>
             </div>
             <p>Return book today</p>
+            <IoExpandSharp 
+              size={20} 
+              cursor={'pointer'} 
+              style={{ position: 'absolute', bottom: '4%', right: '4%', zIndex: '20' }}
+              onClick={() => { setModalType('returned'); setIsShowBorrowSummaryModal(true); }}
+            />
         </div>
       </div>
       <div className={style.contentCharts}>

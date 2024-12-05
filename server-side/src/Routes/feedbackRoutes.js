@@ -39,6 +39,7 @@ router.get('/getFeedBack', (req, res) => {
 router.post('/deleteFeedback', (req, res) => {
     
     const { id } = req.body
+    console.log(id)
     const query = 'DELETE FROM feedback WHERE id=?'
 
     db.query(query,[id], (error, data, field) => {

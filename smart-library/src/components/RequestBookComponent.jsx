@@ -89,12 +89,14 @@ const RequestBookComponent = () => {
   }
 
   const handleDelete = (id) => {
+
     axios.post('http://localhost:5001/borrow/deleteReq', {id})
     .then((res) => {
       const result = res.data
       const message = result.message
       console.log(message)
     }).catch((err) => console.log(err))
+    
   }
 
   

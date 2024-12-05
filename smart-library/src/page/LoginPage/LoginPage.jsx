@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import style from './LoginPage.module.css'
-import bookLogo from '../assets/logo-white.png'
+import bookLogo from '../../assets/logo-white.png'
 import { PiUserSwitchFill } from "react-icons/pi";
-import LoadingComponents from '../components/LoadingComponents';
+import LoadingComponents from '../../components/LoadingComponents';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios'
 
@@ -19,6 +19,7 @@ const LoginPage = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
+
         if (email, password) {
             setEnableButton(false)
         }
@@ -28,7 +29,7 @@ const LoginPage = () => {
             if (accountDetails?.acctype === 'admin') {
                 navigate('/admin')
             }else {
-                navigate('/searchBook')
+                navigate('/guestHomepage')
             }
         }
     },[email, password])
@@ -61,7 +62,7 @@ const LoginPage = () => {
                     if (loginType === 'admin' || userData.acctype === 'super') {
                         navigate('/admin')
                     }else {
-                        navigate('/searchBook')
+                        navigate('/guestHomepage')
                     }
                     
                 }else {
