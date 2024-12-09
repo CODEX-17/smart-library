@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2024 at 04:53 AM
+-- Generation Time: Dec 09, 2024 at 08:25 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -91,7 +91,7 @@ CREATE TABLE `books` (
 
 INSERT INTO `books` (`book_id`, `item_no`, `title`, `author_name`, `access_no`, `genre`, `branch`, `quantity`, `amount`, `call_no`, `total_value`, `date_acquired`) VALUES
 (1, 5523, 'Alamat ng saging', 'Juan Cruz', '8000pl', 'Classic Literature', 'GENERAL TRIAS BRANCH', 1, '20', '09123554899', '0', '2024-10-29'),
-(2, 5002, 'Alamat ng sample', 'John Cruz', '8005pl', 'Classic Literature', 'GENERAL TRIAS BRANCH', 10, '5', '0', '0', '2024-10-30');
+(2, 5002, 'Alamat ng sample', 'John Cruz', '8005pl', 'Classic Literature', 'GENERAL TRIAS BRANCH', 9, '5', '0', '0', '2024-10-30');
 
 -- --------------------------------------------------------
 
@@ -121,7 +121,8 @@ INSERT INTO `borrow_books` (`id`, `book_id`, `title`, `author_name`, `acct_id`, 
 (3, '1', 'Alamat ng saging', 'Juan Cruz', 35, 'JOSHUA B. MARCELINO', '2024-11-20', '19:05', 'returned'),
 (4, '1', 'Alamat ng saging', 'Juan Cruz', 35, 'JOSHUA B. MARCELINO', '2024-11-20', '21:23', 'rejected'),
 (23, '1', 'Alamat ng saging', 'Juan Cruz', 34, 'MARK R. PAMPARO', '2024-11-27', '18:33', 'pending'),
-(24, '2', 'Alamat ng sample', 'John Cruz', 34, 'MARK R. PAMPARO', '2024-11-27', '19:10', 'pending');
+(24, '2', 'Alamat ng sample', 'John Cruz', 34, 'MARK R. PAMPARO', '2024-11-27', '19:10', 'pending'),
+(25, '2', 'Alamat ng sample', 'John Cruz', 34, 'MARK PAMPARO', '2024-12-03', '17:06', 'pending');
 
 -- --------------------------------------------------------
 
@@ -151,18 +152,21 @@ INSERT INTO `branch` (`id`, `branch_name`) VALUES
 
 CREATE TABLE `feedback` (
   `id` int(10) NOT NULL,
+  `username` varchar(255) NOT NULL,
   `message` longtext NOT NULL,
-  `date` varchar(50) NOT NULL,
-  `time` varchar(50) NOT NULL
+  `date` varchar(255) NOT NULL,
+  `time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `feedback`
 --
 
-INSERT INTO `feedback` (`id`, `message`, `date`, `time`) VALUES
-(1, 'sample feedback', '2024-11-07', '12:55'),
-(6, 'hatdog', 'Thu Nov 28 2024', '10:18 AM');
+INSERT INTO `feedback` (`id`, `username`, `message`, `date`, `time`) VALUES
+(1, 'anonymous', 'sample feedback', '2024-11-01', '12:55:00'),
+(16, 'anonymous', 'dasdasdasdas', '2024-12-05', '14:20:00'),
+(17, 'anonymous', 'dasdasdsa', '2024-12-05', '14:23:00'),
+(18, 'ako to si mar', 'ganda ng ui nyo', '2024-12-05', '14:23:00');
 
 -- --------------------------------------------------------
 
@@ -297,7 +301,7 @@ ALTER TABLE `books`
 -- AUTO_INCREMENT for table `borrow_books`
 --
 ALTER TABLE `borrow_books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `branch`
@@ -309,7 +313,7 @@ ALTER TABLE `branch`
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `genre`
