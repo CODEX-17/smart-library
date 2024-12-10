@@ -165,28 +165,28 @@ const AnalyticsComponents = () => {
         </div>
       }
       <div className={style.cardAnalyticsBar}>
-        <div className={style.card} style={{ backgroundColor: '#ADD8E6' }}>
+        <div className={style.card} style={{ backgroundColor: '#001A6E' }}>
             <div className={style.cardHead}>
               <MdOutlineMenuBook size={50}/>
               <h1>{bookList?.length}</h1>
             </div>
             <p>Total number of books</p>
         </div>
-        <div className={style.card} style={{ backgroundColor: '#DECBE6' }}>
+        <div className={style.card} style={{ backgroundColor: '#441752' }}>
             <div className={style.cardHead}>
               <RiUser3Fill size={50}/>
               <h1>{acctList?.length}</h1>
             </div>
             <p>Total number of users/clients</p>
         </div>
-        <div className={style.card} style={{ backgroundColor: '#EEC9BC' }}>
+        <div className={style.card} style={{ backgroundColor: '#F26B0F' }}>
             <div className={style.cardHead}>
               <MdAssignmentReturn size={50}/> 
               <h1>{reqList?.length}</h1>
             </div>
             <p>Total request books</p>
         </div>
-        <div className={style.card} style={{ backgroundColor: '#C3D7BC' }}>
+        <div className={style.card} style={{ backgroundColor: '#1F4529' }}>
             <div className={style.cardHead}>
               <MdAssignmentReturn size={50}/> 
               <h1>{computeTodaysBorrow()}</h1>

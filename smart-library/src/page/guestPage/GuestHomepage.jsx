@@ -1,17 +1,22 @@
 import React, {useEffect, useState} from 'react'
 import style from './GuestHomePage.module.css'
 import bookLogo from '../../assets/logo-yellow.png'
-import { FaFilter } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
-import { MdManageAccounts } from "react-icons/md";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { IoMdLogOut } from "react-icons/io";
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
 import FeedbackComponents from '../../components/FeedbackComponents';
 import ManageAccountComponent from '../../components/ManageAccountComponent';
 import NotificationComponents from '../../components/NotificationComponents';
+import Catalogue from '../../page/adminPage/Tabs/Catalogue/AdminCatalogue'
 import { CgCloseR } from "react-icons/cg";
+import { VscGitPullRequestNewChanges } from "react-icons/vsc";
+import { LuBookPlus } from "react-icons/lu";
+import { FiBookOpen } from "react-icons/fi";
+import { FaFilter } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import { MdManageAccounts, MdOutlineFeedback } from "react-icons/md";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { IoMdLogOut } from "react-icons/io";
+
 import { useForm } from 'react-hook-form';
 
 import { getCurrentUserFullname } from '../../utils/userNameUtil'
@@ -40,9 +45,6 @@ const GuestHomePage = () => {
   const [isShowNotification, setIsShowNotification] = useState(false)
   const [message, setMessage] = useState('')
   const [notifStatus, setNotifStatus] = useState(true)
-
-  const [isShowBulkModal, setIsShowBulkModal] = useState(false)
-  const [bulk, setBulk] = useState(0)
 
   const { handleSubmit, register, formState: { errors } } = useForm()
 
@@ -256,54 +258,8 @@ const GuestHomePage = () => {
     },
   }
 
-  const handleBulkBorrow = (data) => {
-    axios.post(data)
-  }
-
-  const validationBulkBorrow = (value) => {
-    if (value == 0 || value < 0 || value > selectedData?.quantity) {
-      return `quantity must be greaterthan 0 and lessthan ${selectedData?.quantity}`
-    }else {
-      return true
-    }
-  }
-
   return (
     <div className={style.container}>
-      {
-        isShowBulkModal && 
-        <div className={style.bulkModal}>
-          <div className={style.cardbulk}>
-            <div className={style.head}>
-              <h2>Bulk borrow books</h2>
-              <CgCloseR size={25} cursor={'pointer'} onClick={() => setIsShowBulkModal(false)}/>
-            </div>
-            <div className={style.body}>
-              <form onSubmit={handleSubmit(handleBulkBorrow)}>
-                <div className='d-flex w-100 flex-column mb-3'>
-                  
-                    <div className='d-flex justify-content-between'>
-                      <label>Quantity</label>
-                      <p>Stock(s): {selectedData?.quantity}</p>
-                    </div>
-                    
-                    <input 
-                      type="number" 
-                      min={0} 
-                      max={selectedData?.quantity} 
-                      {...register('bulk_quantity', { 
-                        required: 'Quantity required.',
-                        validate: validationBulkBorrow
-                      })}
-                    />
-                    {errors.bulk_quantity && <p style={{ margin: 0, fontSize: '0.8rem', color: 'red' }}>{errors.bulk_quantity.message}</p>}
-                </div>
-                <button type='submit'>Borrow</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      }
 
       {
         isShowSidebar && (
@@ -327,17 +283,22 @@ const GuestHomePage = () => {
               <button 
                 style={{ backgroundColor: activeBtn === 'borrow' ? '#ffa600' : '#38b6ff' }}
                 onClick={() => setActiveBtn('borrow')}
-              >Borrow Book
+              ><LuBookPlus size={15} style={{ marginRight: 10 }}/>Borrow Book
               </button>
               <button 
                 style={{ backgroundColor: activeBtn === 'request' ? '#ffa600' : '#38b6ff' }}
                 onClick={() => setActiveBtn('request')}
-              >Request List
+              ><VscGitPullRequestNewChanges size={15} style={{ marginRight: 10 }}/> Request List
+              </button>
+              <button 
+                style={{ backgroundColor: activeBtn === 'catalogue' ? '#ffa600' : '#38b6ff' }}
+                onClick={() => setActiveBtn('catalogue')}
+              ><FiBookOpen size={15} style={{ marginRight: 10 }}/>Catalogue
               </button>
               <button 
                 style={{ backgroundColor: activeBtn === 'feedback' ? '#ffa600' : '#38b6ff' }}
                 onClick={() => setActiveBtn('feedback')}
-              >Feedback
+              ><MdOutlineFeedback size={15} style={{ marginRight: 10 }}/>Feedback
               </button>
             </div>
           </div>
@@ -363,8 +324,8 @@ const GuestHomePage = () => {
             backgroundColor: 
               activeBtn === 'borrow' && '#38b6ff' || 
               activeBtn === 'request' && '#ffa600' ||
-              activeBtn === 'feedback' && 'white'
-              ,
+              activeBtn === 'catalogue' && 'white' ||
+              activeBtn === 'feedback' && 'white',
           }}
         >
           {
@@ -375,12 +336,8 @@ const GuestHomePage = () => {
           }
 
           {
-            activeBtn === 'feedback' && (
-              <FeedbackComponents/>
-            ) || 
+            activeBtn === 'feedback' && <FeedbackComponents/> || 
             ( activeBtn === 'request' || activeBtn === 'borrow' ) &&
-
-            (
               <div className={style.tableDiv}>
                 <div className={style.titleDiv}>
                   <h1>{activeBtn === 'borrow' ? 'Borrow book' : 'Request List'}</h1>
@@ -423,11 +380,10 @@ const GuestHomePage = () => {
                   </DataTable>
                 </div>
               </div>
-            ) || 
-            activeBtn === 'manageAccount' && 
-            (
-              <ManageAccountComponent/>
-            )
+            || 
+            activeBtn === 'manageAccount' && <ManageAccountComponent/> ||
+            activeBtn === 'catalogue' && <Catalogue/>
+
           }
 
         </div>

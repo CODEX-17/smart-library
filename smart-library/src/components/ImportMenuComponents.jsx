@@ -39,6 +39,7 @@ const ImportMenuComponents = () => {
   },[])
 
   const handleNoticationConfig = (message, status) => {
+    console.log('mes',message)
     setMessage(message)
     setNotifStatus(status)
     setIsShowNotification(true)
@@ -53,8 +54,8 @@ const ImportMenuComponents = () => {
     console.log(data)
     if (data) {
       if (
-        data.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
-        data.type == 'application/vnd.ms-excel'
+        data.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+        data.type === 'application/vnd.ms-excel'
       ) {
         setFileAcceptable(true)
         setFile(data)
@@ -65,7 +66,7 @@ const ImportMenuComponents = () => {
           const binaryStr = e.target.result;
           const workbook = XLSX.read(binaryStr, { type: 'binary' });
           const numberOfSheets = workbook.SheetNames.length
-
+          
           console.log(numberOfSheets)
 
           let finalData = []
@@ -75,81 +76,106 @@ const ImportMenuComponents = () => {
             let worksheet = workbook.Sheets[sheetName];
             console.log('worksheet', worksheet)
 
-            if (
-              worksheet?.A1?.v == 'The NATIONAL LIBRARY' ||
-              worksheet?.A1?.v == 'NAIC MUNICIPAL LIBRARY' ||
-              worksheet?.A1?.v == '#'
-            ) {
-              worksheet.A1.v = 'item_no'
-              worksheet.A1.w = 'item_no'
-            }
+            // if (
+            //   worksheet?.A1?.v == 'The NATIONAL LIBRARY' ||
+            //   worksheet?.A1?.v == 'NAIC MUNICIPAL LIBRARY' ||
+            //   worksheet?.A1?.v == '#'
+            // ) {
+            //   worksheet.A1.v = 'item_no'
+            //   worksheet.A1.w = 'item_no'
+            // }
 
-            const result = XLSX.utils.sheet_to_json(worksheet); // Convert to JSON
+            const result = XLSX.utils.sheet_to_json(worksheet, {
+              raw: false, // Forces date parsing
+              dateNF: 'YYYY-MM-DD' // Specifies date format
+            }); // Convert to JSON
+
             console.log('result', result)
-            const final = result.filter((data) => data.AUTHOR || data.ISBN || data.TITLE || data.__EMPTY
-          )
-            for (let x = 0; x < final.length; x++) {
-              let updated = final[x]
 
-              if (updated.__EMPTY) {
-                updated.title = updated.__EMPTY
-                delete updated.__EMPTY
-              }
+            result.forEach((data) => {
+              const updatedData = { ...data };
+            
+              // Check and parse date fields
+              ['date_acquired', 'publication'].forEach((key) => {
+                if (typeof data[key] === 'number') {
+                  const parsedDate = XLSX.SSF.parse_date_code(data[key]);
+                  
+                  // Format with leading zeros
+                  const month = String(parsedDate.m).padStart(2, '0');
+                  const day = String(parsedDate.d).padStart(2, '0');
+                  const year = String(parsedDate.y);
+            
+                  updatedData[key] = `${month}/${day}/${year}`;
+                }
+              });
+            
+              finalData.push(updatedData);
+            });
 
-              if (updated.__EMPTY_1) {
-                updated.author = updated.__EMPTY_1
-                delete updated.__EMPTY_1
-              }
+            //const final = result.filter((data) => data.AUTHOR || data.ISBN || data.TITLE || data.__EMPTY)
+            
+            // for (let x = 0; x < final.length; x++) {
+            //   let updated = final[x]
 
-              if (updated.TITLE) {
-                updated.title = updated.TITLE
-                delete updated.TITLE
-              }
+            //   if (updated.__EMPTY) {
+            //     updated.title = updated.__EMPTY
+            //     delete updated.__EMPTY
+            //   }
+
+            //   if (updated.__EMPTY_1) {
+            //     updated.author = updated.__EMPTY_1
+            //     delete updated.__EMPTY_1
+            //   }
+
+            //   if (updated.TITLE) {
+            //     updated.title = updated.TITLE
+            //     delete updated.TITLE
+            //   }
               
-              if (updated.AUTHOR) {
-                updated.author = updated.AUTHOR
-                delete updated.AUTHOR
-              }
+            //   if (updated.AUTHOR) {
+            //     updated.author = updated.AUTHOR
+            //     delete updated.AUTHOR
+            //   }
 
-              if (updated.ISBN) {
-                updated.isbn = updated.ISBN
-                delete updated.ISBN
-              }
+            //   if (updated.ISBN) {
+            //     updated.isbn = updated.ISBN
+            //     delete updated.ISBN
+            //   }
              
-              updated.access_no = updated.__EMPTY_2
-              updated.call_no = updated.__EMPTY_3
-              updated.quantity = updated.__EMPTY_4 || 0
-              updated.date_acquired = updated.__EMPTY_6
-              updated.amount = updated.__EMPTY_7
-              updated.total_value = updated.__EMPTY_8
-              updated.branch = selectedBranch
-              updated.genre = 'n/a'
+            //   updated.access_no = updated.__EMPTY_2
+            //   updated.call_no = updated.__EMPTY_3
+            //   updated.quantity = updated.__EMPTY_4 || 0
+            //   updated.date_acquired = updated.__EMPTY_6
+            //   updated.amount = updated.__EMPTY_7
+            //   updated.total_value = updated.__EMPTY_8
+            //   updated.branch = selectedBranch
+            //   updated.genre = 'n/a'
        
-              delete updated.__EMPTY_2
-              delete updated.__EMPTY_3
-              delete updated.__EMPTY_4
-              delete updated.__EMPTY_5
-              delete updated.__EMPTY_6
-              delete updated.__EMPTY_7
-              delete updated.__EMPTY_8
-              delete updated.ISBN
+            //   delete updated.__EMPTY_2
+            //   delete updated.__EMPTY_3
+            //   delete updated.__EMPTY_4
+            //   delete updated.__EMPTY_5
+            //   delete updated.__EMPTY_6
+            //   delete updated.__EMPTY_7
+            //   delete updated.__EMPTY_8
+            //   delete updated.ISBN
               
-              if (
-                updated.title == 'T I T L E' ||
-                updated.item_no == '000-099 - (GENERALITIES)' ||
-                updated.title == '000-099 - (GENERALITIES)' 
-              ) {
-                continue
-              }else {
-                finalData.push(updated)
-              }
+            //   if (
+            //     updated.title == 'T I T L E' ||
+            //     updated.item_no == '000-099 - (GENERALITIES)' ||
+            //     updated.title == '000-099 - (GENERALITIES)' 
+            //   ) {
+            //     continue
+            //   }else {
+            //     finalData.push(updated)
+            //   }
 
               
-            }
+            // }
           }
 
           if (finalData.length <= 0) {
-            handleNoticationConfig('Invalid Excel format.', false)
+            handleNoticationConfig('Excel file has no data.', false)
           }
 
           finalData = [...new Set(finalData)]
@@ -177,7 +203,8 @@ const ImportMenuComponents = () => {
   const handleImport = async ()  => {
     setIsLoading(true)
     let success = 0
-    let failed = 0   
+    let failed = 0 
+    let current_message = ''  
 
     const sendRequestsSequentially = async () => {
 
@@ -186,7 +213,7 @@ const ImportMenuComponents = () => {
           const res = await axios.post(`${url}book/addBook`, dataList[i])
           const result = res.data
           const message = result.message
-          setMessage(message) 
+          current_message = message  
           success ++
         } catch (err) {
           failed ++
@@ -195,17 +222,17 @@ const ImportMenuComponents = () => {
       }
     }
     
-    await sendRequestsSequentially()
+    await sendRequestsSequentially()  
     setIsLoading(false)
 
     if (dataList.length == success) {
-      handleNoticationConfig(message, true)
+      handleNoticationConfig(current_message, true)
+      setIsShowModal(false)
+      setIsShowImportedData(false)
     }else {
       handleNoticationConfig(`Failed to add ${failed} books, ${success} books added.`, false)
     }
 
-    
-    
   }
 
   const handleCancelButton = () => {
@@ -217,7 +244,7 @@ const ImportMenuComponents = () => {
   }
 
   const handleCloseForm = (status) => {
-      setIsShowForm(status)
+    setIsShowForm(status)
   }
 
 
@@ -247,7 +274,7 @@ const ImportMenuComponents = () => {
                 dataList?.map((data, index) => (
                   <div className={style.cardData} key={index}>
                     <h2>{data?.title == undefined ? 'N/A' : data?.title}</h2>
-                    <p>{data?.author}</p>
+                    <p>{data?.author_name} {data?.publication}</p>
                   </div>
                 ))
               }

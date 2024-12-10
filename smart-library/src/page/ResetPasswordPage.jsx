@@ -21,6 +21,8 @@ const [btnDisabled, setBtnDisabled] = useState(true)
 const [isShowPassword, setIsShowPassword] = useState(false)
 const navigate = useNavigate()
 
+const [isProcessDone, setIsProcessDone] = useState(false)
+
 const hasLowerAndUpperCase = (value) => {
   return /[a-z]/.test(value) && /[A-Z]/.test(value)
 }
@@ -36,10 +38,6 @@ useEffect(() => {
 },[])
 
 useEffect(() => {
-    
-  setTimeout(() => {
-    setLoadingState(false)
-  }, 2000);
 
   if (password && token) {
 
@@ -78,6 +76,7 @@ const handleSubmit = async (e) => {
       setIsToast(true)
       setTimeout(() => {
         setIsToast(false)
+        setIsProcessDone(true)
       }, 3000);
     } catch (error) {
       console.error('There was an error resetting the password!', error);
@@ -93,39 +92,51 @@ const handleSubmit = async (e) => {
           </div>
         )
       }
-      <div className='container d-flex flex-column gap-2'>
-        <h1>Reset Password</h1>
-        <form onSubmit={handleSubmit}>
-          <div className={style.inputPasswordDiv}>
-            <input 
-                type={isShowPassword ? "text" : "password" }
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-                placeholder="Enter your new password" 
-                required 
-            />
-            {
-              isShowPassword ? 
-                <IoMdEyeOff size={25} cursor={'pointer'} color='gray' onClick={() => setIsShowPassword(!isShowPassword)}/>
-                :
-                <IoMdEye size={25} cursor={'pointer'} color='gray' onClick={() => setIsShowPassword(!isShowPassword)}/>
-            }
-            
-            
+      {
+        isProcessDone ? 
+        (
+          <div className={style.doneDiv}>
+            <p>Password Successfully Reset.</p>
+            <button onClick={() => navigate('/login')}>Login</button>
+          </div>    
+        ) : 
+        (
+          <div className='container d-flex flex-column gap-2'>  
+            <form onSubmit={handleSubmit}>
+              <h1>Reset Password</h1>
+              <div className={style.inputPasswordDiv}>
+                <input 
+                    type={isShowPassword ? "text" : "password" }
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    placeholder="Enter your new password" 
+                    required 
+                />
+                {
+                  isShowPassword ? 
+                    <IoMdEyeOff size={25} cursor={'pointer'} color='gray' onClick={() => setIsShowPassword(!isShowPassword)}/>
+                    :
+                    <IoMdEye size={25} cursor={'pointer'} color='gray' onClick={() => setIsShowPassword(!isShowPassword)}/>
+                }
+                
+                
+              </div>
+    
+              {
+                  password.length > 1 &&
+                  <div className={style.checkPassDiv}>
+                    <p>{validLenghtChar ? <FaCheck size={10} color='green'/> : <ImCross size={10} color='red'/>}  at least 12 characters long.</p>
+                    <p>{mixChar ? <FaCheck size={10} color='green'/> : <ImCross size={10} color='red'/>} contains a mix of uppercase and lowercase letters.</p>
+                    <p>{specialChar ? <FaCheck size={10} color='green'/> : <ImCross size={10} color='red'/>} includes numbers and special characters.</p>
+                  </div>
+              }
+              <p className={style.info}>Passwords must include a mix of uppercase and lowercase letters, numbers, and special characters to ensure strong security.</p>
+              <button type="submit" disabled={btnDisabled}>Reset Password</button>
+            </form>
           </div>
 
-          {
-              password.length > 1 &&
-              <div className={style.checkPassDiv}>
-                <p>{validLenghtChar ? <FaCheck size={10} color='green'/> : <ImCross size={10} color='red'/>}  at least 12 characters long.</p>
-                <p>{mixChar ? <FaCheck size={10} color='green'/> : <ImCross size={10} color='red'/>} contains a mix of uppercase and lowercase letters.</p>
-                <p>{specialChar ? <FaCheck size={10} color='green'/> : <ImCross size={10} color='red'/>} includes numbers and special characters.</p>
-              </div>
-          }
-          <p className={style.info}>Passwords must include a mix of uppercase and lowercase letters, numbers, and special characters to ensure strong security.</p>
-          <button type="submit" disabled={btnDisabled}>Reset Password</button>
-        </form>
-      </div>
+        )
+      }
     </div>
   )
 }

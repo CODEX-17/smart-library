@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2024 at 08:25 AM
+-- Generation Time: Dec 10, 2024 at 08:48 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -53,16 +53,10 @@ CREATE TABLE `accounts` (
 
 INSERT INTO `accounts` (`id`, `card_number`, `branch`, `firstname`, `middlename`, `lastname`, `birthdate`, `street_address`, `city`, `contact`, `gender`, `email`, `password`, `acctype`, `imageID`, `reset_token`, `reset_token_expires`) VALUES
 (1, 0, '', 'MARK', 'HERERA', 'FERNANDEZ', 'Mon Jan 22 2024', '#3', 'NAIC', '09760202655', 'MALE', 'admin@gmail.com', 'sha1$893f4e91$1$008377225482295454a3298cd0070e8c1c9600f7', 'admin', 'default', '4617c4369e2e74938f42655fb96fce85cbe9c03b4172a479796c18d0f342c3cf', '0000-00-00 00:00:00'),
-(34, 1000, '', 'MARK', 'REYES', 'PAMPARO', '2024-09-26', 'SAN GABRIEL', 'MENDEZ', '09760202622', 'male', 'leysicoaj@gmail.com', 'sha1$893f4e91$1$008377225482295454a3298cd0070e8c1c9600f7', 'guest', 'default', NULL, NULL),
-(35, 1001, '', 'JOSHUA', 'BALISS', 'MARCELINO', '2024-09-11', 'SAN GABRIEL', 'MENDEZ', '09760202622', 'male', 'admin@gmail.com', 'sha1$575af398$1$c6fcca586c6442e3224f21a17deec41487e5aaea', 'guest', 'default', NULL, NULL),
 (36, 0, '', 'ROMAR', 'reyes', 'CENA', '2024-09-27', 'SAN GABRIEL', 'NAIC', '09760202622', 'male', 'admin1@gmail.com', 'sha1$893f4e91$1$008377225482295454a3298cd0070e8c1c9600f7', 'super', 'default', NULL, NULL),
-(37, 1002, '', 'RUMAR', '', 'PAMPARO', 'undefined', 'undefined', 'KAWIT', '09760202622', 'male', 'pamparor@gmail.com', 'sha1$3484411c$1$8851545e9327eaa6fc0a497b249d9a1ca95832b6', 'undefined', 'default', NULL, NULL),
-(38, 1003, '', 'RUMAR', '', 'PAMPARO', 'undefined', 'undefined', 'KAWIT', '09760202622', 'male', 'pamparor@gmail.com', 'sha1$fb49e6f3$1$86ffbb62ee150366d4e84ca043cda7362df65cd3', 'undefined', 'default', NULL, NULL),
-(39, 1003, '', 'RUMAR', '', 'PAMPARO', 'undefined', 'undefined', 'MARAGONDON', '09760202622', 'male', 'pamparor@gmail.com', 'sha1$48170d43$1$c028130aa012707750339f31421012b85411177d', 'undefined', 'default', NULL, NULL),
-(40, 1004, '', 'RUMAR', '', 'PAMPARO', 'undefined', 'undefined', 'NAIC', '09760202622', 'male', 'pamparor@gmail.com', 'sha1$7e1d96dd$1$09a727b4b419abbe11b73deedd2ad12112e5362e', 'undefined', 'default', NULL, NULL),
-(41, 1005, '', 'RUMAR', '', 'PAMPARO', 'undefined', 'undefined', 'NOVELETA', '09760202622', 'male', 'pamparor@gmail.com', 'sha1$76f2e083$1$f2efa363c4a580a303f23431634b28e41823a607', 'undefined', 'default', NULL, NULL),
 (42, 0, 'GENERAL TRIAS BRANCH', 'pamparor', 'c', 'reyes', '2024-11-27', 'undefined', 'NOVELETA', '09760202655', 'male', 'pamparor1@gmail.com', 'sha1$b7233466$1$0c66a06f63b183bdff3c5ff13ed2d36f42e625cc', 'admin', 'default', NULL, NULL),
-(43, 1006, 'GENERAL TRIAS BRANCH', 'Rumar', 'Capoquian', 'Pamparo', '2024-11-16', 'undefined', 'SILANG', '09760202622', 'male', 'pamparor2@gmail.com', 'sha1$893f4e91$1$008377225482295454a3298cd0070e8c1c9600f7', 'guest', '2b94d49a-f', NULL, NULL);
+(43, 1006, 'GENERAL TRIAS BRANCH', 'Joshua', 'reyes', 'cabal', '2024-11-16', '#3 calamansi street', 'SILANG', '09760202622', 'male', 'pamparor@gmail.com', 'sha1$893f4e91$1$008377225482295454a3298cd0070e8c1c9600f7', 'guest', '2b94d49a-f', NULL, NULL),
+(44, 1007, 'undefined', 'Ash', '', 'Ampart', 'undefined', '#3 calamansi', 'CAVITE-CITY', '09760202622', 'male', 'ash.ampart17@gmail.com', 'sha1$ad6a2cf5$1$cd0425783d83f78fff4365c495ce53695d4ec5fd', 'guest', 'default', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -73,6 +67,7 @@ INSERT INTO `accounts` (`id`, `card_number`, `branch`, `firstname`, `middlename`
 CREATE TABLE `books` (
   `book_id` int(10) NOT NULL,
   `item_no` int(10) DEFAULT NULL,
+  `ISBN` varchar(255) DEFAULT NULL,
   `title` varchar(100) NOT NULL,
   `author_name` varchar(50) DEFAULT NULL,
   `access_no` varchar(50) DEFAULT NULL,
@@ -82,16 +77,38 @@ CREATE TABLE `books` (
   `amount` varchar(100) DEFAULT NULL,
   `call_no` varchar(100) DEFAULT NULL,
   `total_value` varchar(100) DEFAULT NULL,
-  `date_acquired` varchar(100) DEFAULT NULL
+  `date_acquired` varchar(100) DEFAULT NULL,
+  `publication` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`book_id`, `item_no`, `title`, `author_name`, `access_no`, `genre`, `branch`, `quantity`, `amount`, `call_no`, `total_value`, `date_acquired`) VALUES
-(1, 5523, 'Alamat ng saging', 'Juan Cruz', '8000pl', 'Classic Literature', 'GENERAL TRIAS BRANCH', 1, '20', '09123554899', '0', '2024-10-29'),
-(2, 5002, 'Alamat ng sample', 'John Cruz', '8005pl', 'Classic Literature', 'GENERAL TRIAS BRANCH', 9, '5', '0', '0', '2024-10-30');
+INSERT INTO `books` (`book_id`, `item_no`, `ISBN`, `title`, `author_name`, `access_no`, `genre`, `branch`, `quantity`, `amount`, `call_no`, `total_value`, `date_acquired`, `publication`) VALUES
+(1, 5523, NULL, 'Alamat ng saging', 'Juan Cruz', '8000pl', 'Classic Literature', 'GENERAL TRIAS BRANCH', 0, '20', '09123554899', '0', '2024-10-29', ''),
+(2, 5002, NULL, 'Alamat ng sample', 'John Cruz', '8005pl', 'Classic Literature', 'GENERAL TRIAS BRANCH', 8, '5', '0', '0', '2024-10-30', ''),
+(5, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(6, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(7, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(8, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(9, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(10, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(11, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(12, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(13, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(14, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(15, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(16, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(17, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(18, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(19, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(20, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(21, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(22, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(23, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(24, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(25, 1235, '897678347', 'ALAMANT', NULL, '90087pll', 'Dystopian', 'GENERAL TRIAS BRANCH', 24, '100', '09760202622', '88', '2024-12-18', '2024-12-25');
 
 -- --------------------------------------------------------
 
@@ -120,9 +137,10 @@ INSERT INTO `borrow_books` (`id`, `book_id`, `title`, `author_name`, `acct_id`, 
 (2, '2', 'Alamat ng sample', 'John Cruz', 35, 'JOSHUA B. MARCELINO', '2024-11-20', '16:41', 'rejected'),
 (3, '1', 'Alamat ng saging', 'Juan Cruz', 35, 'JOSHUA B. MARCELINO', '2024-11-20', '19:05', 'returned'),
 (4, '1', 'Alamat ng saging', 'Juan Cruz', 35, 'JOSHUA B. MARCELINO', '2024-11-20', '21:23', 'rejected'),
-(23, '1', 'Alamat ng saging', 'Juan Cruz', 34, 'MARK R. PAMPARO', '2024-11-27', '18:33', 'pending'),
+(23, '1', 'Alamat ng saging', 'Juan Cruz', 34, 'MARK R. PAMPARO', '2024-11-27', '18:33', 'approved'),
 (24, '2', 'Alamat ng sample', 'John Cruz', 34, 'MARK R. PAMPARO', '2024-11-27', '19:10', 'pending'),
-(25, '2', 'Alamat ng sample', 'John Cruz', 34, 'MARK PAMPARO', '2024-12-03', '17:06', 'pending');
+(25, '2', 'Alamat ng sample', 'John Cruz', 34, 'MARK PAMPARO', '2024-12-03', '17:06', 'pending'),
+(26, '2', 'Alamat ng sample', 'John Cruz', 43, 'JOSHUA CABAL', '2024-12-10', '11:01', 'pending');
 
 -- --------------------------------------------------------
 
@@ -289,19 +307,19 @@ ALTER TABLE `image`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `book_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `book_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `borrow_books`
 --
 ALTER TABLE `borrow_books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `branch`

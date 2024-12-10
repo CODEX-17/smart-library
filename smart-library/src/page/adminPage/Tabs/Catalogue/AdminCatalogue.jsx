@@ -148,6 +148,19 @@ const AdminCatalogue = () => {
     if (selectedGenre?.length > 0) {
       updateData = updateData.filter((data) => selectedGenre.includes(data.genre))
     }
+
+    if (filterText.length > 0) {
+      updateData = updateData.filter(
+        (data) => ( 
+          data.title && data.title.toLowerCase().includes(lowerCaseSearchText) || 
+          data.author_name && data.author_name.toLowerCase().includes(lowerCaseSearchText) ||
+          data.book_id && data.book_id.toString().includes(lowerCaseSearchText) ||
+          data.item_no && data.item_no.toString().includes(lowerCaseSearchText) ||
+          data.access_no && data.access_no.toLowerCase().includes(lowerCaseSearchText)
+          
+        )
+      )
+    }
     
     setFilteredData(updateData)
 

@@ -7,7 +7,6 @@ import axios from 'axios'
 import LoadingComponents from '../components/LoadingComponents';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { max } from 'rxjs';
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { GrPowerReset } from "react-icons/gr";
 import NotificationComponents from '../components/NotificationComponents';
@@ -319,7 +318,7 @@ const CreateAccount = () => {
 
                 <div className='d-flex gap-2 w-100 mb-2'>
                     <div className='d-flex flex-column w-100 mb-2'>
-                      <div className="input-group mb-2">
+                      <div className="input-group w-100 mb-2">
                           <span className="input-group-text">Library Card Number</span>
                           <input 
                             className="form-control" 
@@ -332,27 +331,31 @@ const CreateAccount = () => {
                     </div>
 
                     <div className='d-flex flex-column w-100 mb-2'>
-                      <div className="input-group mb-2">
-                          <span className="input-group-text">Branch</span>
-                          <select 
-                            className='form-select'
-                            {...register('branch', { required: 'Branch is required.' })}
-                          >
-                            <option value="">Select branch</option>
-                            {
-                              branchList &&
-                              branchList.map((branch, index) => (
-                                <option value={branch.branch_name} key={index}>{branch.branch_name}</option>
-                              ))
-                            }
-                          </select>
-                      </div>
+                      {
+                        type !== 'guest' &&
+                        <div className="input-group mb-2">
+                            <span className="input-group-text">Branch</span>
+                            <select 
+                              className='form-select'
+                              {...register('branch', { required: 'Branch is required.' })}
+                            >
+                              <option value="">Select branch</option>
+                              {
+                                branchList &&
+                                branchList.map((branch, index) => (
+                                  <option value={branch.branch_name} key={index}>{branch.branch_name}</option>
+                                ))
+                              }
+                            </select>
+                        </div>
+                      }
+
                     </div>
                 </div>
 
                 <div className='d-flex flex-column w-100 mb-2'>
                   <div className="input-group mb-2">
-                      <span className="input-group-text">Firstname</span>
+                      <span className="input-group-text">First Name</span>
                       <input 
                         className="form-control" 
                         type='text'
@@ -364,7 +367,7 @@ const CreateAccount = () => {
 
                 <div className='d-flex flex-column w-100 mb-2'>
                   <div className="input-group mb-2">
-                      <span className="input-group-text">Middlename (optional)</span>
+                      <span className="input-group-text">Middle Name (optional)</span>
                       <input 
                         className="form-control" 
                         type='text'
@@ -375,7 +378,7 @@ const CreateAccount = () => {
 
                 <div className='d-flex flex-column w-100 mb-2'>
                   <div className="input-group mb-2">
-                      <span className="input-group-text">Lastname</span>
+                      <span className="input-group-text">Last Name</span>
                       <input 
                         className="form-control" 
                         type='text'

@@ -5,7 +5,6 @@ import DataTable from 'react-data-table-component';
 import { AiFillDelete } from "react-icons/ai";
 import { MdEditSquare } from "react-icons/md";
 import { IoSearch } from "react-icons/io5";
-import { filter } from 'rxjs';
 import TableEditModalComponents from './TableEditModalComponents';
 import NotificationComponents from './NotificationComponents';
 import DeleteNotifComponents from './DeleteNotifComponents';

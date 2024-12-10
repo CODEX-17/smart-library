@@ -246,7 +246,7 @@ router.post('/forgotPassword', async (req, res) => {
   
       // Generate a reset token
       const resetToken = crypto.randomBytes(32).toString('hex');
-      const resetTokenExpires = Date.now() + 3600000; // 1 hour from now
+      const resetTokenExpires = new Date(Date.now() + 3600000) // 1 hour from now
   
       // Save the token and expiry date in the database
       await db.query('UPDATE accounts SET reset_token = ?, reset_token_expires = ? WHERE email = ?', [resetToken, resetTokenExpires, email]);

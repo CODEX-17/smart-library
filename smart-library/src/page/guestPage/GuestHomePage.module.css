@@ -27,7 +27,8 @@
   backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 20px;
 }
 
 .cardbulk {
@@ -200,6 +201,8 @@ button:hover {
   border-radius: 5px;
   font-family: bold;
   font-size: 10pt;
+  text-align: start;
+  padding-left: 20px;
 }
 
 .menuDiv button:hover {

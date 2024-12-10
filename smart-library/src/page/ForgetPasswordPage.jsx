@@ -6,6 +6,7 @@ const ForgetPasswordPage = () => {
 
   const [email, setEmail] = useState('')
   const [isToast, setIsToast] = useState(false)
+  const [isShowProcessDone, setIsShowProcessDone] = useState(true)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -30,19 +31,29 @@ const ForgetPasswordPage = () => {
           </div>
         )
       }
-      <div className='container d-flex flex-column gap-2'>
-        <form onSubmit={handleSubmit}>
-          <h1>Forget Password</h1>
-          <input 
-            type="email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            placeholder="Enter your email" 
-            required 
-          />
-          <button type="submit">Send Reset Link</button>
-        </form>
-      </div>
+      {
+        isShowProcessDone ? ( 
+          <div className={style.doneDiv}>
+            <p>Successfully reset link sent, Please check email.</p>
+            <button onClick={() => window.open('https://mail.google.com/', '_blank')}>Check Email</button>
+          </div>    
+        ) : (
+          <div className='container d-flex flex-column gap-2'>
+            <form onSubmit={handleSubmit}>
+              <h1>Forget Password</h1>
+              <input 
+                type="email" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                placeholder="Enter your email" 
+                required 
+              />
+              <button type="submit">Send Reset Link</button>
+            </form>
+          </div>
+        )
+      }
+
       
     </div>
   )

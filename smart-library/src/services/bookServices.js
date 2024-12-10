@@ -19,3 +19,21 @@ export const getBooks = async () => {
         return null
     }
 }
+
+export const addBook = async (data) => {
+    try {
+        const result = await axios.post(`${BASE_URL}/book/addBook`, data)
+        
+        if (result) {
+            console.log('Successfully added books.')
+            return result.data
+        }
+
+        console.log('Failed add books.')
+        return null
+
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}

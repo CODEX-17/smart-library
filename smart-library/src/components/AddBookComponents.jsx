@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import style from './AddBookComponents.module.css'
 import axios from 'axios'
 import { useForm } from 'react-hook-form';
+import { addBook } from '../services/bookServices';
 
 const AddBookComponents = ({ handleCloseForm, handleNoticationConfig, selectedBranch }) => {
 
@@ -33,18 +34,23 @@ useEffect(() => {
 
 },[])
 
-const onSubmit = (data) => {
+const onSubmit = async (data)  => {
   let updated = data
   updated.branch = selectedBranch
 
-  axios.post('http://localhost:5001/book/addBook', updated)
-  .then((res) =>{
-    const result = res.data
-    const message = result.message
-    handleNoticationConfig(message, true)
-    handleCloseForm(false)
-  })
-  .catch((err) => console.log(err))
+  console.log('updated', updated)
+
+  try {
+    const result = await addBook(updated)
+    if (result) {
+      const message = result.message
+      handleNoticationConfig(message, true)
+      handleCloseForm(false)
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const handleClose = () => {
@@ -54,6 +60,9 @@ const handleClose = () => {
   return (
     <div className={style.container}>
       <div className={style.content}>
+        <div className='d-flex w-100'>
+          <h1>Add Book</h1>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='d-flex w-100 gap-2 mb-2'>
             <div className='d-flex flex-column w-100'>
@@ -121,6 +130,15 @@ const handleClose = () => {
               </select>
               {errors.genre && <p>{errors.genre.message}</p>}
             </div>
+            <div className='d-flex flex-column w-100 mb-2'>
+              <label>ISBN <b>*</b></label>
+              <input 
+                type="text" 
+                placeholder='ex.978 971 508 3393'
+                {...register('ISBN', { required: 'Author name is required.' })}
+              />
+              {errors.ISBN && <p>{errors.ISBN.message}</p>}
+            </div>
           </div>
 
           <div className='d-flex w-100 gap-2 mb-2'>
@@ -164,16 +182,22 @@ const handleClose = () => {
               <label>Total Value</label>
               <input type="number" {...register('total_value')}/>
             </div>
+          </div>
+          <div className='d-flex w-100 gap-2 mb-2'>
             <div className='d-flex flex-column w-100'>
               <label>Date Acquired</label>
               <input type="date" {...register('date_acquired')}/>
+            </div>
+            <div className='d-flex flex-column w-100'>
+              <label>Publication</label>
+              <input type="date" {...register('publication')}/>
             </div>
           </div>
 
           <div className={style.botMenu}>
               <button type='submit'>Submit</button>
               <button style={{
-                  width: '20%',
+                  width: '30%',
                   backgroundColor: '#B8001F'
               }} onClick={handleClose}>Close</button>
           </div>
