@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import style from './ImportMenuComponents.module.css'
 import { FaFile } from "react-icons/fa"
 import { IoAddCircleSharp } from "react-icons/io5"
-import { FaFileCircleCheck } from "react-icons/fa6"
-import { FaFileCircleXmark } from "react-icons/fa6"
+import { FaFileCircleCheck, FaDownload, FaFileCircleXmark} from "react-icons/fa6"
 import AddBookComponents from './AddBookComponents'
 import loadingGif from '../assets/loading.gif'
 import axios from 'axios'
@@ -247,6 +246,17 @@ const ImportMenuComponents = () => {
     setIsShowForm(status)
   }
 
+  const handleDownload = () => {
+  
+    const filePath = "./../../public/excel-format.xlsx";
+    
+    const link = document.createElement("a");
+    link.href = filePath;
+    link.download = "excel-template.xlsx";
+    link.click();
+    link.remove();
+  };
+
 
   return (
     <div className={style.container}>
@@ -305,11 +315,14 @@ const ImportMenuComponents = () => {
               <FaFileCircleXmark size={60} color='#C7253E'/>
             }
             <input type="file" accept='.xlsx, .xls' onChange={handleFileUpload}/>
-            <div className='d-flex w-100 gap-2'>
+            <div className='d-flex flex-column w-100 gap-2'>
               <button 
                 style={{ backgroundColor: '#B8001F'}} 
                 onClick={handleCancelButton}
               >Cancel</button>
+              <button 
+                onClick={handleDownload}
+              ><FaDownload/> Download Excel Format</button>
             </div>
           </div>
         )}

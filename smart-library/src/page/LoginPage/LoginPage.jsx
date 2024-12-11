@@ -136,7 +136,7 @@ const LoginPage = () => {
                 <div className='d-flex flex-column'>
                     <h1>SMART LIBRARY</h1>
                     <h2>OF CITY PUBLIC</h2>
-                    <p>Book are great!</p>
+                    <p>Books are great!</p>
                 </div>
                
             </div>
