@@ -3,22 +3,45 @@
 export const convertDateFormatIntoString = (date) => {
     
     if (date) {
-      let [ year, month, day ] = date.split('-')
-      month = 
-        month === '1' && 'Jan' || 
-        month === '2' && 'Feb' || 
-        month === '3' && 'Mar' ||
-        month === '4' && 'Apr' || 
-        month === '5' && 'May' || 
-        month === '6' && 'Jun' ||
-        month === '7' && 'Jul' || 
-        month === '8' && 'Aug' || 
-        month === '9' && 'Sep' ||
-        month === '10' && 'Oct' || 
-        month === '11' && 'Nov' || 
-        month === '12' && 'Dec' 
+      if (date.includes('-')) {
+        let [ year, month, day ] = date.split('-')
+        month = 
+          month === '1' && 'Jan' || 
+          month === '2' && 'Feb' || 
+          month === '3' && 'Mar' ||
+          month === '4' && 'Apr' || 
+          month === '5' && 'May' || 
+          month === '6' && 'Jun' ||
+          month === '7' && 'Jul' || 
+          month === '8' && 'Aug' || 
+          month === '9' && 'Sep' ||
+          month === '10' && 'Oct' || 
+          month === '11' && 'Nov' || 
+          month === '12' && 'Dec' 
 
-      return `${month}. ${day}, ${year}`
+        return `${month}. ${day}, ${year}`
+      }
+      
+      else if (date.includes('/')) {
+
+        let [ month, day, year ] = date.split('/')
+        month = 
+          month === '1' && 'Jan' || 
+          month === '2' && 'Feb' || 
+          month === '3' && 'Mar' ||
+          month === '4' && 'Apr' || 
+          month === '5' && 'May' || 
+          month === '6' && 'Jun' ||
+          month === '7' && 'Jul' || 
+          month === '8' && 'Aug' || 
+          month === '9' && 'Sep' ||
+          month === '10' && 'Oct' || 
+          month === '11' && 'Nov' || 
+          month === '12' && 'Dec' 
+
+        return `${month}. ${day}, 20${year}`
+      }
+      
     }
 
     return null

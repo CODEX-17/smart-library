@@ -38,8 +38,6 @@ const onSubmit = async (data)  => {
   let updated = data
   updated.branch = selectedBranch
 
-  console.log('updated', updated)
-
   try {
     const result = await addBook(updated)
     if (result) {

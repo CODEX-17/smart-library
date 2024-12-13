@@ -57,12 +57,29 @@ router.post('/addBook', (req, res) => {
 
 router.post('/updateBooks', (req, res) => {
 
-    const { book_id, item_no, title, author, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired } = req.body
+    const { 
+        book_id, 
+        item_no,
+        ISBN, 
+        title, 
+        author, 
+        access_no, 
+        genre, 
+        branch, 
+        quantity, 
+        amount, 
+        call_no, 
+        total_value, 
+        date_acquired,
+        publication,
+    } = req.body
+
     const query = `
   UPDATE books 
   SET 
     item_no=?, 
     title=?, 
+    ISBN=?,
     author_name=?, 
     access_no=?, 
     genre=?, 
@@ -71,14 +88,15 @@ router.post('/updateBooks', (req, res) => {
     amount=?, 
     call_no=?, 
     total_value=?, 
-    date_acquired=? 
+    date_acquired=?,
+    publication=?
   WHERE 
     book_id=?
 `;
 
     console.log(req.body)
 
-    db.query(query,[ item_no, title, author, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired, book_id], (error, data, field) => {
+    db.query(query,[ item_no, title, ISBN, author, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired, publication, book_id], (error, data, field) => {
         if (error) {
             console.error(error)
             res.status(404).send(error)

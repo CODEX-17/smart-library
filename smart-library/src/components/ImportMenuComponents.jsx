@@ -11,7 +11,7 @@ import * as XLSX from 'xlsx';
 
 const ImportMenuComponents = () => {
 
-  const [selectedBranch, setSelectedBranch] = useState('')
+
   const [branchList, setBranchList] = useState([])
   const [fileAcceptable, setFileAcceptable] = useState(false)
   const [file, setFile] = useState(null)
@@ -25,6 +25,9 @@ const ImportMenuComponents = () => {
   const [message, setMessage] = useState('')
   const [notifStatus, setNotifStatus] = useState(false)
   const [dataList, setDataList] = useState([]);
+
+  const userDetails = JSON.parse(localStorage.getItem('user'))
+  const selectedBranch = userDetails?.branch || null
 
   const url = 'http://localhost:5001/'
 
@@ -332,38 +335,24 @@ const ImportMenuComponents = () => {
             <AddBookComponents handleCloseForm={handleCloseForm} handleNoticationConfig={handleNoticationConfig} selectedBranch={selectedBranch}/>
           </div>
       )}
-
-      <div className={style.menu}>
-        <select value={selectedBranch} onChange={(e) => (setSelectedBranch(e.target.value), console.log(e.target.value))}>
-          <option value=''>Select Branch</option>
-          {
-            branchList.map((branch, index) => (
-              <option value={branch.branch_name} key={index}>{branch.branch_name}</option>
-            ))
-          }
-        </select>
-      </div>
-      {
-        selectedBranch !== '' && (
-          <div className={style.content}>
-            <div className={style.card} onClick={() => setIsShowModal(true)}>
-              <FaFile size={30}/>
-              <div className='d-flex flex-column align-items-center'>
-                <h2>Import Data</h2>
-                <p>Only Excel files are accepted. Please upload a valid file.</p>
-              </div>
-              
-            </div>
-            <div className={style.card} onClick={() => handleCloseForm(true)}>
-              <IoAddCircleSharp size={35}/>
-              <div className='d-flex flex-column align-items-center'>
-                <h2>Add Manual</h2>
-                <p>Manual Entry of Books</p>
-              </div>
-            </div>
+      
+      <div className={style.content}>
+        <div className={style.card} onClick={() => setIsShowModal(true)}>
+          <FaFile size={30}/>
+          <div className='d-flex flex-column align-items-center'>
+            <h2>Import Data</h2>
+            <p>Only Excel files are accepted. Please upload a valid file.</p>
           </div>
-        )
-      }
+          
+        </div>
+        <div className={style.card} onClick={() => handleCloseForm(true)}>
+          <IoAddCircleSharp size={35}/>
+          <div className='d-flex flex-column align-items-center'>
+            <h2>Add Manual</h2>
+            <p>Manual Entry of Books</p>
+          </div>
+        </div>
+      </div>
 
     </div>
   )

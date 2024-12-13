@@ -48,9 +48,6 @@ const AdminCatalogue = () => {
 
   },[])
 
-  
- 
-  
 
   useEffect(() => {
 

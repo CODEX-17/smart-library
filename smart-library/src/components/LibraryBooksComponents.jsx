@@ -3,11 +3,102 @@ import style from './LibraryBooksComponents.module.css'
 import DataTable from 'react-data-table-component';
 import { AiFillDelete } from "react-icons/ai";
 import { MdEditSquare } from "react-icons/md";
-import { IoMdClose } from "react-icons/io";
+import { IoMdClose } from "react-icons/io"; 
+import { IoSearch } from "react-icons/io5";
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
+import { Table, ConfigProvider } from 'antd';
+import { convertDateFormatIntoString } from '../utils/dateUtils';
+
 const LibraryBooksComponents = () => {
+
+    const column = [
+        {
+          title: 'Book ID',
+          dataIndex: 'book_id',
+          key: 'book_id',
+          sorter: (a, b) => a.book_id - b.book_id,
+        },
+        {
+          title: 'Item no.',
+          dataIndex: 'item_no',
+          key: 'item_no',
+          sorter: (a, b) => a.item_no - b.item_no,
+        },
+        {
+            title: 'ISBN',
+            dataIndex: 'ISBN',
+            key: 'ISBN',
+            sorter: (a, b) => a.ISBN - b.ISBN,
+          },
+        {
+          title: 'Access no.',
+          dataIndex: 'access_no',
+          key: 'access_no',
+          sorter: (a, b) => a.access_no - b.access_no,
+        },
+        {
+          title: 'Title',
+          dataIndex: 'title',
+          key: 'title',
+          sorter: (a, b) => a.title - b.title,
+        },
+        {
+          title: 'Author',
+          dataIndex: 'author_name',
+          key: 'author_name',
+          sorter: (a, b) => a.author_name - b.author_name,
+        },
+        {
+          title: 'Genre',
+          dataIndex: 'genre',
+          key: 'genre',
+          sorter: (a, b) => a.genre - b.genre,
+        },
+        {
+          title: 'Branch',
+          dataIndex: 'branch',
+          key: 'branch',
+          sorter: (a, b) => a.branch - b.branch,
+        },
+        {
+          title: 'Total Copies',
+          dataIndex: 'quantity',
+          key: 'quantity',
+          sorter: (a, b) => a.quantity - b.quantity,
+        },
+        {
+          title: 'Date Acquired',
+          render: (data) => convertDateFormatIntoString(data.date_acquired),
+          key: 'date_acquired',
+          sorter: (a, b) => a.date_acquired - b.date_acquired,
+        },
+        {
+            title: 'Publication',
+            render: (data) => convertDateFormatIntoString(data.publication),
+            key: 'publication',
+            sorter: (a, b) => a.publication - b.publication,
+        },
+        {
+            title: 'Action',
+            render: (data) => 
+            <div className='d-flex gap-2'>
+                <button 
+                    id={style.btnAction} 
+                    title='edit' 
+                    style={{ backgroundColor: 'rgb(56, 127, 57)'}}
+                    onClick={() => handleEdit(data)}
+                ><MdEditSquare/></button>
+
+                <button 
+                    id={style.btnAction} 
+                    title='delete' 
+                    onClick={() => handleDelete(data.book_id)}
+                ><AiFillDelete/></button>
+            </div>,
+        },
+    ]
 
     const [bookList, setBookList] = useState([])
     const [genreList, setGenreList] = useState([])
@@ -17,6 +108,8 @@ const LibraryBooksComponents = () => {
     const [toastMessage, setToastMessage] = useState('')
 
     const [selectedBook, setSelectedBook]= useState(null)
+    const [filterText, setFilterText] = useState('')
+    const [filteredData, setFilteredData] = useState([])
 
     const url = 'http://localhost:5001/'
 
@@ -29,6 +122,7 @@ const LibraryBooksComponents = () => {
         defaultValues: {
             book_id: selectedBook?.book_id,
             item_no: selectedBook?.item_no,
+            ISBN: selectedBook?.ISBN,
             access_no: selectedBook?.access_no,
             title: selectedBook?.title,
             author:  selectedBook?.author_name,
@@ -39,24 +133,27 @@ const LibraryBooksComponents = () => {
             call_no:  selectedBook?.call_no,
             total_value:  selectedBook?.total_value,
             date_acquired:  selectedBook?.date_acquired,
+            publication:  selectedBook?.publication,
         }
     })
 
     useEffect(() => {
         if (selectedBook) {
             reset({
-                book_id: selectedBook.book_id,
-                item_no: selectedBook.item_no,
-                title: selectedBook.title,
-                author:  selectedBook.author_name,
-                branch:  selectedBook.branch,
-                genre:  selectedBook.genre,
-                amount:  selectedBook.amount,
-                quantity:  selectedBook.quantity,
-                call_no:  selectedBook.call_no,
-                total_value:  selectedBook.total_value,
-                date_acquired:  selectedBook.date_acquired,
-                access_no: selectedBook.access_no,
+                book_id: selectedBook?.book_id,
+                item_no: selectedBook?.item_no,
+                ISBN: selectedBook?.ISBN,
+                access_no: selectedBook?.access_no,
+                title: selectedBook?.title,
+                author:  selectedBook?.author_name,
+                branch:  selectedBook?.branch,
+                genre:  selectedBook?.genre,
+                amount:  selectedBook?.amount,
+                quantity:  selectedBook?.quantity,
+                call_no:  selectedBook?.call_no,
+                total_value:  selectedBook?.total_value,
+                date_acquired:  selectedBook?.date_acquired,
+                publication:  selectedBook?.publication,
             });
         }
     }, [selectedBook, reset]);
@@ -66,6 +163,7 @@ const LibraryBooksComponents = () => {
         axios.get('http://localhost:5001/book/getBooks')
         .then((res) => {
             setBookList(res.data)
+            setFilteredData(res.data)
         })
         .catch((error) => console.log(error))
 
@@ -83,84 +181,39 @@ const LibraryBooksComponents = () => {
 
     },[])
 
-    const customStyles = {
-        table: {
-            style: {
-                color: 'red'
-            },
-        },
-        headCells: {
-            style: {
-                fontWeight: 'bold',
-                fontSize: '10pt',
-            },
-        },
-    }
+    useEffect(() => {
 
-    const column = [
-        {
-            name: 'Item no.',
-            selector: row => row.item_no,
-            sortable: true,
-        },
-        {
-            name: 'access no.',
-            selector: row => row.access_no,
-            sortable: true,
-        },
-        {
-            name: 'Title',
-            selector: row => row.title,
-            sortable: true,
-        },
-        {
-            name: 'Author',
-            selector: row => row.author_name,
-            sortable: true,
-        },
-        {
-            name: 'Genre',
-            selector: row => row.genre,
-            sortable: true,
-        },
-        {
-            name: 'Branch',
-            selector: row => row.branch,
-            sortable: true,
-        },
-        {
-            name: 'Total Copies',
-            selector: row => row.quantity,
-            sortable: true,
-        },
-        {
-            name: 'Date Acquired',
-            selector: row => row.date_acquired,
-            sortable: true,
-        },
+        if (filterText !== '') {
+
+            const lowerCaseSearchText = filterText.toLowerCase()
+
+            setFilteredData((old) => {
+            
+                const updated = old.filter(
+                    (data) => ( 
+                        data.title && data.title.toLowerCase().includes(lowerCaseSearchText) || 
+                        data.author_name && data.author_name.toLowerCase().includes(lowerCaseSearchText) ||
+                        data.book_id && data.book_id.toString().includes(lowerCaseSearchText) ||
+                        data.item_no && data.item_no.toString().includes(lowerCaseSearchText) ||
+                        data.access_no && data.access_no.toLowerCase().includes(lowerCaseSearchText) ||
+                        data.ISBN && data.ISBN.toString().includes(lowerCaseSearchText)
+                    )
+                )
+
+                if (updated.length < 0) {
+                    return old
+                }else {
+                    return updated
+                }
+
+                
+            })
+            
+        }else {
+            setFilteredData(bookList)
+        }
         
-        {
-            name: 'Action',
-            cell: row => (
-                <div className='d-flex gap-2 p-2'>
-                    <button id={style.btnAction} style={{ backgroundColor: '#387F39' }} onClick={() =>handleEdit(row)}><MdEditSquare size={20} title='edit'/></button>
-                    <button id={style.btnAction} onClick={() => handleDelete(row.book_id)}><AiFillDelete size={20} title='delete'/></button>
-                </div>
-            ),
-        },
-    ]
-
-    const [filterText, setFilterText] = useState('')
-    
-    // Filter the data based on the search query
-    const filteredData = bookList.filter(item => 
-        item.item_no && item.item_no === filterText || 
-        item.title && item.title.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.author_name && item.author_name.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.access_no && item.access_no.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.genre && item.genre.toLowerCase().includes(filterText.toLowerCase())
-    );
-
+    },[filterText])
 
     const handleDelete = (book_id) => {
 
@@ -169,7 +222,7 @@ const LibraryBooksComponents = () => {
             const result = res.data
             const message = result.message
 
-            setBookList((oldData) => {
+            setFilteredData((oldData) => {
                 const data = oldData.filter((data) => data.book_id !== book_id)
                 return data
             })
@@ -214,6 +267,9 @@ const LibraryBooksComponents = () => {
         }).catch((err) => console.log(err))
     }
 
+
+
+
   return (
     <div className={style.container}>
         {       
@@ -226,7 +282,8 @@ const LibraryBooksComponents = () => {
         {
             (isShowEditModal && selectedBook) && (
                 <div className={style.modal}>
-                    <div className='w-100 d-flex align-items-center justify-content-end'>
+                    <div className='d-flex align-item-center justify-content-between mb-2'>
+                        <h1>Edit book detail</h1>
                         <div className={style.closeDiv}>
                             <IoMdClose 
                                 size={25} 
@@ -279,17 +336,30 @@ const LibraryBooksComponents = () => {
                             {errors.title && <p>{errors.title.message}</p>}
                         </div>
 
-                        <div className='d-flex flex-column w-100 mb-2'>
-                            <label>Author name <b>*</b></label>
-                            <input 
-                            type="text"
-                            id='author'
-                            placeholder='Juan Dela Cruz'
-                            {...register('author', { required: 'Author name is required.' })}
-                            />
-                            {errors.author && <p>{errors.author.message}</p>}
+                        <div className='d-flex gap-2 w-100 mb-2'>
+                            <div className='d-flex flex-column w-100 mb-2'>
+                                <label>Author name <b>*</b></label>
+                                <input 
+                                    type="text"
+                                    id='author'
+                                    placeholder='Juan Dela Cruz'
+                                    {...register('author', { required: 'Author name is required.' })}
+                                />
+                                {errors.author && <p>{errors.author.message}</p>}
+                            </div>
+                            <div className='d-flex flex-column w-100 mb-2'>
+                                <label>ISBN<b>*</b></label>
+                                <input 
+                                    type="text"
+                                    id='ex.978 971 508 3390'
+                                    placeholder='Juan Dela Cruz'
+                                    {...register('ISBN', { required: 'ISBN is required.' })}
+                                />
+                                {errors.ISBN && <p>{errors.ISBN.message}</p>}
+                            </div>
                         </div>
 
+                        
                         <div className='d-flex gap-2 w-100 mb-2'>
                             <div className='d-flex flex-column w-100'>
                                 <label>Genre <b>*</b></label>
@@ -359,12 +429,19 @@ const LibraryBooksComponents = () => {
                                 {errors.call_no && <p>{errors.call_no.message}</p>}
                             </div>
                             <div className='d-flex flex-column w-100'>
-                            <label>Total Value</label>
-                            <input type="number" {...register('total_value')}/>
+                                <label>Total Value</label>
+                                <input type="number" {...register('total_value')}/>
+                            </div>
+                        </div>
+
+                        <div className='d-flex w-100 gap-2 mb-2'>
+                            <div className='d-flex flex-column w-100'>
+                                <label>Date Acquired</label>
+                                <input type="date" {...register('date_acquired')}/>
                             </div>
                             <div className='d-flex flex-column w-100'>
-                            <label>Date Acquired</label>
-                            <input type="date" {...register('date_acquired')}/>
+                                <label>Publication</label>
+                                <input type="date" {...register('publication')}/>
                             </div>
                         </div>
 
@@ -376,29 +453,28 @@ const LibraryBooksComponents = () => {
             )
         }
         <div className={style.content}>
-            <h1>Book List</h1>
-            <div className={style.tableDiv}>
-                <input
-                    id={style.searchBar}
-                    type="text"
-                    placeholder="Search..."
-                    value={filterText}
-                    onChange={(e) => setFilterText(e.target.value)}
-                />
-                <DataTable 
-                    columns={column}
-                    data={filteredData}
-                    highlightOnHover
-                    pointerOnHover
-                    striped
-                    pagination
-                    paginationPerPage={5}  // Default rows per page
-                    paginationRowsPerPageOptions={[5, 10]}  // Custom dropdown options
-                    className={style.table}
-                    customStyles={customStyles}
-                >
-                </DataTable>
+            <div className={style.searchBar}>
+                <input type="text" placeholder='Enter search phrase...' onChange={(e) => setFilterText(e.target.value)}/> 
+                <IoSearch size={25}/>
             </div>
+            <ConfigProvider
+                theme={{
+                    components: {
+                    Table: {
+                        headerBg: '#38b6ff7c', // Custom header background color
+                        cellFontSize: 14,
+                    },
+                    },
+                }}
+            >
+                <Table 
+                    className={style.table} 
+                    headerBg={'#38b6ff'}
+                    columns={column} 
+                    dataSource={filteredData} 
+                    pagination={{ pageSize: 5 }} 
+                />
+            </ConfigProvider>
         </div>
   </div>
   )

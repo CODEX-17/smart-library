@@ -53,7 +53,7 @@ const TableEditModalComponents = ({ currentTable, selectedData, setIssShowEditMo
                 </h2>
                 <IoMdClose size={25} color='#38b6ff' cursor={'pointer'} onClick={() => setIssShowEditModal(false)}/>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} className={style.form}>
                 <div className='d-flex flex-column w-100 mb-2'>
                     <label>ID</label>
                     <input 
