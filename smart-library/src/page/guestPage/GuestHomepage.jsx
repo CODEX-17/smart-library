@@ -274,9 +274,9 @@ const GuestHomePage = () => {
                 )
               }
               <h1>{userAccount?.firstname + " " + userAccount?.lastname}</h1>
-              <div className='d-flex gap-2 mt-2'>
-                <button onClick={() => setActiveBtn('manageAccount')} title='Manage account' ><MdManageAccounts size={18}/></button>
-                <button style={{ backgroundColor: '#C7253E', color: 'white' }} onClick={handleLogout}><IoMdLogOut size={18} color='white'/></button>
+              <div className='d-flex flex-column gap-2 mt-2'>
+                <button onClick={() => setActiveBtn('manageAccount')} title='Manage account' ><MdManageAccounts size={20}/> Manage Account</button>
+                <button style={{ backgroundColor: '#C7253E', color: 'white' }} onClick={handleLogout}><IoMdLogOut size={20} color='white'/> Logout</button>
               </div>
             </div>
             <div className={style.menuDiv}>

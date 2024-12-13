@@ -176,12 +176,18 @@
 .iconDiv {
   border: 1px solid #D91656;
   border-radius: 5px;
-  padding: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: white;
+  gap: 10px;
+  font-family: bold;
+  font-size: .8rem;
 }
 
 .iconDiv:hover {

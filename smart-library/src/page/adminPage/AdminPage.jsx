@@ -221,7 +221,8 @@ const AdminPage = () => {
        
    
                 <div className={style.iconDiv} title='logout' style={{ backgroundColor: '#D91656' }} onClick={handleLogout}>
-                    <IoMdLogOut size={15} color='white'/>
+                    <IoMdLogOut size={20} color='white'/>
+                    Logout
                 </div>
         </div>
 

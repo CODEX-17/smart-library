@@ -168,13 +168,12 @@ router.post('/updateAccount', upload.single('file'), async (req, res) => {
 router.post('/checkAccount', async (req, res) => {
 
     const {email, password} = req.body
-    console.log(req.body)
     const query = 'SELECT * FROM accounts WHERE email=?'
 
     try {
         const [user] = await new Promise((resolve, reject) => {
             db.query(query, [email], (error, data, field) => {
-                if (error) return reject(error)
+                if (error) return reject('account doesnt exist')
                 resolve(data)
             })
         })
@@ -189,12 +188,16 @@ router.post('/checkAccount', async (req, res) => {
                     return res.status(200).send(user)
                 } else {
                     console.log(false)
-                    return res.status(400).send(false)
+                    return res.status(400).json({
+                        message: 'Invalid password!'
+                    })
                 }
             }
             
         }else {
-            return res.status(400).send(false)
+            return res.status(400).json({
+                message: "Account doesn't exist!",
+            })
         }
 
     } catch (error) {

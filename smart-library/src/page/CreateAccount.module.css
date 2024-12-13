@@ -9,8 +9,8 @@
 }
 
 .container {
-    width: 100%;
-    height: 100vh;
+    width: 100%;  
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,21 +19,23 @@
     position: relative;
     overflow-y: auto;
     padding: 20px;
-}
-
-form {
-  width: 50%;
-  height: 100%;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    overflow-y: auto;
 }
 
 .contentForm {
   width: 80%;
   height: 100%;
 }
+
+.contentForm form {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+
 
 .loading {
   width: 100%;
@@ -192,6 +194,7 @@ form {
 .btnMenu {
   display: flex;
   gap: 2%;
+  margin-bottom: 20px;
 }
 
 #btnLogin {
@@ -199,14 +202,32 @@ form {
   width: 40%;
 }
 
-
-@media (max-width: 2000px) {
-
-  form {
-    width: 100%;
-  }
-
+.doneDiv {
+  width: 100%;
+  height: 100vh;
+  flex-direction: column;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
 }
+
+.doneDiv h1 {
+  font-size: 1.5rem;
+  font-family: bold;
+  color: #38b6ff;
+}
+
+.doneDiv button {
+  width: 200px;
+  max-width: none;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
 
 @media (max-width: 760px) {
 
@@ -215,7 +236,7 @@ form {
     flex-direction: column;
   }
 
-}
+} 
 
 @media (max-width: 425px) {
 
@@ -257,10 +278,12 @@ form {
   .contentTop span,
   .contentBot input,
   .contentTop input,
-  .contentBot select
+  .contentBot   
   {
     font-size: 8pt;
   }
+
+
 
 }
 

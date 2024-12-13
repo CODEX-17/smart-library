@@ -15,6 +15,7 @@ const LoginPage = () => {
     const [loginType, setLoginType] = useState('admin')
     const [loadingState, setLoadingState] = useState(false)
     const [isShowErrorMessage, setisShowErrorMessage] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
     const adminAccess = useParams()
     const navigate = useNavigate()
 
@@ -81,7 +82,9 @@ const LoginPage = () => {
 
 
         } catch (error) {
-            console.log(error)
+            const response = error.response.data
+            console.log(response.message)
+            setErrorMessage(response.message)
             setisShowErrorMessage(true)
             setTimeout(() => {
                 setisShowErrorMessage(false)
@@ -108,10 +111,10 @@ const LoginPage = () => {
                     <input className={style.inputBox} type={isShowPassword ? "text" : "password"} placeholder='Enter password' onChange={(e) => setPassword(e.target.value)}/>
                     <div className='d-flex gap-2 mb-2'>
                         <input type="checkbox" value={false} onClick={() => setIsShowPassword(!isShowPassword)}/>
-                        Show password
+                        <p>Show password</p>
                     </div>
                     <button onClick={handleLogin} disabled={enableButton}>Login</button>
-                    <div className='d-flex gap-5'>
+                    <div className='d-flex w-100 align-items-center justify-content-around'> 
                          <p id={style.linkClick} onClick={() => {
                             navigate('/forgetPassword')
                         }}>Forget password?</p>
@@ -120,9 +123,7 @@ const LoginPage = () => {
                         }}>Create Account</p>
                     </div>
                    
-                    {
-                        isShowErrorMessage &&  <p style={{ color: 'red' }}>Account doesn't exist!</p>
-                    }
+                    { isShowErrorMessage &&  <p style={{ color: 'red' }}>{errorMessage}</p> }
                    
                 </div>
                 <div className='d-flex gap-2'>
