@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import style from './LibraryBooksComponents.module.css'
-import DataTable from 'react-data-table-component';
 import { AiFillDelete } from "react-icons/ai";
 import { MdEditSquare } from "react-icons/md";
 import { IoMdClose } from "react-icons/io"; 
@@ -8,7 +7,7 @@ import { IoSearch } from "react-icons/io5";
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 
-import { Table, ConfigProvider } from 'antd';
+import { Table, ConfigProvider, Button } from 'antd';
 import { convertDateFormatIntoString } from '../utils/dateUtils';
 
 const LibraryBooksComponents = () => {
@@ -42,25 +41,25 @@ const LibraryBooksComponents = () => {
           title: 'Title',
           dataIndex: 'title',
           key: 'title',
-          sorter: (a, b) => a.title - b.title,
+          sorter: (a, b) => a.title.localeCompare(b.title),
         },
         {
           title: 'Author',
           dataIndex: 'author_name',
           key: 'author_name',
-          sorter: (a, b) => a.author_name - b.author_name,
+          sorter: (a, b) => a.author_name.localeCompare(b.author_name),
         },
         {
           title: 'Genre',
           dataIndex: 'genre',
           key: 'genre',
-          sorter: (a, b) => a.genre - b.genre,
+          sorter: (a, b) => a.genre.localeCompare(b.genre),
         },
         {
           title: 'Branch',
           dataIndex: 'branch',
           key: 'branch',
-          sorter: (a, b) => a.branch - b.branch,
+          sorter: (a, b) => a.branch.localeCompare(b.branch),
         },
         {
           title: 'Total Copies',
@@ -72,30 +71,33 @@ const LibraryBooksComponents = () => {
           title: 'Date Acquired',
           render: (data) => convertDateFormatIntoString(data.date_acquired),
           key: 'date_acquired',
-          sorter: (a, b) => a.date_acquired - b.date_acquired,
+          sorter: (a, b) => new Date(a.date_acquired) - new Date(b.date_acquired)
         },
         {
             title: 'Publication',
             render: (data) => convertDateFormatIntoString(data.publication),
             key: 'publication',
-            sorter: (a, b) => a.publication - b.publication,
+            sorter: (a, b) => new Date(a.publication) - new Date(b.publication)
         },
         {
             title: 'Action',
+            key: 'action',
+            fixed: 'right',
+            width: 150,
             render: (data) => 
             <div className='d-flex gap-2'>
                 <button 
-                    id={style.btnAction} 
+                    id={style.btnAction}    
                     title='edit' 
                     style={{ backgroundColor: 'rgb(56, 127, 57)'}}
                     onClick={() => handleEdit(data)}
-                ><MdEditSquare/></button>
+                ><MdEditSquare size={15}/></button>
 
                 <button 
                     id={style.btnAction} 
                     title='delete' 
                     onClick={() => handleDelete(data.book_id)}
-                ><AiFillDelete/></button>
+                ><AiFillDelete size={15}/></button>
             </div>,
         },
     ]
@@ -462,7 +464,7 @@ const LibraryBooksComponents = () => {
                     components: {
                     Table: {
                         headerBg: '#38b6ff7c', // Custom header background color
-                        cellFontSize: 14,
+                        cellFontSize: '.8em',
                     },
                     },
                 }}
@@ -473,6 +475,8 @@ const LibraryBooksComponents = () => {
                     columns={column} 
                     dataSource={filteredData} 
                     pagination={{ pageSize: 5 }} 
+                    bordered
+                    scroll={{ x: '1000px' }}
                 />
             </ConfigProvider>
         </div>

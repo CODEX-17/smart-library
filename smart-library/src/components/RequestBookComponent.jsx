@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import style from './RequestBookComponent.module.css'
-import DataTable from 'react-data-table-component';
+import { Table, ConfigProvider } from 'antd';
+import { IoSearch } from "react-icons/io5";
 import { AiFillDelete } from "react-icons/ai";
+import { convertDateFormatIntoString, convertTimeTo12HourFormat } from '../utils/dateUtils';
 import axios from 'axios';
 
 const RequestBookComponent = () => {
@@ -36,8 +38,8 @@ const RequestBookComponent = () => {
           
         }
 
-        console.log(finalData)
-        setReqList(finalData)
+        const sorted = finalData.sort((a, b) => new Date(b.date) - new Date(a.date))
+        setReqList(sorted)
 
       })
       .catch((error) => console.log(error))
@@ -99,91 +101,87 @@ const RequestBookComponent = () => {
     
   }
 
-  
-
-  const requestColumns = [
-    
-    {
-      name: 'Book ID',
-      selector: row => row.book_id,
-      sortable: true,
-    },
-    {
-      name: 'Title',
-      selector: row => row.title,
-      sortable: true,
-    },
-    {
-      name: 'Author',
-      selector: row => row.author_name,
-      sortable: true,
-    },
-    {
-      name: 'Borrower',
-      selector: row => row.acct_name,
-      sortable: true,
-    },
-    {
-      name: 'Date',
-      selector: row => row.date,
-      sortable: true,
-    },
-    {
-      name: 'Time',
-      selector: row => row.time,
-      sortable: true,
-    },
-    {
-      name: 'Status',
-      selector: row => row.status,
-      sortable: true,
-    },
-    {
-      name: 'Total Copies',
-      selector: row => row.quantity,
-      sortable: true,
-    },
-    
-    {
-      name: 'Action',
-      cell: row => (
-        <div className='d-flex gap-2 p-2'>
-          {
-            row.status === 'pending' && (
-              <>
-                {
-                  row.quantity > 0 && <button id={style.btnAction} onClick={() => handleUpdateReq(row.id, row.book_id, 'approved')} style={{ backgroundColor: 'rgb(56, 127, 57)' }}>Approved</button>
-                }
-                <button id={style.btnAction} onClick={() => handleUpdateReq(row.id, row.book_id, 'rejected')} style={{ backgroundColor: '#F5004F' }}>Reject</button>
-              </>
-            ) ||
-            row.status === 'approved' &&
-            (
-              <>
-                <button id={style.btnAction} onClick={() => handleUpdateReq(row.id, row.book_id, 'returned')} style={{ backgroundColor: '#B43F3F' }}>Returned</button>
-              </>
-            ) ||
-            row.status === 'returned' &&
-            (
-              <>
-                <button id={style.btnAction} disabled={true}>Returned</button>
-                <button id={style.deleteBtn}><AiFillDelete size={15} title='delete' onClick={() => handleDelete(row.id)}/></button>
-              </>
-            ) ||
-            row.status === 'rejected' &&
-            (
-              <>
-                <button id={style.btnAction} disabled={true}>Rejected</button>
-                <button id={style.deleteBtn}><AiFillDelete size={15} title='delete' onClick={() => handleDelete(row.id)}/></button>
-              </>
-            )
+  const column = [
+      {
+        title: 'Book ID',
+        dataIndex: 'book_id',
+        key: 'book_id',
+        sorter: (a, b) => a.book_id - b.book_id,
+      },
+      {
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title',
+        sorter: (a, b) => a.title.localeCompare(b.title),
+      },
+      {
+        title: 'Borrower',
+        dataIndex: 'acct_name',
+        key: 'acct_name',
+        sorter: (a, b) => a.acct_name.localeCompare(b.acct_name),
+      },
+      {
+        title: 'Date',
+        render: (data) => convertDateFormatIntoString(data.date),
+        key: 'date',
+        sorter: (a, b) => new Date(a.date) - new Date(b.date)
+      },
+      {
+        title: 'Time',
+        render: (data) => convertTimeTo12HourFormat(data.time),
+        key: 'date',
+        sorter: (a, b) => new Date(`1970-01-01T${a.time}`) - new Date(`1970-01-01T${b.time}`),
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+        sorter: (a, b) => a.status.localeCompare(b.status),
+      },
+      {
+          title: 'Action',
+          key: 'action',
+          fixed: 'right',
+          width: 200,
+          render: (data) => 
+          <div className='d-flex gap-2 p-2'>
+            {
+              data.status === 'pending' && (
+                <>
+                  {
+                    data.quantity > 0 && <button id={style.btnAction} onClick={() => handleUpdateReq(data.id, data.book_id, 'approved')} style={{ backgroundColor: 'rgb(56, 127, 57)' }}>Approved</button>
+                  }
+                  <button id={style.btnAction} onClick={() => handleUpdateReq(data.id, data.book_id, 'rejected')} style={{ backgroundColor: '#F5004F' }}>Reject</button>
+                </>
+              ) ||
+              data.status === 'approved' &&
+              (
+                <>
+                  <button id={style.btnAction} onClick={() => handleUpdateReq(data.id, data.book_id, 'returned')} style={{ backgroundColor: '#B43F3F' }}>Returned</button>
+                </>
+              ) ||
+              data.status === 'returned' &&
+              (
+                <>
+                  <button id={style.btnAction} disabled={true}>Returned</button>
+                  <button id={style.deleteBtn}><AiFillDelete size={15} title='delete' onClick={() => handleDelete(data.id)}/></button>
+                </>
+              ) ||
+              data.status === 'rejected' &&
+              (
+                <>
+                  <button id={style.btnAction} disabled={true}>Rejected</button>
+                  <button id={style.deleteBtn}><AiFillDelete size={15} title='delete' onClick={() => handleDelete(data.id)}/></button>
+                </>
+              )
+              
+            }
             
-          }
+          </div>
           
-        </div>
-      ),
-    },
-  ];
+      }
+  ]
+  
 
   const [filterText, setFilterText] = useState('');
   
@@ -196,52 +194,34 @@ const RequestBookComponent = () => {
     item.acct_name && item.acct_name.toLowerCase().includes(filterText.toLowerCase())
   );
 
-  const customStyles = {
-    table: {
-      style: {
-        color: 'red'
-      },
-    },
-    headCells: {
-      style: {
-        fontWeight: 'bold',
-        fontSize: '12pt',
-      },
-    },
-  };
-
   return (
     <div className={style.container}>
       <div className={style.content}>
-        <h1>Request Book List</h1>
-        <div className={style.tableDiv}>
-          <input
-            id={style.searchBar}
-            type="text"
-            placeholder="Search..."
-            value={filterText}
-            onChange={(e) => setFilterText(e.target.value)}
-          />
-        
-            <DataTable 
-              columns={requestColumns}
-              data={filteredData}
-              highlightOnHover
-              pointerOnHover
-              striped
-              pagination
-              paginationPerPage={5}  // Default rows per page
-              paginationRowsPerPageOptions={[5, 10]}  // Custom dropdown options
-              className={style.table}
-              customStyles={customStyles}
-            >
-            </DataTable>
-       
+        <div className={style.searchBar}>
+            <input type="text" placeholder='Enter search phrase...' onChange={(e) => setFilterText(e.target.value)}/> 
+            <IoSearch size={25}/>
         </div>
-
-
+        <ConfigProvider
+            theme={{
+                components: {
+                Table: {
+                    headerBg: '#38b6ff7c', // Custom header background color
+                    cellFontSize: '.8em',
+                },
+                },
+            }}
+        >
+            <Table 
+                className={style.table} 
+                headerBg={'#38b6ff'}
+                columns={column} 
+                dataSource={filteredData} 
+                pagination={{ pageSize: 5 }} 
+                bordered
+                scroll={{ x: '1000px' }}
+            />
+        </ConfigProvider>
       </div>
-      
     </div>
   )
 }
