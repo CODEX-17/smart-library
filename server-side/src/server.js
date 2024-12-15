@@ -37,7 +37,7 @@ app.use('/genre', genre)
 app.use('/feedback', feedback)
 
 // database connection//
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5001
 
 server.listen(port, ()=> {
     console.log('Listening to port: ', port)
