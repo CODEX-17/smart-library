@@ -107,42 +107,49 @@ const RequestBookComponent = () => {
         dataIndex: 'book_id',
         key: 'book_id',
         sorter: (a, b) => a.book_id - b.book_id,
+        responsive: ['xs', 'sm', 'md', 'lg'],
       },
       {
         title: 'Title',
         dataIndex: 'title',
         key: 'title',
         sorter: (a, b) => a.title.localeCompare(b.title),
+        responsive: ['xs', 'sm', 'md', 'lg'],
       },
       {
         title: 'Borrower',
         dataIndex: 'acct_name',
         key: 'acct_name',
         sorter: (a, b) => a.acct_name.localeCompare(b.acct_name),
+        responsive: ['xs', 'sm', 'md', 'lg'],
       },
       {
         title: 'Date',
         render: (data) => convertDateFormatIntoString(data.date),
         key: 'date',
-        sorter: (a, b) => new Date(a.date) - new Date(b.date)
+        sorter: (a, b) => new Date(a.date) - new Date(b.date),
+        responsive: ['xs', 'sm', 'md', 'lg'],
       },
       {
         title: 'Time',
         render: (data) => convertTimeTo12HourFormat(data.time),
         key: 'date',
         sorter: (a, b) => new Date(`1970-01-01T${a.time}`) - new Date(`1970-01-01T${b.time}`),
+        responsive: ['xs', 'sm', 'md', 'lg'],
       },
       {
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
         sorter: (a, b) => a.status.localeCompare(b.status),
+        responsive: ['xs', 'sm', 'md', 'lg'],
       },
       {
           title: 'Action',
           key: 'action',
           fixed: 'right',
           width: 200,
+          responsive: ['xs', 'sm', 'md', 'lg'],
           render: (data) => 
           <div className='d-flex gap-2 p-2'>
             {
