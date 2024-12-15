@@ -33,6 +33,7 @@ const AdminPage = () => {
   const [activeMenu, setActiveMenu] = useState('dashboard')
   const [user, setUser] = useState(null)
   const navigate = useNavigate()
+  
 
   useEffect(() => {
     if (!localStorage.getItem('user')) {
@@ -141,13 +142,18 @@ const AdminPage = () => {
                                     <p>Genre</p>
                                 </div>
 
-                                <div 
-                                    className={activeMenu === 'tableBranch' ? style.cardActive : style.card}
-                                    onClick={() => setActiveMenu('tableBranch')}
-                                >
-                                    <PiGitBranchBold size={25} color='#38b6ff'/>
-                                    <p>Branch</p>
-                                </div>
+                                {
+                                    user.type === 'super' && 
+                                    <div 
+                                        className={activeMenu === 'tableBranch' ? style.cardActive : style.card}
+                                        onClick={() => setActiveMenu('tableBranch')}
+                                    >
+                                        <PiGitBranchBold size={25} color='#38b6ff'/>
+                                        <p>Branch</p>
+                                    </div>
+                                }
+                                
+
                             </div>
                         }
 
@@ -219,7 +225,7 @@ const AdminPage = () => {
                     activeMenu === 'tableBranch' && 'Table / Branch'
                 }</h1>
        
-   
+                
                 <div className={style.iconDiv} title='logout' style={{ backgroundColor: '#D91656' }} onClick={handleLogout}>
                     <IoMdLogOut size={20} color='white'/>
                     Logout

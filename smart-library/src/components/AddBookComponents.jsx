@@ -15,7 +15,6 @@ const {
   formState: { errors },
 } = useForm({
   defaultValues: {
-    amount: 0,
     quantity: 0,
     call_no: 0,
     total_value: 0,
@@ -108,7 +107,7 @@ const handleClose = () => {
             <input 
               type="text" 
               placeholder='Juan Dela Cruz'
-              {...register('author', { required: 'Author name is required.' })}
+              {...register('author_name', { required: 'Author name is required.' })}
             />
             {errors.author && <p>{errors.author.message}</p>}
           </div>
