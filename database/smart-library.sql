@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 15, 2024 at 04:08 AM
+-- Generation Time: Dec 15, 2024 at 04:45 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -91,7 +91,8 @@ INSERT INTO `books` (`book_id`, `item_no`, `ISBN`, `title`, `author_name`, `acce
 (2, 5002, '978 971 508 3396', 'Alamat ng sample', 'John Cruz', '8005pl', 'Classic Literature', 'GENERAL TRIAS BRANCH', 5, '5', '0', '0', '2024-10-30', '2024-10-30'),
 (11, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 9, '100', '9123554899', '65', '12/5/23', '12/5/23'),
 (26, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
-(27, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23');
+(27, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
+(28, 1212, '978 971 508 3390', 'sample new', 'joshua', '8006pl', 'Children\'s Literature', 'GENERAL TRIAS BRANCH', 90, '90', '', '100', '2024-12-16', '2024-12-24');
 
 -- --------------------------------------------------------
 
@@ -301,7 +302,7 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `book_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `book_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `borrow_books`
