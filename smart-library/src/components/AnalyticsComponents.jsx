@@ -2,6 +2,7 @@ import React,{ useEffect, useState } from 'react'
 import style from './AnalyticsComponents.module.css'
 import { RiUser3Fill } from "react-icons/ri";
 import { 
+  MdOutlinePendingActions,
   MdOutlineMenuBook,
   MdAssignmentReturn, 
   MdAssignmentReturned 
@@ -109,11 +110,13 @@ const AnalyticsComponents = () => {
   const computeTodaysBorrow = () => {
     
     let todaysBorrow = 0
+
     for (let i = 0; i < reqList.length; i++) {
-      const date = reqList[i].date
+      const date = new Date(reqList[i].date).toDateString()
+      const dateNow = new Date().toDateString()
       const status = reqList[i].status
 
-      if (date === currentDate && status === 'approved') {
+      if (date === dateNow && status === 'approved') {
         todaysBorrow++
       }
     }
@@ -123,15 +126,33 @@ const AnalyticsComponents = () => {
   const computeTodaysReturn = () => {
     
     let todaysReturn = 0
+
     for (let i = 0; i < reqList.length; i++) {
-      const date = reqList[i].date
+      const date = new Date(reqList[i].date).toDateString()
+      const dateNow = new Date().toDateString()
       const status = reqList[i].status
 
-      if (date === currentDate && status === 'returned') {
+      if (date == dateNow && status === 'returned') {
+        console.log(status)
         todaysReturn++
       }
     }
     return todaysReturn
+  }
+
+  const computeTodaysPending = () => {
+    
+    let totalPending = 0
+
+    for (let i = 0; i < reqList.length; i++) {
+      const status = reqList[i].status
+
+      if (status === 'pending') {
+        totalPending++
+      }
+    }
+    
+    return totalPending
   }
 
   // Material chart options
@@ -185,6 +206,13 @@ const AnalyticsComponents = () => {
               <h1>{reqList?.length}</h1>
             </div>
             <p>Total request books</p>
+        </div>
+        <div className={style.card} style={{ backgroundColor: '#FFB200' }}>
+            <div className={style.cardHead}>
+              <MdOutlinePendingActions size={50}/> 
+              <h1>{computeTodaysPending()}</h1>
+            </div>
+            <p>Total pending books</p>
         </div>
         <div className={style.card} style={{ backgroundColor: '#1F4529' }}>
             <div className={style.cardHead}>

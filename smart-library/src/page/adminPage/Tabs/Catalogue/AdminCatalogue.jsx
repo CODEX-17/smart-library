@@ -45,7 +45,7 @@ const AdminCatalogue = () => {
    } 
 
    fetchData()
-
+      
   },[])
 
 
@@ -67,54 +67,63 @@ const AdminCatalogue = () => {
       dataIndex: 'book_id',
       key: 'book_id',
       sorter: (a, b) => a.book_id - b.book_id,
+      responsive: ['xs', 'sm', 'md', 'lg'],
     },
     {
       title: 'Item no.',
       dataIndex: 'item_no',
       key: 'item_no',
       sorter: (a, b) => a.item_no - b.item_no,
+      responsive: ['xs', 'sm', 'md', 'lg'],
     },
     {
       title: 'Access no.',
       dataIndex: 'access_no',
       key: 'access_no',
       sorter: (a, b) => a.access_no - b.access_no,
+      responsive: ['xs', 'sm', 'md', 'lg'],
     },
     {
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
       sorter: (a, b) => a.title - b.title,
+      responsive: ['xs', 'sm', 'md', 'lg'],
     },
     {
       title: 'Author',
       dataIndex: 'author_name',
       key: 'author_name',
       sorter: (a, b) => a.author_name - b.author_name,
+      responsive: ['xs', 'sm', 'md', 'lg'],
     },
     {
       title: 'Genre',
       dataIndex: 'genre',
       key: 'genre',
       sorter: (a, b) => a.genre - b.genre,
+      responsive: ['xs', 'sm', 'md', 'lg'],
     },
     {
       title: 'Branch',
       dataIndex: 'branch',
       key: 'branch',
       sorter: (a, b) => a.branch - b.branch,
+      responsive: ['xs', 'sm', 'md', 'lg'],
     },
     {
       title: 'Total Copies',
       dataIndex: 'quantity',
       key: 'quantity',
       sorter: (a, b) => a.quantity - b.quantity,
+      responsive: ['xs', 'sm', 'md', 'lg'],
     },
     {
       title: 'Date Acquired',
       render: (data) => convertDateFormatIntoString(data.date_acquired),
       key: 'date_acquired',
       sorter: (a, b) => a.date_acquired - b.date_acquired,
+      responsive: ['xs', 'sm', 'md', 'lg'],
     },
   ]
 
@@ -210,7 +219,7 @@ const AdminCatalogue = () => {
             components: {
               Table: {
                 headerBg: '#38b6ff7c', // Custom header background color
-                cellFontSize: 14,
+                cellFontSize: 11,
               },
             },
           }}

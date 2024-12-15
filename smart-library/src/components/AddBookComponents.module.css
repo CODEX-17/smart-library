@@ -44,6 +44,14 @@
     font-family: bold;
     font-size: 12pt;
     margin: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.content label #optional {
+  color: rgba(128, 128, 128, 0.413);
+  font-style: italic;
+  
 }
 
 .content h1 {

@@ -141,7 +141,7 @@ const handleClose = () => {
 
           <div className='d-flex w-100 gap-2 mb-2'>
             <div className='d-flex flex-column w-100'>
-              <label>Amount</label>
+              <label>Amount <p id={style.optional}>(optional)</p></label>
               <input
                 type="number"
                 {...register('amount')}
@@ -150,13 +150,13 @@ const handleClose = () => {
             </div>
             
             <div className='d-flex flex-column w-100'>
-              <label>Quantity</label>
+              <label>Quantity <p id={style.optional}>(optional)</p></label>
               <input type="number" {...register('quantity')}/>
             </div>
           </div>
           <div className='d-flex w-100 gap-2 mb-2'>
             <div className='d-flex flex-column w-100'>
-              <label>Call number</label>
+              <label>Call number <p id={style.optional}>(optional)</p></label>
               <input 
                 type="number" 
                 {...register('call_no', {
@@ -177,17 +177,17 @@ const handleClose = () => {
                 {errors.call_no && <p>{errors.call_no.message}</p>}
             </div>
             <div className='d-flex flex-column w-100'>
-              <label>Total Value</label>
+              <label>Total Value <p id={style.optional}>(optional)</p></label>
               <input type="number" {...register('total_value')}/>
             </div>
           </div>
           <div className='d-flex w-100 gap-2 mb-2'>
             <div className='d-flex flex-column w-100'>
-              <label>Date Acquired</label>
+              <label>Date Acquired <p id={style.optional}>(optional)</p></label>
               <input type="date" {...register('date_acquired')}/>
             </div>
             <div className='d-flex flex-column w-100'>
-              <label>Publication</label>
+              <label>Publication <p id={style.optional}>(optional)</p></label>
               <input type="date" {...register('publication')}/>
             </div>
           </div>
