@@ -259,7 +259,7 @@ router.post('/forgotPassword', async (req, res) => {
       await db.query('UPDATE accounts SET reset_token = ?, reset_token_expires = ? WHERE email = ?', [resetToken, resetTokenExpires, email]);
   
       // Send reset email
-      const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+      const resetUrl = `http://82.112.236.213:5173/reset-password/${resetToken}`;
       const mailOptions = {
         to: email,
         from: 'librarysmart69@gmail.com',
