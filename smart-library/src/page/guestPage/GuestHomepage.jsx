@@ -17,6 +17,8 @@ import { MdManageAccounts, MdOutlineFeedback } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdLogOut } from "react-icons/io";
 
+import { Table, ConfigProvider } from 'antd';
+
 import { useForm } from 'react-hook-form';
 
 import { getCurrentUserFullname } from '../../utils/userNameUtil'
@@ -79,99 +81,6 @@ const GuestHomePage = () => {
 
   },[message])
 
-  const borrowColumns = [
-    
-    {
-      name: 'Title',
-      selector: row => row.title,
-      sortable: true,
-    },
-    {
-      name: 'Author',
-      selector: row => row.author_name,
-      sortable: true,
-    },
-    {
-      name: 'Genre',
-      selector: row => row.genre,
-      sortable: true,
-    },
-    {
-      name: 'Branch',
-      selector: row => row.branch,
-      sortable: true,
-    },
-    {
-      name: 'Total Copies',
-      selector: row => row.quantity,
-      sortable: true,
-    },
-    {
-      name: 'Action',
-      cell: row => 
-        <div className='d-flex gap-2'>
-          <button 
-            id={style.btnBorrow} 
-            disabled={ row.quantity <=0 ? true : false } 
-            onClick={() => handleBorrow(row)}
-          >Borrow</button>
-          {/* {
-            row.quantity > 1 &&
-            <button 
-              id={style.btnBorrow} 
-              style={{ backgroundColor: '#A02334' }}
-              onClick={() => {setIsShowBulkModal(true), setSelectedData(row)}}
-            >
-              <ImBooks size={25}/> Bulk
-            </button>
-          } */}
-          
-        </div>
-    },
-  ]
-
-  const requestColumns = [
-    
-    {
-      name: 'Book ID',
-      selector: row => row.book_id,
-      sortable: true,
-    },
-    {
-      name: 'Title',
-      selector: row => row.title,
-      sortable: true,
-    },
-    {
-      name: 'Author',
-      selector: row => row.author_name,
-      sortable: true,
-    },
-    {
-      name: 'Borrower',
-      selector: row => row.acct_name,
-      sortable: true,
-    },
-    {
-      name: 'Date',
-      selector: row => convertDateFormatIntoString(row.date),
-      sortable: true,
-    },
-    {
-      name: 'Time',
-      selector: row => convertTimeTo12HourFormat(row.time),
-      sortable: true,
-    },
-    {
-      name: 'Status',
-      selector: row => row.status,
-      sortable: true,
-    },
-    {
-      name: 'Action',
-      cell: row => <button id={style.btnBorrow} style={{ backgroundColor: '#A02334' }} onClick={() => handleDeleteReq(row.id)}>Delete</button>,
-    },
-  ]
 
   const notificationConfig = ( message, status ) => {
     setMessage(message)
@@ -258,6 +167,126 @@ const GuestHomePage = () => {
       },
     },
   }
+
+  const borrowColumns = [
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+      sorter: (a, b) => a.title.localeCompare(b.title),
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },
+    {
+      title: 'Author',
+      dataIndex: 'author_name',
+      key: 'author_name',
+      sorter: (a, b) => a.author_name.localeCompare(b.author_name),
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },   
+    {
+      title: 'Genre',
+      dataIndex: 'genre',
+      key: 'genre',
+      sorter: (a, b) => a.genre - b.genre,
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },
+    {
+      title: 'Branch',
+      dataIndex: 'branch',
+      key: 'branch',
+      sorter: (a, b) => a.branch - b.branch,
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },
+    {
+      title: 'Total Copies',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      sorter: (a, b) => a.quantity - b.quantity,
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },
+    {
+      title: 'Date Acquired',
+      render: (data) => convertDateFormatIntoString(data.date_acquired),
+      key: 'date_acquired',
+      sorter: (a, b) => a.date_acquired - b.date_acquired,
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      fixed: 'right',
+      width: 150,
+      render: (data) => 
+        <div className='d-flex gap-2'>
+          <button 
+            id={style.btnBorrow} 
+            disabled={ data.quantity <=0 ? true : false } 
+            onClick={() => handleBorrow(data)}
+          >Borrow</button>
+        </div>
+    },
+  ]
+
+  const requestColumns = [
+    {
+      title: 'Book ID',
+      dataIndex: 'book_id',
+      key: 'book_id',
+      sorter: (a, b) => a.book_id - b.book_id,
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+      sorter: (a, b) => a.title.localeCompare(b.title),
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },
+    {
+      title: 'Author',
+      dataIndex: 'author_name',
+      key: 'author_name',
+      sorter: (a, b) => a.author_name.localeCompare(b.author_name),
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },   
+    {
+      title: 'Borrower',
+      dataIndex: 'acct_name',
+      key: 'acct_name',
+      sorter: (a, b) => a.acct_name.localeCompare(b.acct_name),
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },
+    {
+      title: 'Date',
+      render: (data) => convertDateFormatIntoString(data.date),
+      key: 'date',
+      sorter: (a, b) => new Date(a.date) - new Date(b.date),
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },
+    {
+      title: 'time',
+      render: (data) => convertTimeTo12HourFormat(data.time),
+      key: 'time',
+      sorter: (a, b) => new Date(a.time) - new Date(b.time),
+      responsive: ['xs', 'sm', 'md', 'lg'],
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      fixed: 'right',
+      width: 150,
+      render: (data) => 
+        <button 
+          id={style.btnBorrow} 
+          style={{ backgroundColor: '#A02334' }} 
+          onClick={() => handleDeleteReq(data.id)}>
+          Delete
+        </button>
+    },
+  ]
+
+
+
 
   return (
     <div className={style.container}>
@@ -378,22 +407,28 @@ const GuestHomePage = () => {
                     </div>
                   )
                 }
-
-                <div className={style.table}>
-                  <DataTable
-                    columns={ activeBtn === 'borrow' ? borrowColumns : requestColumns }
-                    data={activeBtn === 'borrow' ? filteredData : reqList }
-                    highlightOnHover
-                    pointerOnHover
-                    striped
-                    pagination
-                    paginationPerPage={5}
-                    paginationRowsPerPageOptions={[5, 10]}
-                    customStyles={customStyles}
+                  <ConfigProvider
+                      theme={{
+                          components: {
+                          Table: {
+                              headerBg: '#38b6ff7c', // Custom header background color
+                              cellFontSize: '.8em',
+                          },
+                          },
+                      }}
                   >
-                  </DataTable>
+                      <Table 
+                          className={style.table} 
+                          headerBg={'#38b6ff'}
+                          columns={ activeBtn === 'borrow' ? borrowColumns : requestColumns }
+                          dataSource={activeBtn === 'borrow' ? filteredData : reqList } 
+                          pagination={{ pageSize: 5 }} 
+                          bordered
+                          scroll={{ x: '1000px' }}
+                      />
+                  </ConfigProvider>
                 </div>
-              </div>
+       
             || 
             activeBtn === 'manageAccount' && <ManageAccountComponent/> ||
             activeBtn === 'catalogue' && <Catalogue/>
