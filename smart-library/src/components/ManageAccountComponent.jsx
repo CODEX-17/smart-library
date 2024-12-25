@@ -7,6 +7,9 @@ import axios from 'axios';
 const ManageAccountComponent = () => {
 
   const userAccount = JSON.parse(localStorage.getItem('user'))
+
+  console.log(userAccount)
+
   const [firstname, setFirstname] = useState(userAccount?.firstname)
   const [middlename, setMiddlename] = useState(userAccount?.middlename)
   const [lastname, setLastname] = useState(userAccount?.lastname)

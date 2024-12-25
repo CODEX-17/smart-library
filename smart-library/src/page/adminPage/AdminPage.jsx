@@ -143,7 +143,7 @@ const AdminPage = () => {
                                 </div>
 
                                 {
-                                    user.type === 'super' && 
+                                    user.acctype === 'super' && 
                                     <div 
                                         className={activeMenu === 'tableBranch' ? style.cardActive : style.card}
                                         onClick={() => setActiveMenu('tableBranch')}

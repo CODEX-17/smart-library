@@ -100,7 +100,7 @@ const AnalyticsComponents = () => {
     })
     .catch((err) => console.log(err))
 
-    axios.get('http://localhost:5001/account/getAccounts')
+    axios.get('https://localhost:5001/account/getAccounts')
     .then((res) => {setAcctList(res.data)})
     .catch((err) => console.log(err))
     

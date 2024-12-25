@@ -132,7 +132,6 @@ const LibraryBooksComponents = () => {
             genre:  selectedBook?.genre,
             amount:  selectedBook?.amount,
             quantity:  selectedBook?.quantity,
-            call_no:  selectedBook?.call_no,
             total_value:  selectedBook?.total_value,
             date_acquired:  selectedBook?.date_acquired,
             publication:  selectedBook?.publication,
@@ -257,6 +256,7 @@ const LibraryBooksComponents = () => {
             let updated = bookList.filter((book) => book.book_id !== book_id)
             updated.push(data)
             setBookList(updated)
+            setFilteredData(updated)
 
             setToastMessage(message)
             setIsToast(true)
@@ -406,33 +406,6 @@ const LibraryBooksComponents = () => {
                             <div className='d-flex flex-column w-100'>
                             <label>Quantity</label>
                             <input type="number" {...register('quantity')}/>
-                            </div>
-                        </div>
-                        <div className='d-flex w-100 gap-2 mb-2'>
-                            <div className='d-flex flex-column w-100'>
-                            <label>Call number</label>
-                            <input 
-                                type="number" 
-                                {...register('call_no', {
-                                pattern: {
-                                    value: /^09\d{9}$/,
-                                    message: "Contact number must start with 09 and be 11 digits",
-                                },
-                                minLength: {
-                                    value: 11,
-                                    message: "Contact number must be 11 digits",
-                                },
-                                maxLength: {
-                                    value: 11,
-                                    message: "Contact number must be 11 digits",
-                                },
-                                }
-                                )}/>
-                                {errors.call_no && <p>{errors.call_no.message}</p>}
-                            </div>
-                            <div className='d-flex flex-column w-100'>
-                                <label>Total Value</label>
-                                <input type="number" {...register('total_value')}/>
                             </div>
                         </div>
 

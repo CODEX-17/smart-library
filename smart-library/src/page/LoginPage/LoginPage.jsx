@@ -50,6 +50,7 @@ const LoginPage = () => {
 
            if (result) {
                 let userData = result.data
+                console.log(userData)
                 const imageID = userData.imageID
 
                 if (imageID !== 'default') {

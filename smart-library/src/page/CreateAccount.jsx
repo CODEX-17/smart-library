@@ -27,7 +27,7 @@ const CreateAccount = () => {
     "CARMONA",
     "CAVITE-CITY",
     "MAGALLANES",
-    "ROSARIO",
+    "ROSARIO",    
     "DASMARINAS-CITY",
     "GEN.-MARIANO-ALVAREZ",
     "GENERAL-EMILIO-AGUINALDO",
@@ -209,11 +209,20 @@ const CreateAccount = () => {
       {
         isDoneProcess ? (
           <div className={style.doneDiv}>
-            <h1>Admin Account Created Successfully!</h1>
+            <h1>{ type === 'guest' ? 'Guest account created successfully!' : 'Admin account created successfully!'}</h1>
             <div className='d-flex gap-5   align-items-center justify-content-between'>
-              <button onClick={() => handleLogin()}><BiSolidLockAlt/>Login</button>
+              
               {
-                type !== 'guest' && <button onClick={() => type === 'guest' ? navigate('/login') : navigate('/admin')}><IoMdHome/>Back</button>
+                type !== 'guest' ? 
+                  <>
+                    <button onClick={() => {reset(), setIsDoneProcess(false)}}><BiSolidLockAlt/>Create another account</button>
+                    <button 
+                      onClick={() => type === 'guest' ? navigate('/login') : navigate('/admin')}
+                    ><IoMdHome/>Back to Dashboard</button>
+                    
+                  </>
+                :
+                  <button onClick={() => handleLogin()}><BiSolidLockAlt/>Login</button>
               }
               
             </div>

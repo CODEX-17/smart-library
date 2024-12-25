@@ -78,21 +78,10 @@ const ImportMenuComponents = () => {
             let worksheet = workbook.Sheets[sheetName];
             console.log('worksheet', worksheet)
 
-            // if (
-            //   worksheet?.A1?.v == 'The NATIONAL LIBRARY' ||
-            //   worksheet?.A1?.v == 'NAIC MUNICIPAL LIBRARY' ||
-            //   worksheet?.A1?.v == '#'
-            // ) {
-            //   worksheet.A1.v = 'item_no'
-            //   worksheet.A1.w = 'item_no'
-            // }
-
             const result = XLSX.utils.sheet_to_json(worksheet, {
               raw: false, // Forces date parsing
               dateNF: 'YYYY-MM-DD' // Specifies date format
             }); // Convert to JSON
-
-            console.log('result', result)
 
             result.forEach((data) => {
               const updatedData = { ...data };
@@ -114,66 +103,6 @@ const ImportMenuComponents = () => {
               finalData.push(updatedData);
             });
 
-            //const final = result.filter((data) => data.AUTHOR || data.ISBN || data.TITLE || data.__EMPTY)
-            
-            // for (let x = 0; x < final.length; x++) {
-            //   let updated = final[x]
-
-            //   if (updated.__EMPTY) {
-            //     updated.title = updated.__EMPTY
-            //     delete updated.__EMPTY
-            //   }
-
-            //   if (updated.__EMPTY_1) {
-            //     updated.author = updated.__EMPTY_1
-            //     delete updated.__EMPTY_1
-            //   }
-
-            //   if (updated.TITLE) {
-            //     updated.title = updated.TITLE
-            //     delete updated.TITLE
-            //   }
-              
-            //   if (updated.AUTHOR) {
-            //     updated.author = updated.AUTHOR
-            //     delete updated.AUTHOR
-            //   }
-
-            //   if (updated.ISBN) {
-            //     updated.isbn = updated.ISBN
-            //     delete updated.ISBN
-            //   }
-             
-            //   updated.access_no = updated.__EMPTY_2
-            //   updated.call_no = updated.__EMPTY_3
-            //   updated.quantity = updated.__EMPTY_4 || 0
-            //   updated.date_acquired = updated.__EMPTY_6
-            //   updated.amount = updated.__EMPTY_7
-            //   updated.total_value = updated.__EMPTY_8
-            //   updated.branch = selectedBranch
-            //   updated.genre = 'n/a'
-       
-            //   delete updated.__EMPTY_2
-            //   delete updated.__EMPTY_3
-            //   delete updated.__EMPTY_4
-            //   delete updated.__EMPTY_5
-            //   delete updated.__EMPTY_6
-            //   delete updated.__EMPTY_7
-            //   delete updated.__EMPTY_8
-            //   delete updated.ISBN
-              
-            //   if (
-            //     updated.title == 'T I T L E' ||
-            //     updated.item_no == '000-099 - (GENERALITIES)' ||
-            //     updated.title == '000-099 - (GENERALITIES)' 
-            //   ) {
-            //     continue
-            //   }else {
-            //     finalData.push(updated)
-            //   }
-
-              
-            // }
           }
 
           if (finalData.length <= 0) {

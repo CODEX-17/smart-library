@@ -39,10 +39,10 @@ router.post('/deleteBooks', (req, res) => {
 
 router.post('/addBook', (req, res) => {
     
-    const { item_no, title, ISBN, author_name, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired, publication } = req.body
-    const query = 'INSERT INTO books(item_no, title, ISBN, author_name, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired, publication) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)'
+    const { item_no, title, ISBN, author_name, access_no, genre, branch, quantity, amount, total_value, date_acquired, publication } = req.body
+    const query = 'INSERT INTO books(item_no, title, ISBN, author_name, access_no, genre, branch, quantity, amount, total_value, date_acquired, publication) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)'
 
-    db.query(query,[ item_no, title, ISBN, author_name, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired, publication], (error, data, field) => {
+    db.query(query,[ item_no, title, ISBN, author_name, access_no, genre, branch, quantity, amount, total_value, date_acquired, publication], (error, data, field) => {
         if (error) {
             console.error(error)
             res.status(404).send(error)

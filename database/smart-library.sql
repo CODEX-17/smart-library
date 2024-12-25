@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 15, 2024 at 04:45 PM
+-- Generation Time: Dec 25, 2024 at 05:35 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -52,13 +52,13 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `card_number`, `branch`, `firstname`, `middlename`, `lastname`, `birthdate`, `street_address`, `city`, `contact`, `gender`, `email`, `password`, `acctype`, `imageID`, `reset_token`, `reset_token_expires`) VALUES
-(1, 0, 'GENERAL TRIAS BRANCH', 'MARK', 'HERERA', 'FERNANDEZ', 'Mon Jan 22 2024', '#3', 'NAIC', '09760202655', 'MALE', 'admin@gmail.com', 'sha1$893f4e91$1$008377225482295454a3298cd0070e8c1c9600f7', 'admin', 'default', '4617c4369e2e74938f42655fb96fce85cbe9c03b4172a479796c18d0f342c3cf', '0000-00-00 00:00:00'),
+(1, 0, 'GENERAL TRIAS BRANCH', 'MARK', 'HERERA', 'FERNANDEZ', '2024-11-27', '#3', 'NAIC', '09760202655', 'MALE', 'admin@gmail.com', 'sha1$893f4e91$1$008377225482295454a3298cd0070e8c1c9600f7', 'admin', 'default', '4617c4369e2e74938f42655fb96fce85cbe9c03b4172a479796c18d0f342c3cf', '0000-00-00 00:00:00'),
 (36, 0, 'GENERAL TRIAS BRANCH', 'ROMAR', 'reyes', 'CENA', '2024-09-27', 'SAN GABRIEL', 'NAIC', '09760202622', 'male', 'admin1@gmail.com', 'sha1$893f4e91$1$008377225482295454a3298cd0070e8c1c9600f7', 'super', 'default', NULL, NULL),
 (42, 0, 'GENERAL TRIAS BRANCH', 'pamparor', 'c', 'reyes', '2024-11-27', 'undefined', 'NOVELETA', '09760202655', 'male', 'pamparor1@gmail.com', 'sha1$b7233466$1$0c66a06f63b183bdff3c5ff13ed2d36f42e625cc', 'admin', 'default', NULL, NULL),
 (43, 1006, 'GENERAL TRIAS BRANCH', 'Joshua', 'reyes', 'cabal', '2024-11-16', '#3 calamansi street', 'SILANG', '09760202622', 'male', 'pamparor@gmail.com', 'sha1$893f4e91$1$008377225482295454a3298cd0070e8c1c9600f7', 'guest', '2b94d49a-f', NULL, NULL),
 (44, 1007, 'undefined', 'Ash', '', 'Ampart', 'undefined', '#3 calamansi', 'CAVITE-CITY', '09760202622', 'male', 'ash.ampart17@gmail.com', 'sha1$ad6a2cf5$1$cd0425783d83f78fff4365c495ce53695d4ec5fd', 'guest', 'default', NULL, NULL),
 (46, 0, 'GENERAL TRIAS BRANCH', 'JS', 'RI', 'REYES', '2024-12-20', '#3 calamansi street', 'MENDEZ', '09760203882', 'male', 'ash.ampart179@gmail.com', 'sha1$db4309c7$1$a17c6fbf89ef96a995c517931dd6a37211878ff1', 'admin', '2a579c99-6', NULL, NULL),
-(47, 1008, 'undefined', 'asd', 'asdasd', 'asdasd', 'undefined', 'dasda', 'MENDEZ', '09123334566', 'male', 'ash.ampart1710@gmail.com', 'sha1$1c182630$1$bd7a0a0dacd61561bde2de92c46f694a339b7bdd', 'guest', 'default', NULL, NULL);
+(47, 1008, 'undefined', 'asd', 'asdasd', 'asdasd', '2024-09-27', 'dasda', 'MENDEZ', '09123334566', 'male', 'ash.ampart1710@gmail.com', 'sha1$1c182630$1$bd7a0a0dacd61561bde2de92c46f694a339b7bdd', 'guest', 'default', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -77,7 +77,6 @@ CREATE TABLE `books` (
   `branch` varchar(50) NOT NULL,
   `quantity` int(100) DEFAULT NULL,
   `amount` varchar(100) DEFAULT NULL,
-  `call_no` varchar(100) DEFAULT NULL,
   `total_value` varchar(100) DEFAULT NULL,
   `date_acquired` varchar(100) DEFAULT NULL,
   `publication` varchar(255) DEFAULT NULL
@@ -87,12 +86,12 @@ CREATE TABLE `books` (
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`book_id`, `item_no`, `ISBN`, `title`, `author_name`, `access_no`, `genre`, `branch`, `quantity`, `amount`, `call_no`, `total_value`, `date_acquired`, `publication`) VALUES
-(2, 5002, '978 971 508 3396', 'Alamat ng sample', 'John Cruz', '8005pl', 'Classic Literature', 'GENERAL TRIAS BRANCH', 5, '5', '0', '0', '2024-10-30', '2024-10-30'),
-(11, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 9, '100', '9123554899', '65', '12/5/23', '12/5/23'),
-(26, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
-(27, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '9123554899', '65', '12/5/23', '12/5/23'),
-(28, 1212, '978 971 508 3390', 'sample new', 'joshua', '8006pl', 'Children\'s Literature', 'GENERAL TRIAS BRANCH', 90, '90', '', '100', '2024-12-16', '2024-12-24');
+INSERT INTO `books` (`book_id`, `item_no`, `ISBN`, `title`, `author_name`, `access_no`, `genre`, `branch`, `quantity`, `amount`, `total_value`, `date_acquired`, `publication`) VALUES
+(2, 5002, '978 971 508 3396', 'Alamat ng sample', 'John Cruz', '8005pl', 'Classic Literature', 'GENERAL TRIAS BRANCH', 5, '5', '0', '2024-10-30', '2024-10-30'),
+(11, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 9, '100', '65', '12/5/23', '12/5/23'),
+(26, 265, '978 971 508 3393', 'The First Three Years Of Life', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '65', '12/5/23', '12/5/23'),
+(27, 222, '978 971 508 3393', 'sample', 'May Tobias - Papa', '8000pl', 'Horror', 'GENERAL TRIAS BRANCH', 10, '100', '65', '12/5/23', '12/5/23'),
+(28, 1212, '978 971 508 3390', 'sample new', 'joshua', '8006pl', 'Children\'s Literature', 'GENERAL TRIAS BRANCH', 90, '90', '100', '2024-12-16', '2024-12-24');
 
 -- --------------------------------------------------------
 

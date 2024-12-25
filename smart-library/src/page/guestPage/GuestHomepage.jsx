@@ -36,6 +36,7 @@ const GuestHomePage = () => {
   const [activeBtn, setActiveBtn] = useState('borrow')
   const [selectedData, setSelectedData] = useState(null)
   const userAccount = JSON.parse(localStorage.getItem('user'))
+  const [isShowDropDownMenu, setIsShowDropDownMenu] = useState(false)
 
   const [filterBranch, setFilterBranch] = useState('all')
 
@@ -266,17 +267,12 @@ const GuestHomePage = () => {
           <div className={style.left}>
             <div className={style.profileDiv}>
               <GiHamburgerMenu size={25} color='white' id={style.hamburgerMenuProfile} onClick={() => setIsShowSidebar(!isShowSidebar)}/>
-              {
-                userAccount.imageID === 'default' ? (
-                  <div id={style.defaultProfile}>{userAccount?.firstname.substring(0,1)}</div>
-                ) : (
-                  <img src={userAccount.image} alt="profile picture" />
-                )
-              }
-              <h1>{userAccount?.firstname + " " + userAccount?.lastname}</h1>
-              <div className='d-flex flex-column gap-2 mt-2'>
-                <button onClick={() => setActiveBtn('manageAccount')} title='Manage account' ><MdManageAccounts size={20}/> Manage Account</button>
-                <button style={{ backgroundColor: '#C7253E', color: 'white' }} onClick={handleLogout}><IoMdLogOut size={20} color='white'/> Logout</button>
+              
+              <img id={style.bookLogo} src={bookLogo} alt="logo" />
+              <div className='d-flex align-items-center justify-content-center w-100 flex-column'>
+                  <h1>SMART LIBRARY</h1>
+                  <h2>OF CITY PUBLIC</h2>
+                  <p>Books are great!</p>
               </div>
             </div>
             <div className={style.menuDiv}>
@@ -310,12 +306,22 @@ const GuestHomePage = () => {
             {
               !isShowSidebar && <GiHamburgerMenu size={25} color='#38b6ff' id={style.hamburgerMenu} onClick={() => setIsShowSidebar(!isShowSidebar)}/>
             }          
-            <img id={style.bookLogo} src={bookLogo} alt="logo" />
-            <div className='d-flex flex-column'>
-                <h1>SMART LIBRARY</h1>
-                <h2>OF CITY PUBLIC</h2>
-                <p>Books are great!</p>
-            </div>
+            <h1>{getCurrentUserFullname()}</h1>
+            {
+              userAccount.imageID === 'default' ? (        
+                  <div 
+                    id={style.defaultProfile}
+                    onClick={() => setIsShowDropDownMenu(!isShowDropDownMenu)}
+                  >{userAccount?.firstname.substring(0,1)}
+                  </div>
+              ) : (
+                <img 
+                  src={userAccount.image} 
+                  alt="profile picture"
+                  onClick={() => setIsShowDropDownMenu(!isShowDropDownMenu)} 
+                />
+              )
+            }
         </div>
 
         <div className={style.content} 
@@ -329,6 +335,14 @@ const GuestHomePage = () => {
           }}
         >
           {
+            isShowDropDownMenu &&
+            <div className={style.divDropDownMenu}>
+              <p onClick={() => setActiveBtn('manageAccount')} title='Manage account' ><MdManageAccounts size={20}/> Manage Account</p>
+              <hr />
+              <button style={{ backgroundColor: '#C7253E', color: 'white' }} onClick={handleLogout}><IoMdLogOut size={20} color='white'/> Logout</button>
+            </div>
+          }
+          {
             isShowNotification && 
             <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
               <NotificationComponents message={message} status={notifStatus}/>
@@ -340,7 +354,7 @@ const GuestHomePage = () => {
             ( activeBtn === 'request' || activeBtn === 'borrow' ) &&
               <div className={style.tableDiv}>
                 <div className={style.titleDiv}>
-                  <h1>{activeBtn === 'borrow' ? 'Borrow book' : 'Request List'}</h1>
+                  <h1>{activeBtn === 'borrow' ? 'Borrow Book' : 'Request List'}</h1>
                 </div>
                 {
                   activeBtn === 'borrow' && (

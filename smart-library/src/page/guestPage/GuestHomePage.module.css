@@ -117,19 +117,7 @@ button:hover {
   background-color: gray;
 }
 
-#defaultProfile {
-  background-color: white;
-  width: 100px;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: bold;
-  font-size: 50pt;
-  border-radius: 50%;
-  color: #38b6ff;
-  margin-bottom: 2%;
-}
+
 
 .left {
   flex: 15%;
@@ -151,16 +139,26 @@ button:hover {
   justify-content: center;
   background-color: #38b6ff;
   user-select: none;
+  color: white;
+}
+
+#bookLogo {
+  width: 200px;
+  height: 200px;
+  background-color: white;
 }
 
 .profileDiv h1 {
-  font-size: 1.5rem;
   font-family: bold;
-  color: white;
   margin: 0;
-  margin-bottom: 2%;
-  user-select: none;
+  font-size: 1.5rem;
 }
+
+.profileDiv h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
 
 .profileDiv button {
   background-color: white;
@@ -177,16 +175,6 @@ button:hover {
 
 .profileDiv button:hover {
   opacity: 0.5;
-}
-
-.profileDiv img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  padding: 2%;
-  margin-bottom: 5%;
-  background-color: white;
-  user-select: none;
 }
 
 .menuDiv {
@@ -233,29 +221,74 @@ button:hover {
 .header {
     position: relative;
     width: 100%;
-    height: auto;
-    max-height: 200px;
+    height: 70px; 
+    max-height: 70px;
     display: flex;
-    flex: 20%;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     background-color: white;
     animation: fade 0.5s ease-in-out;
     user-select: none;
+    padding-right: 20px;
+    gap: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
-    font-family: bold;
-    margin: 0;
+  font-size: 1.5rem;
+  font-family: bold;
+  margin: 0;
 }
 
-.header h2 {
-    margin: 0;
+.divDropDownMenu {
+  position: absolute;
+  background-color: white;
+  z-index: 20;
+  border-radius: 5px;
+  padding: 20px;
+  top: 10px;
+  right: 10px;
+  gap: 10px;
+  animation: pop 0.5s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-#bookLogo {
-    width: 200px;
-    height: 200px;
+.divDropDownMenu p {
+  font-size: .8rem;
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.divDropDownMenu button {
+  border-radius: 5px;
+}
+
+#defaultProfile {
+  background-color: rgb(196, 193, 193);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: bold;
+  font-size: 1rem;
+  border-radius: 50%;   
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profileDiv img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 2%;
+  margin-bottom: 5%;
+  cursor: pointer;
+  background-color: rgb(196, 193, 193);
+  user-select: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .content {
@@ -334,30 +367,6 @@ button:hover {
   padding: 20px;
 }
 
-
-
-@media (max-width: 2560px) {
-  .header {
-    height: 150px;
-  }
-
-  .header h1 {
-    font-family: bold;
-    font-size: 15pt;
-    margin: 0;
-  }
-
-  .header h2 {
-    font-size: 10pt;
-    margin: 0;
-  }
-
-  #bookLogo {
-    width: 150px;
-    height: 150px;
-  }
-
-}
 
 
 @media (max-width: 1440px) {

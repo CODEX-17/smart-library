@@ -168,8 +168,9 @@ router.post('/updateAccount', upload.single('file'), async (req, res) => {
 router.post('/checkAccount', async (req, res) => {
 
     const {email, password} = req.body
+    console.log(email, password)
     const query = 'SELECT * FROM accounts WHERE email=?'
-
+    console.log('asdas')
     try {
         const [user] = await new Promise((resolve, reject) => {
             db.query(query, [email], (error, data, field) => {
@@ -178,12 +179,15 @@ router.post('/checkAccount', async (req, res) => {
             })
         })
 
+        console.log([user])
+
         
         if (user) {
            const hashPassword = user.password 
        
             if (hashPassword) {
                 console.log('result:' + passwordHash.verify(password, hashPassword))
+                console.log('asdas')
                 if (passwordHash.verify(password, hashPassword)) {
                     return res.status(200).send(user)
                 } else {
