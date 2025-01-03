@@ -7,6 +7,7 @@ const pool = mysql.createPool(
         user: 'root',
         password: '',
         database: 'smart_library',
+        port: 3306,
     }
     // {
     //     connectionLimit: 10,
@@ -16,5 +17,14 @@ const pool = mysql.createPool(
     //     database: 'smart-library'
     // }
 )
+
+pool.getConnection((err, connection) => {
+    if (err) {
+        console.error('Database connection failed:', err.stack);
+        return;
+    }
+    console.log('Connected to database with thread ID:', connection.threadId);
+    connection.release(); // Release the connection back to the pool
+});
 
 module.exports = pool
