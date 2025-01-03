@@ -418,6 +418,10 @@ button:hover {
   .left {
     width: 40%;
   }
+
+  .header {
+    justify-content: space-between;
+  }
 }
 
 @media (max-width: 425px) {
