@@ -5,7 +5,7 @@ const pool = mysql.createPool(
         connectionLimit: 10,
         host: 'localhost',
         user: 'root',
-        password: '',
+        password: 'root123',
         database: 'smart_library',
         port: 3306,
     }
