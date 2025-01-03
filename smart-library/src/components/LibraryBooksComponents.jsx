@@ -113,7 +113,7 @@ const LibraryBooksComponents = () => {
     const [filterText, setFilterText] = useState('')
     const [filteredData, setFilteredData] = useState([])
 
-    const url = 'http://82.112.236.213:5001/'
+    const url = 'http://localhost:5001/'
 
     const {
         handleSubmit,
@@ -161,20 +161,20 @@ const LibraryBooksComponents = () => {
 
     useEffect(() => {
 
-        axios.get('http://82.112.236.213:5001/book/getBooks')
+        axios.get('http://localhost:5001/book/getBooks')
         .then((res) => {
             setBookList(res.data)
             setFilteredData(res.data)
         })
         .catch((error) => console.log(error))
 
-        axios.get('http://82.112.236.213:5001/genre/getGenre')
+        axios.get('http://localhost:5001/genre/getGenre')
         .then((res) => {
             setGenreList(res.data)
         })
         .catch((error) => console.log(error))
 
-        axios.get('http://82.112.236.213:5001/branch/getBranch')
+        axios.get('http://localhost:5001/branch/getBranch')
         .then((res) => {
             setBranchList(res.data)
         })
@@ -218,7 +218,7 @@ const LibraryBooksComponents = () => {
 
     const handleDelete = (book_id) => {
 
-        axios.post('http://82.112.236.213:5001/book/deleteBooks', { book_id })
+        axios.post('http://localhost:5001/book/deleteBooks', { book_id })
         .then((res) => {
             const result = res.data
             const message = result.message

@@ -13,12 +13,12 @@ const RequestBookComponent = () => {
 
   useEffect(() => {
 
-    axios.get('http://82.112.236.213:5001/book/getBooks')
+    axios.get('http://localhost:5001/book/getBooks')
     .then((res) => {
       const books = res.data
       setBookList(res.data)
 
-      axios.get('http://82.112.236.213:5001/borrow/getBorrow')
+      axios.get('http://localhost:5001/borrow/getBorrow')
       .then((res) => {
         let finalData = res.data
 
@@ -78,7 +78,7 @@ const RequestBookComponent = () => {
 
       setReqList(updateData)
 
-      axios.post('http://82.112.236.213:5001/borrow/updateReq', {response, id, book_id})
+      axios.post('http://localhost:5001/borrow/updateReq', {response, id, book_id})
       .then((res) => {
         const result = res.data
         const message = result.message
@@ -92,7 +92,7 @@ const RequestBookComponent = () => {
 
   const handleDelete = (id) => {
 
-    axios.post('http://82.112.236.213:5001/borrow/deleteReq', {id})
+    axios.post('http://localhost:5001/borrow/deleteReq', {id})
     .then((res) => {
       const result = res.data
       const message = result.message

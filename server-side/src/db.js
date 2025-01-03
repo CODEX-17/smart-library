@@ -6,7 +6,7 @@ const pool = mysql.createPool(
         host: 'localhost',
         user: 'root',
         password: 'root123',
-        database: 'smart_library',
+        database: 'smart-library',
         port: 3306,
     }
     // {
