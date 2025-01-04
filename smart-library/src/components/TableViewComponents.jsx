@@ -90,7 +90,7 @@ const TableViewComponents = ({ currentTable }) => {
     },
   ]
 
-  const url = 'http://localhost:5001'
+  const url = 'http://82.112.236.213:5001'
 
   const [genreList, setGenreList] = useState([])
   const [branchList, setBranchList] = useState([])

@@ -65,15 +65,15 @@ const GuestHomePage = () => {
       }
     }
 
-    axios.get('http://localhost:5001/branch/getBranch')
+    axios.get('http://82.112.236.213:5001/branch/getBranch')
     .then((res) => {setBranchList(res.data)})
     .catch((error) => console.log(error))
 
-      axios.get('http://localhost:5001/book/getBooks')
+      axios.get('http://82.112.236.213:5001/book/getBooks')
       .then((res) => setBookList(res.data))
       .catch((error) => console.log(error))
 
-    axios.get('http://localhost:5001/borrow/getBorrowByAcctID/' + userAccount.id)
+    axios.get('http://82.112.236.213:5001/borrow/getBorrowByAcctID/' + userAccount.id)
     .then((res) => {setReqList(res.data)})
     .catch((error) => console.log(error))
 
@@ -104,7 +104,7 @@ const GuestHomePage = () => {
         book_quantity: row.quantity,
       }
 
-      axios.post('http://localhost:5001/borrow/addBorrowBooks', finalData)
+      axios.post('http://82.112.236.213:5001/borrow/addBorrowBooks', finalData)
       .then((res) => {
           const result = res.data
           const message = result.message
@@ -117,7 +117,7 @@ const GuestHomePage = () => {
 
     setReqList(reqList.filter((req) => req.id !== id))
 
-    axios.post('http://localhost:5001/borrow/deleteReq', {id})
+    axios.post('http://82.112.236.213:5001/borrow/deleteReq', {id})
     .then((res) => {
       const result = res.data
       const message = result.message

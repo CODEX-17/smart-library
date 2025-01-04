@@ -13,7 +13,7 @@ const AddDataTableModalComponent = ({ currentTable, setisShowAddModal, notificat
     formState: { errors },
   } = useForm()
 
-  const url = 'http://localhost:5001'
+  const url = 'http://82.112.236.213:5001'
 
   const onSubmit = (data) => {
     if (currentTable === 'tableGenre') {
