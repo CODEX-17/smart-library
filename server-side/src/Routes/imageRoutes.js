@@ -6,7 +6,8 @@ const db = require('../db')
 router.get('/getImageByImageID/:imageID', (req, res) => {
     const { imageID } = req.params
 
-    console.log(req.body)
+    console.log(req.params)
+
     const query = 'SELECT * FROM image WHERE imageID=?'
 
     db.query(query,[imageID], (error, data, field) => {

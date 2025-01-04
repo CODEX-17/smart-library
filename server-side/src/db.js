@@ -1,21 +1,21 @@
 const mysql = require('mysql')
 
 const pool = mysql.createPool(
+    // {
+    //     connectionLimit: 10,
+    //     host: 'sql12.freesqldatabase.com',
+    //     user: 'sql12755402',
+    //     password: 'CF7wM3dXGL',
+    //     database: 'sql12755402',
+    //     port: 3306,
+    // }
     {
         connectionLimit: 10,
         host: 'localhost',
         user: 'root',
-        password: 'root123',
-        database: 'smart_library',
-        port: 3306,
+        password: '',
+        database: 'smart-library'
     }
-    // {
-    //     connectionLimit: 10,
-    //     host: 'localhost',
-    //     user: 'root',
-    //     password: '',
-    //     database: 'smart-library'
-    // }
 )
 
 pool.getConnection((err, connection) => {

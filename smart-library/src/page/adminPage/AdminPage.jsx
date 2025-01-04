@@ -14,7 +14,8 @@ import { GrDashboard } from "react-icons/gr";
 import { FiBookOpen } from "react-icons/fi";
 import { LiaBookSolid } from "react-icons/lia";
 import { IoSync } from "react-icons/io5";
-import { IoMdLogOut } from "react-icons/io";
+import { MdManageAccounts } from "react-icons/md";
+import { IoMdLogOut, IoMdArrowDropdownCircle } from "react-icons/io";
 import { 
     PiGitBranchBold,
     PiBooksLight
@@ -24,6 +25,7 @@ import {
     MdOutlineSupervisorAccount,
     MdOutlineTableChart 
 } from "react-icons/md";
+import ManageAccountComponent from '../../components/ManageAccountComponent';
 
 
 
@@ -32,6 +34,7 @@ const AdminPage = () => {
   const [isShowSideBar, setIsShowSideBar] = useState(true)
   const [activeMenu, setActiveMenu] = useState('dashboard')
   const [user, setUser] = useState(null)
+  const [isShowSetting, setIsShowSetting] = useState(false)
   const navigate = useNavigate()
   
 
@@ -225,35 +228,51 @@ const AdminPage = () => {
                     activeMenu === 'tableBranch' && 'Table / Branch'
                 }</h1>
        
+            
+                <IoMdArrowDropdownCircle 
+                    size={30} 
+                    cursor={'pointer'} 
+                    className={style.iconSetting}
+                    onClick={() => setIsShowSetting(!isShowSetting)}
+                />
+            
                 
-                <div className={style.iconDiv} title='logout' style={{ backgroundColor: '#D91656' }} onClick={handleLogout}>
-                    <IoMdLogOut size={20} color='white'/>
-                    Logout
-                </div>
+                
         </div>
 
         <div className={style.content}>
-
-            { activeMenu === 'dashboard' && <AnalyticsComponents/> }
-
-            { activeMenu === 'addBook' && <ImportMenuComponents/> }
-
-            { activeMenu === 'reqBook' && <RequestBookComponent/> }
-
-            { activeMenu === 'catalogue' && <AdminCatalogue/> }
-
-            { activeMenu === 'libBook' && <LibraryBooksComponents/> }
-
-            { activeMenu === 'feedback' && <AdminFeedback/> }
-
             {
+                isShowSetting &&
+                <div className={style.settingCard}>
+                    <h3 onClick={() => setActiveMenu('manage-account')}><MdManageAccounts/>Manage Account</h3>
+                    <hr />
+                    <button onClick={handleLogout}><IoMdLogOut/>Logout</button>
+                </div>
+            }
+
+            { 
+
+                activeMenu === 'manage-account' && <ManageAccountComponent/> ||
+             
+                activeMenu === 'dashboard' && <AnalyticsComponents/> ||
+
+                activeMenu === 'addBook' && <ImportMenuComponents/> ||
+
+                activeMenu === 'reqBook' && <RequestBookComponent/> ||
+
+                activeMenu === 'catalogue' && <AdminCatalogue/> ||
+
+                activeMenu === 'libBook' && <LibraryBooksComponents/> ||
+
+                activeMenu === 'feedback' && <AdminFeedback/> ||
+ 
                 ( 
                     activeMenu === 'tables' ||
                     activeMenu === 'tableGenre' || 
                     activeMenu === 'tableBranch'
-                ) && (
+                ) && 
                     <TableViewComponents currentTable={activeMenu}/>
-                )
+                
             }
             
         </div>

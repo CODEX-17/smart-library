@@ -2,12 +2,10 @@ import React, {useEffect, useState} from 'react'
 import style from './GuestHomePage.module.css'
 import bookLogo from '../../assets/logo-yellow.png'
 import axios from 'axios';
-import DataTable from 'react-data-table-component';
 import FeedbackComponents from '../../components/FeedbackComponents';
 import ManageAccountComponent from '../../components/ManageAccountComponent';
 import NotificationComponents from '../../components/NotificationComponents';
 import Catalogue from '../../page/adminPage/Tabs/Catalogue/AdminCatalogue'
-import { CgCloseR } from "react-icons/cg";
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import { LuBookPlus } from "react-icons/lu";
 import { FiBookOpen } from "react-icons/fi";
@@ -154,20 +152,6 @@ const GuestHomePage = () => {
     item.genre && item.genre.toLowerCase().includes(filterText.toLowerCase())
   )
 
-  const customStyles = {
-    table: {
-      style: {
-        borderRadius: '10px'
-      }
-    },
-    headCells: {
-      style: {
-        fontWeight: 'bold',
-        fontSize: '12pt',
-      },
-    },
-  }
-
   const borrowColumns = [
     {
       title: 'Title',
@@ -284,8 +268,6 @@ const GuestHomePage = () => {
         </button>
     },
   ]
-
-
 
 
   return (
@@ -405,7 +387,7 @@ const GuestHomePage = () => {
                           }
                         </select>
                     </div>
-                  )
+                  ) 
                 }
                   <ConfigProvider
                       theme={{

@@ -21,6 +21,7 @@
   z-index: 2;
   width: 300px;
   min-width: 300px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .main {
@@ -173,31 +174,62 @@
   margin: 0;
 }
 
-.iconDiv {
-  border: 1px solid #D91656;
+.iconSetting {
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: #38b6ff;
+  margin: 0;
+  padding: 0;
+}
+
+.iconSetting:hover {
+  transform: scale(110%);
+}
+
+.settingCard {
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  animation: pop 0.5s ease-in-out;
+  z-index: 20;
+}
+
+.settingCard h3 {
+  margin: 0;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: white;
   gap: 10px;
-  font-family: bold;
-  font-size: .8rem;
 }
 
-.iconDiv:hover {
-  opacity: 0.5;
+.settingCard h3:hover {
+  text-decoration: underline;
 }
+
+.settingCard button {
+  background-color: rgb(199, 37, 62);
+  color: white;
+  font-family: normal;
+  border-radius: 5px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
 
 .content {
-  height: 90%;
+  height: 100%;
   width: 100%;
-  padding: 20px;
   display: flex;
   position: relative;
 }

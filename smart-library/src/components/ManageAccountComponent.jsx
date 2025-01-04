@@ -3,12 +3,41 @@ import style from './ManageAccountComponent.module.css'
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import axios from 'axios';
+import NotificationComponents from './NotificationComponents';
+import UserProfile from './UserProfile';
+import { CgArrowsExchange } from "react-icons/cg";
+import { useForm } from 'react-hook-form';
+import { RiLockPasswordFill } from "react-icons/ri";
+import { useNavigate } from 'react-router-dom'
 
 const ManageAccountComponent = () => {
 
   const userAccount = JSON.parse(localStorage.getItem('user'))
+  const navigate = useNavigate()
 
-  console.log(userAccount)
+  const [isShowSuccessfully, setisShowSuccessfully] = useState(false)
+
+  const { 
+    handleSubmit, 
+    reset, 
+    setValue, 
+    register, formState:{ errors } 
+  } = useForm({
+    defaultValues: {
+      firstname: userAccount?.firstname,
+      middlename: userAccount?.middlename,
+      lastname: userAccount?.lastname,
+      email: userAccount?.email,
+      contact: userAccount?.contact,
+      card_number: userAccount?.card_number,
+      branch: userAccount?.branch,
+      birthdate: userAccount?.birthdate,
+      gender: userAccount?.gender,
+      street_address: userAccount?.street_address,
+      city: userAccount?.city,
+    }
+  })
+
 
   const [firstname, setFirstname] = useState(userAccount?.firstname)
   const [middlename, setMiddlename] = useState(userAccount?.middlename)
@@ -29,7 +58,7 @@ const ManageAccountComponent = () => {
   const [validLenghtChar, setValidLenghtChar] = useState(false)
   const [btnDisabled, setBtnDisabled] = useState(true)
   const [isToast, setIsToast] = useState(false)
-  const [toastMessage, setToastMessage] = useState('')
+  const [message, setMessage] = useState('')
 
   const [isShowModal, setIsShowModal] = useState(false)
   const [isShowFailedChangePass, setIsShowFailedChangePass] = useState(false)
@@ -104,10 +133,6 @@ const ManageAccountComponent = () => {
     setImage(file)
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-  }
-
   const handleCheckPassword = () => {
 
     axios.post('http://localhost:5001/account/checkAccount', {email, password:currentPassword})
@@ -160,20 +185,22 @@ const ManageAccountComponent = () => {
 
   }
 
-  const handleUpdateAcctInfo = () => {
+  const onSubmit = (data) => {
+    console.log(data)
+
       const formData = new FormData
 
       let updatedImageID = imageID
 
       formData.append('id', userAccount?.id)
-      formData.append('firstname', firstname)
-      formData.append('middlename', middlename)
-      formData.append('lastname', lastname)
-      formData.append('contact', contact)
-      formData.append('gender', gender)
-      formData.append('street_address', streetAddress)
-      formData.append('birthdate', birthdate)
-      formData.append('city', city)
+      formData.append('firstname', data?.firstname)
+      formData.append('middlename', data?.middlename)
+      formData.append('lastname', data?.lastname)
+      formData.append('contact', data?.contact)
+      formData.append('gender', data?.gender)
+      formData.append('street_address', data?.street_address)
+      formData.append('birthdate', data?.birthdate)
+      formData.append('city', data?.city)
       
 
       if (image) {
@@ -189,9 +216,7 @@ const ManageAccountComponent = () => {
         const result = res.data
         const message = result.message
 
-        setToastMessage(message)
-        console.log(message)
-
+        setMessage(message)
         let updatedInfo = userAccount
 
         updatedInfo.firstname = firstname
@@ -207,30 +232,59 @@ const ManageAccountComponent = () => {
         localStorage.setItem('user', JSON.stringify(updatedInfo))
 
         setIsToast(true)
+        setisShowSuccessfully(true)
         setTimeout(() => {
           setIsToast(false)
+          setisShowSuccessfully(false)
+          localStorage.clear()
+          navigate('/login')
         }, 3000);
       })
       .catch((err) => {console.log(err)})
 
   }
 
+
   return (
     <div className={style.container}>
       {
-        isToast && (
-          <div className={style.toast}>
-            {toastMessage}
-          </div>
-        )
+        isToast &&
+        <div style={{ position: 'absolute', top: 10, right: 10 }}>
+          <NotificationComponents message={message} status={true}/>
+        </div>
       }
+
+      {
+        isShowSuccessfully &&
+        <div 
+          className={style.modal} 
+          style={{ 
+            borderRadius: 10, 
+            display: 'flex', 
+            textAlign: 'center',
+            gap: 10
+          }}
+        >
+          <h1>Successfully change account information</h1>
+          <p>This automatically logout...</p>
+        </div>
+      }
+
       {
         isShowModal && (
           <div className={style.modal}>
-            <h1>Change Password</h1>
+            
+            <div className='w-100 d-flex flex-column'>
+              <h1>Change Password</h1>
+              <p>Please verify your current password to proceed with the update.</p>
+              
+            </div>
+            
             <input type="text" placeholder='Current password...' onChange={(e) => setCurrentPassword(e.target.value)}/>
+
             {
-              isShowFailedChangePass && <p className={style.info} style={{ backgroundColor: '#FF8A8A', color: 'white' }}>Password doesn't match.</p>
+              isShowFailedChangePass && 
+                <p className={style.info} style={{ backgroundColor: '#FF8A8A', color: 'white' }}>Password doesn't match.</p>
             }
             
             {
@@ -258,7 +312,7 @@ const ManageAccountComponent = () => {
               )
             }
             
-            <div className='d-flex w-100 gap-2'>
+            <div className='d-flex w-100 gap-2 mt-2'>
               {
                 isShowNewPasswordInput ? 
                 <button disabled={btnDisabled} onClick={handleChangePassword}>Change Password</button>
@@ -272,81 +326,145 @@ const ManageAccountComponent = () => {
         )
       }
 
-      <h1>Manage Account</h1>
-      <form onSubmit={handleSubmit}>
-        <div className={style.head}>
-          <div className={style.headLeft}>
-            {
-              image !== null ? (
-                <>
-                  <img src={URL.createObjectURL(image)} alt="profile pic" id={style.imgDiv} onClick={() => inputImage.current.click()}/>
-                </>
-                
-              ) : (
-                <>
-                  <div id={style.imgDiv} onClick={() => inputImage.current.click()}>Click here to insert image.</div>
-                  <input type="file" ref={inputImage} accept="image/*" style={{ display: 'none' }} onChange={handleGetImage}/>
-                </>
-              )
-            }
-            
+      <div className='w-100 h-100'>
+        <div className='container p-4'>
+
+          <div className='d-flex flex-column w-100'>
+            <h1>Manage Account</h1>
+            <p>Updating your account information.</p>
           </div>
-          <div className={style.headRight}>
-            <p>Firstname</p>
-            <input type="text" value={firstname} required onChange={(e) => setFirstname(e.target.value)}/>
-            <p>Middlename</p>
-            <input type="text" value={middlename} required onChange={(e) => setMiddlename(e.target.value)}/>
-            <p>Lastname</p>
-            <input type="text" value={lastname} required onChange={(e) => setLastname(e.target.value)}/>
+          
+          <div className='d-flex gap-2 w-100'>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className={style.left}>
+                    <div className='w-100 d-flex flex-column gap-3 align-items-center justify-content-center'>
+                      <div className={style.imageDiv}>
+                        <UserProfile 
+                          imageID={imageID} 
+                          firstname={'rumar'}
+                        />
+                      </div>
+                      <p 
+                        style={{ cursor: 'pointer', gap: 10 }} 
+                        title='Change the profile picture'
+                        onClick={() => inputImage.current.click()}
+                      ><CgArrowsExchange size={25}/>Change Profile Picture</p>
+                      <input 
+                        type="file"
+                        ref={inputImage} 
+                        accept="image/*" 
+                        style={{ display: 'none' }} 
+                        onChange={handleGetImage}
+                      />
+                    </div>
+                    
+                    <div className='w-100 d-flex flex-column mt-2'>
+                      <label>First Name</label>
+                      <input 
+                        type="text"
+                        {...register('firstname', { required: 'First Name is required.' })}
+                      />
+                      {errors.firstname && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.firstname.message}</p>}
+                    </div>
+                    <div className='w-100 d-flex flex-column mt-2'>
+                      <label>Middle Name</label>
+                      <input 
+                        type="text"
+                        {...register('middlename', { required: 'Middle Name is required.' })}
+                      />
+                      {errors.middlename && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.middlename.message}</p>}
+                    </div>
+                    <div className='w-100 d-flex flex-column mt-2'>
+                      <label>Last Name</label>
+                      <input 
+                        type="text"
+                        {...register('lastname', { required: 'Last Name is required.' })}
+                      />
+                      {errors.lastname && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.lastname.message}</p>}
+                    </div>
+                    <div className='w-100 d-flex flex-column mt-2'>
+                      <label>Email</label>
+                      <input 
+                        type="email"
+                        {...register('email', { required: 'Email is required.' })}
+                      />
+                      {errors.lastname && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.lastname.message}</p>}
+                    </div>
+                    <div className='w-100 d-flex flex-column mt-2'>
+                      <label>Contact Number</label>
+                      <input 
+                        type="contact"
+                        {...register('contact', { required: 'Contact Number is required.' })}
+                      />
+                      {errors.contact && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.contact.message}</p>}
+                    </div>
+              </div>
+
+              <div className={style.right}>
+                  <div className='w-100 d-flex flex-column mt-4'>
+                      <label>Card Number</label>
+                      <input 
+                        type="number" 
+                        {...register('card_number')}
+                        disabled
+                      />
+                  </div>
+                  <div className='w-100 d-flex flex-column mt-2'>
+                      <label>Designated Branch</label>
+                      <input 
+                        type="text" 
+                        {...register('branch')}
+                        disabled
+                      />
+                  </div>
+                  <div className='w-100 d-flex flex-column mt-2'>
+                    <label>Birth Date</label>
+                    <input 
+                        type="birthdate"
+                        {...register('birthdate', { required: 'Contact Number is required.' })}
+                      />
+                    {errors.birthdate && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.birthdate.message}</p>}
+                  </div>
+                  <div className='w-100 d-flex flex-column mt-2'>
+                    <label>Gender</label>
+                    <input 
+                        type="gender"
+                        {...register('gender', { required: 'Contact Number is required.' })}
+                      />
+                      {errors.gender && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.gender.message}</p>}
+                  </div>
+                  <div className='w-100 d-flex flex-column mt-2'>
+                    <label>Street</label>
+                    <input 
+                        type="street_address"
+                        {...register('street_address', { required: 'Contact Number is required.' })}
+                      />
+                      {errors.street_address && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.street_address.message}</p>}
+                  </div>
+                  <div className='w-100 d-flex flex-column mt-2'>
+                    <label>City</label>
+                    <input 
+                        type="city"
+                        {...register('city', { required: 'Contact Number is required.' })}
+                      />
+                      {errors.city && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.city.message}</p>}
+                  </div>
+                  <div className='w-100 d-flex gap-3 flex-column align-items-center mt-4'>
+                    <button type='submit'>Save</button>
+                    <p
+                      style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', gap: 10 }} 
+                      title='Change the profile picture'
+                      onClick={() => setIsShowModal(true)}
+                    ><RiLockPasswordFill/>Change Password</p>
+                    
+                  </div>
+                  
+              </div>
+            </form>
           </div>
 
         </div>
-        <div className={style.main}>
-          <div className='d-flex w-100 gap-2'>
-            <div className='d-flex w-50 flex-column'>
-              <p>Birthdate</p>
-              <input type="date" value={birthdate} required onChange={(e) => setBirthdate(e.target.value)}/>
-            </div>
-            <div className='d-flex w-50 flex-column'>
-              <p>Contact</p>
-              <input type="tel" value={contact} required onChange={(e) => setContact(e.target.value)}/>
-            </div>
-          </div>
-          <div className='d-flex w-100 gap-2'>
-            <div className='d-flex w-100 flex-column'>
-              <p>Street Address</p>
-              <input type="text" value={streetAddress} required onChange={(e) => setStreetAddress(e.target.value)}/>
-            </div>
-          </div>
-          <div className='d-flex w-100 gap-2'>
-            <div className='d-flex w-50 flex-column'>
-              <p>City</p>
-              <input type="text" value={city} required onChange={(e) => setCity(e.target.value)}/>
-            </div>
-            <div className='d-flex w-50 flex-column'>
-              <p>Gender</p>
-              <select value={gender} required onChange={(e) => setGender(e.target.value)}>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            </div>
-          </div>
-          <div className='d-flex w-100 gap-2'>
-            <div className='d-flex w-50 flex-column'>
-              <p>Email</p>
-              <input type="email" value={email} disabled/>
-            </div>
-            <div className='d-flex w-50 flex-column'>
-              <p>Password</p>
-              <input type="password" value={password} required onClick={() => setIsShowModal(true)}/>
-            </div>
-          </div>
-          <div className='d-flex w-100 mt-2'>
-            <button type='submit' onClick={handleUpdateAcctInfo}>Submit Changes</button>
-          </div>
-        
-        </div>
-      </form>
+      </div>
     </div>
   )
 }
