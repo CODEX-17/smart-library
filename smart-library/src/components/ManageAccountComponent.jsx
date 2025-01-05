@@ -135,7 +135,7 @@ const ManageAccountComponent = () => {
 
   const handleCheckPassword = () => {
 
-    axios.post('http://localhost:5001/account/checkAccount', {email, password:currentPassword})
+    axios.post('http://82.112.236.213:5001/account/checkAccount', {email, password:currentPassword})
     .then((res) => {
       const result = res.data
   
@@ -163,7 +163,7 @@ const ManageAccountComponent = () => {
 
   const handleChangePassword = () => {
 
-    axios.post('http://localhost:5001/account/changePassword', {email, newPassword})
+    axios.post('http://82.112.236.213:5001/account/changePassword', {email, newPassword})
     .then((res) => {
       const result = res.data
       const message = result.message
@@ -211,7 +211,7 @@ const ManageAccountComponent = () => {
         formData.append('imageID', imageID)
       }
 
-      axios.post('http://localhost:5001/account/updateAccount', formData)
+      axios.post('http://82.112.236.213:5001/account/updateAccount', formData)
       .then((res) => {
         const result = res.data
         const message = result.message
