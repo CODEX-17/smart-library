@@ -23,11 +23,11 @@ const {
 
 useEffect(() => {
 
-  axios.get('http://82.112.236.213:5001/branch/getBranch')
+  axios.get('http://localhost:5001/branch/getBranch')
   .then((res) => {setBranchList(res.data)})
   .catch((err) => console.log(err))
 
-  axios.get('http://82.112.236.213:5001/genre/getGenre')
+  axios.get('http://localhost:5001/genre/getGenre')
   .then((res) => {setGenreList(res.data)})
   .catch((err) => console.log(err))
 
@@ -63,23 +63,12 @@ const handleClose = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='d-flex w-100 gap-2 mb-2'>
             <div className='d-flex flex-column w-100'>
-              <label>Item number <b>*</b></label>
+              <label>Item number(optional)</label>
               <input 
                 type="number" 
                 placeholder='ex. 0000'
-                {...register('item_no', { 
-                  required: 'Item number is required',
-                  minLength: {
-                    value: 4,
-                    message: "Item number must be 4 digit only.",
-                  },
-                  maxLength: {
-                    value: 4,
-                    message: "Item number must be 4 digit.",
-                  }
-                })}
+                {...register('item_no')}
               />
-              {errors.item_no && <p>{errors.item_no.message}</p>}
             </div>
             <div className='d-flex flex-column w-100'>
               <label>Accession number <b>*</b></label>

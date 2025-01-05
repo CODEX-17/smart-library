@@ -5,20 +5,24 @@ import { IoSearch } from "react-icons/io5";
 import { AiFillDelete } from "react-icons/ai";
 import { convertDateFormatIntoString, convertTimeTo12HourFormat } from '../utils/dateUtils';
 import axios from 'axios';
+import NotificationComponents from './NotificationComponents';
+
 
 const RequestBookComponent = () => {
 
   const [reqList, setReqList] = useState([])
   const [bookList, setBookList] = useState([])
+  const [message, setMessage] = useState('')
+  const [isShowNotification, setIsShowNotification] = useState(false)
 
   useEffect(() => {
 
-    axios.get('http://82.112.236.213:5001/book/getBooks')
+    axios.get('http://localhost:5001/book/getBooks')
     .then((res) => {
       const books = res.data
       setBookList(res.data)
 
-      axios.get('http://82.112.236.213:5001/borrow/getBorrow')
+      axios.get('http://localhost:5001/borrow/getBorrow')
       .then((res) => {
         let finalData = res.data
 
@@ -47,7 +51,7 @@ const RequestBookComponent = () => {
     })
     .catch((error) => console.log(error))
 
-  },[])
+  },[message])
 
   const handleUpdateReq = (id, book_id, response) => {
 
@@ -78,7 +82,7 @@ const RequestBookComponent = () => {
 
       setReqList(updateData)
 
-      axios.post('http://82.112.236.213:5001/borrow/updateReq', {response, id, book_id})
+      axios.post('http://localhost:5001/borrow/updateReq', {response, id, book_id})
       .then((res) => {
         const result = res.data
         const message = result.message
@@ -92,11 +96,18 @@ const RequestBookComponent = () => {
 
   const handleDelete = (id) => {
 
-    axios.post('http://82.112.236.213:5001/borrow/deleteReq', {id})
+    axios.post('http://localhost:5001/borrow/deleteReq', {id})
     .then((res) => {
       const result = res.data
       const message = result.message
-      console.log(message)
+      setMessage(message)
+      setIsShowNotification(true)
+
+      setTimeout(() => {
+        setIsShowNotification(false)
+        setMessage('')
+      }, 3000);
+
     }).catch((err) => console.log(err))
     
   }
@@ -203,6 +214,12 @@ const RequestBookComponent = () => {
 
   return (
     <div className={style.container}>
+      {
+        isShowNotification &&
+        <div style={{ position: 'absolute', top: 10, right: 10}}>
+          <NotificationComponents message={message} status={true}/>
+        </div>
+      }
       <div className={style.content}>
         <div className={style.searchBar}>
             <input type="text" placeholder='Enter search phrase...' onChange={(e) => setFilterText(e.target.value)}/> 

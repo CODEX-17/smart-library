@@ -170,9 +170,9 @@ router.post('/updateAccount', upload.single('file'), async (req, res) => {
 router.post('/checkAccount', async (req, res) => {
 
     const {email, password} = req.body
-    console.log(email, password)
+   
     const query = 'SELECT * FROM accounts WHERE email=?'
-    console.log('asdas')
+
     try {
         const [user] = await new Promise((resolve, reject) => {
             db.query(query, [email], (error, data, field) => {
@@ -180,10 +180,7 @@ router.post('/checkAccount', async (req, res) => {
                 resolve(data)
             })
         })
-
-        console.log([user])
-
-        
+ 
         if (user) {
            const hashPassword = user.password 
        
@@ -261,7 +258,7 @@ router.post('/forgotPassword', async (req, res) => {
       await db.query('UPDATE accounts SET reset_token = ?, reset_token_expires = ? WHERE email = ?', [resetToken, resetTokenExpires, email]);
   
       // Send reset email
-      const resetUrl = `http://82.112.236.213:5173/reset-password/${resetToken}`;
+      const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
       const mailOptions = {
         to: email,
         from: 'librarysmart69@gmail.com',
