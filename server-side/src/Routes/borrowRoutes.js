@@ -2,8 +2,17 @@ const express = require('express')
 const router = express.Router()
 const db = require('../db')
 
+const rateLimit = require("express-rate-limit"); 
+
+const limiter = rateLimit({
+    windowMs: 5000, // 5 seconds
+    max: 1, // Limit each user to 1 request per window
+    message: "Too many requests. Please try again later.",
+});
+   
+
 //API add borrow books
-router.post('/addBorrowBooks', async (req, res) => {
+router.post('/addBorrowBooks', limiter, async (req, res) => {
 
     const { 
         book_id,

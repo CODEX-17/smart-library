@@ -6,6 +6,7 @@ import FeedbackComponents from '../../components/FeedbackComponents';
 import ManageAccountComponent from '../../components/ManageAccountComponent';
 import NotificationComponents from '../../components/NotificationComponents';
 import Catalogue from '../../page/adminPage/Tabs/Catalogue/AdminCatalogue'
+import LoadingComponents from '../../components/LoadingComponents'
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import { LuBookPlus } from "react-icons/lu";
 import { FiBookOpen } from "react-icons/fi";
@@ -14,11 +15,8 @@ import { useNavigate } from 'react-router-dom';
 import { MdManageAccounts, MdOutlineFeedback } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdLogOut } from "react-icons/io";
-
 import { Table, ConfigProvider } from 'antd';
-
 import { useForm } from 'react-hook-form';
-
 import { getCurrentUserFullname } from '../../utils/userNameUtil'
 import { 
   convertDateFormatIntoString, 
@@ -46,6 +44,9 @@ const GuestHomePage = () => {
   const [isShowNotification, setIsShowNotification] = useState(false)
   const [message, setMessage] = useState('')
   const [notifStatus, setNotifStatus] = useState(true)
+
+  const [isLoading, setIsLoading] = useState(false)
+
 
   const { handleSubmit, register, formState: { errors } } = useForm()
 
@@ -92,6 +93,10 @@ const GuestHomePage = () => {
   }
 
   const handleBorrow = (row) => {
+
+      if (isLoading) return
+      setIsLoading(true)
+
       const finalData = {
         book_id: row.book_id,
         title: row.title,
@@ -108,7 +113,11 @@ const GuestHomePage = () => {
       .then((res) => {
           const result = res.data
           const message = result.message
-          notificationConfig(message, true)
+          setTimeout(() => {
+            setIsLoading(false)
+            notificationConfig(message, true)
+          }, 3000);
+          
       })
     
   }
@@ -345,6 +354,13 @@ const GuestHomePage = () => {
               activeBtn === 'feedback' && 'white',
           }}
         >
+          {
+            isLoading &&
+            <div className={style.card}>
+              <LoadingComponents/>
+            </div>
+          }
+
           {
             isShowDropDownMenu &&
             <div className={style.divDropDownMenu}>
