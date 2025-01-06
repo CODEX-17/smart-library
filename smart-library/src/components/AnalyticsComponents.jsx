@@ -55,11 +55,11 @@ const AnalyticsComponents = () => {
 
   useEffect(() => {
     
-    axios.get('http://localhost:5001/book/getBooks')
+    axios.get('http://82.112.236.213:5001/book/getBooks')
     .then((res) => {setBookList(res.data)})
     .catch((err) => console.log(err))
 
-    axios.get('http://localhost:5001/borrow/getBorrow')
+    axios.get('http://82.112.236.213:5001/borrow/getBorrow')
     .then((res) => {
       const result = res.data
       setReqList(res.data)
@@ -100,7 +100,7 @@ const AnalyticsComponents = () => {
     })
     .catch((err) => console.log(err))
 
-    axios.get('https://localhost:5001/account/getAccounts')
+    axios.get('https://82.112.236.213:5001/account/getAccounts')
     .then((res) => {setAcctList(res.data)})
     .catch((err) => console.log(err))
     

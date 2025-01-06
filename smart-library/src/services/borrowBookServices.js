@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const getRequestBooks = async () => {
-    const BASE_URL = 'http://localhost:5001'
+    const BASE_URL = 'http://82.112.236.213:5001'
 
     try {
         const response = await axios.get(`${BASE_URL}/borrow/getBorrow`)

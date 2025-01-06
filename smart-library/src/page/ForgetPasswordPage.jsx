@@ -15,7 +15,7 @@ const ForgetPasswordPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await axios.post('http://localhost:5001/account/forgotPassword', { email })
+      await axios.post('http://82.112.236.213:5001/account/forgotPassword', { email })
       setIsToast(true)
       setTimeout(() => {
         setIsShowProcessDone(true)
