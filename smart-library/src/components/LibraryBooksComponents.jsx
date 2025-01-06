@@ -113,7 +113,7 @@ const LibraryBooksComponents = () => {
     const [filterText, setFilterText] = useState('')
     const [filteredData, setFilteredData] = useState([])
 
-    const url = 'http://82.112.236.213:5001/'
+    const url = 'http://localhost:5001/'
 
     const {
         handleSubmit,
@@ -128,10 +128,10 @@ const LibraryBooksComponents = () => {
             access_no: selectedBook?.access_no,
             title: selectedBook?.title,
             author:  selectedBook?.author_name,
-            branch:  selectedBook?.branch,
+            branch:  selectedBook?.branch.toUpperCase(),
             genre:  selectedBook?.genre,
             amount:  selectedBook?.amount,
-            quantity:  selectedBook?.quantity,
+            quantity:  selectedBook?.quantity || 1,
             total_value:  selectedBook?.total_value,
             date_acquired:  selectedBook?.date_acquired,
             publication:  selectedBook?.publication,
@@ -161,20 +161,20 @@ const LibraryBooksComponents = () => {
 
     useEffect(() => {
 
-        axios.get('http://82.112.236.213:5001/book/getBooks')
+        axios.get('http://localhost:5001/book/getBooks')
         .then((res) => {
             setBookList(res.data)
             setFilteredData(res.data)
         })
         .catch((error) => console.log(error))
 
-        axios.get('http://82.112.236.213:5001/genre/getGenre')
+        axios.get('http://localhost:5001/genre/getGenre')
         .then((res) => {
             setGenreList(res.data)
         })
         .catch((error) => console.log(error))
 
-        axios.get('http://82.112.236.213:5001/branch/getBranch')
+        axios.get('http://localhost:5001/branch/getBranch')
         .then((res) => {
             setBranchList(res.data)
         })
@@ -218,7 +218,7 @@ const LibraryBooksComponents = () => {
 
     const handleDelete = (book_id) => {
 
-        axios.post('http://82.112.236.213:5001/book/deleteBooks', { book_id })
+        axios.post('http://localhost:5001/book/deleteBooks', { book_id })
         .then((res) => {
             const result = res.data
             const message = result.message
@@ -242,6 +242,7 @@ const LibraryBooksComponents = () => {
     const handleEdit = (data) => {
         setSelectedBook(data)
         setIsShowEditModal(true)
+        console.log(data)
     }
 
     const onSubmit = (data) => {
@@ -298,23 +299,12 @@ const LibraryBooksComponents = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className='d-flex w-100 gap-2 mb-2'>
                             <div className='d-flex flex-column w-100'>
-                                <label>Item number <b>*</b></label>
+                                <label>Item number(optional)</label>
                                 <input 
                                     type="number" 
                                     placeholder='ex. 0000'
-                                    {...register('item_no', { 
-                                    required: 'Item number is required',
-                                    minLength: {
-                                        value: 4,
-                                        message: "Item number must be 4 digit only.",
-                                    },
-                                    maxLength: {
-                                        value: 4,
-                                        message: "Item number must be 4 digit.",
-                                    }
-                                    })}
+                                    {...register('item_no')}
                                 />
-                                {errors.item_no && <p>{errors.item_no.message}</p>}
                             </div>
                             <div className='d-flex flex-column w-100'>
                                 <label>Accession number <b>*</b></label>
@@ -330,10 +320,10 @@ const LibraryBooksComponents = () => {
                         <div className='d-flex flex-column w-100 mb-2'>
                             <label>Book title <b>*</b></label>
                             <input 
-                            type="text"
-                            id='title' 
-                            placeholder='Alamat ng saging' 
-                            {...register('title', { required: 'Book title is required.'})}
+                                type="text"
+                                id='title' 
+                                placeholder='Alamat ng saging' 
+                                {...register('title', { required: 'Book title is required.'})}
                             />
                             {errors.title && <p>{errors.title.message}</p>}
                         </div>
@@ -385,7 +375,7 @@ const LibraryBooksComponents = () => {
                                     <option value="">Select genre</option>
                                     {
                                         branchList.map((branch, index) => (
-                                            <option value={branch.branch_name} key={index}>{branch.branch_name}</option>
+                                            <option value={branch.branch_name.toUpperCase()} key={index}>{branch.branch_name}</option>
                                         )) 
                                     }
                                 </select>
@@ -395,7 +385,7 @@ const LibraryBooksComponents = () => {
 
                         <div className='d-flex w-100 gap-2 mb-2'>
                             <div className='d-flex flex-column w-100'>
-                            <label>Amount</label>
+                            <label>Amount(optional)</label>
                             <input
                                 type="number"
                                 {...register('amount')}
@@ -404,18 +394,18 @@ const LibraryBooksComponents = () => {
                             </div>
                             
                             <div className='d-flex flex-column w-100'>
-                            <label>Quantity</label>
-                            <input type="number" {...register('quantity')}/>
+                            <label>Quantity  <b>*</b></label>
+                            <input type="number" {...register('quantity', {required: 'Quantity is required.'})}/>
                             </div>
                         </div>
 
                         <div className='d-flex w-100 gap-2 mb-2'>
                             <div className='d-flex flex-column w-100'>
-                                <label>Date Acquired</label>
+                                <label>Date Acquired(optional)</label>
                                 <input type="date" {...register('date_acquired')}/>
                             </div>
                             <div className='d-flex flex-column w-100'>
-                                <label>Publication</label>
+                                <label>Publication(optional)</label>
                                 <input type="date" {...register('publication')}/>
                             </div>
                         </div>

@@ -18,7 +18,7 @@ const CreateAccount = () => {
   const [maxCardNumber, setMaxCardNumber] = useState(0)
   const [accountList, setAccountList] = useState([])
   const [branchList, setBranchList] = useState([])
-  const url = 'http://82.112.236.213:5001'
+  const url = 'http://localhost:5001'
 
   const cityArray = [
     "ALFONSO",
@@ -124,7 +124,7 @@ const CreateAccount = () => {
   const onSubmit = (data) => {
 
     setLoadingState(true)
-    
+
     if (password) {
 
         const formData = new FormData
@@ -144,7 +144,7 @@ const CreateAccount = () => {
         formData.append('city', data.city)
         formData.append('image', image)
 
-        axios.post('http://82.112.236.213:5001/account/createAccount', formData)
+        axios.post('http://localhost:5001/account/createAccount', formData)
         .then((res) => {
             const data = res.data
             const message = data.message

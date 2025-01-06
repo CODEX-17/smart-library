@@ -26,7 +26,6 @@ router.post('/addBorrowBooks', limiter, async (req, res) => {
     } =  req.body
 
     const insertQuery = 'INSERT INTO borrow_books(book_id,title,author_name,acct_id,acct_name,date,time,status) VALUES(?,?,?,?,?,?,?,?)'
-    const updateQuery = 'UPDATE books SET quantity=? WHERE book_id=?'
 
     const insertDatas = [
         book_id,
@@ -41,11 +40,8 @@ router.post('/addBorrowBooks', limiter, async (req, res) => {
 
     try {
         
-        const updatedQuantity = parseInt(book_quantity, 10) - 1
-
         await db.query(insertQuery, insertDatas)
-        await db.query(updateQuery,[updatedQuantity, book_id])
-
+    
         res.status(200).json({
             message: 'Successfully Added borrow books.'
         })

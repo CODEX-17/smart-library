@@ -103,7 +103,6 @@ router.post('/updateBooks', (req, res) => {
         branch, 
         quantity, 
         amount, 
-        call_no, 
         total_value, 
         date_acquired,
         publication,
@@ -120,8 +119,7 @@ router.post('/updateBooks', (req, res) => {
     genre=?, 
     branch=?, 
     quantity=?, 
-    amount=?, 
-    call_no=?, 
+    amount=?,
     total_value=?, 
     date_acquired=?,
     publication=?
@@ -131,7 +129,7 @@ router.post('/updateBooks', (req, res) => {
 
     console.log(req.body)
 
-    db.query(query,[ item_no, title, ISBN, author, access_no, genre, branch, quantity, amount, call_no, total_value, date_acquired, publication, book_id], (error, data, field) => {
+    db.query(query,[ item_no, title, ISBN, author, access_no, genre, branch, quantity, amount, total_value, date_acquired, publication, book_id], (error, data, field) => {
         if (error) {
             console.error(error)
             res.status(404).send(error)

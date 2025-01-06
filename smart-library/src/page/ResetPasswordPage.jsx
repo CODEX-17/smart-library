@@ -72,7 +72,7 @@ useEffect(() => {
 const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://82.112.236.213:5001/account/reset-password/${token}`, { password });
+      await axios.post(`http://localhost:5001/account/reset-password/${token}`, { password });
       setIsToast(true)
       setTimeout(() => {
         setIsToast(false)
