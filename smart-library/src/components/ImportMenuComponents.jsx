@@ -29,7 +29,7 @@ const ImportMenuComponents = () => {
   const userDetails = JSON.parse(localStorage.getItem('user'))
   const selectedBranch = userDetails?.branch || null
 
-  const url = 'http://82.112.236.213:5001/'
+  const url = 'http://localhost:5001/'
 
   useEffect(() => {
     axios.get(`${url}branch/getBranch`)
@@ -83,7 +83,15 @@ const ImportMenuComponents = () => {
               dateNF: 'YYYY-MM-DD' // Specifies date format
             }); // Convert to JSON
 
-            result.forEach((data) => {
+            let updatedResult = [...result]
+
+            for (let x = 0; x < updatedResult.length; x++) {
+              updatedResult[x].quantity = parseInt(updatedResult[x].quantity)
+            }
+
+            console.log('updatedResult', updatedResult)
+
+            updatedResult.forEach((data) => {
               const updatedData = { ...data };
             
               // Check and parse date fields
@@ -100,6 +108,9 @@ const ImportMenuComponents = () => {
                 }
               });
             
+              
+              finalData.quantity
+              
               finalData.push(updatedData);
             });
 
@@ -180,11 +191,11 @@ const ImportMenuComponents = () => {
 
   const handleDownload = () => {
   
-    const filePath = "./../../public/excel-format.xlsx";
+    const filePath = "./../../public/excel-format-final.xlsx";
     
     const link = document.createElement("a");
     link.href = filePath;
-    link.download = "excel-template.xlsx";
+    link.download = "excel-format-final.xlsx";
     link.click();
     link.remove();
   };
