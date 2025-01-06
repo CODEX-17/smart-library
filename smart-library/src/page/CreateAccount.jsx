@@ -124,7 +124,7 @@ const CreateAccount = () => {
   const onSubmit = (data) => {
 
     setLoadingState(true)
-
+    
     if (password) {
 
         const formData = new FormData
