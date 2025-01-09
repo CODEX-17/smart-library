@@ -29,7 +29,7 @@ const ImportMenuComponents = () => {
   const userDetails = JSON.parse(localStorage.getItem('user'))
   const selectedBranch = userDetails?.branch || null
 
-  const url = 'http://82.112.236.213:5001/'
+  const url = 'http://localhost:5001/'
 
   useEffect(() => {
     axios.get(`${url}branch/getBranch`)
@@ -87,7 +87,70 @@ const ImportMenuComponents = () => {
 
             for (let x = 0; x < updatedResult.length; x++) {
               updatedResult[x].quantity = parseInt(updatedResult[x].quantity)
+              
+              if (updatedResult[x].title === null || updatedResult[x].title === '' || !updatedResult[x].title) {
+                console.log('no title ', updatedResult[x].item_no)
+                updatedResult[x].title = 'no title'
+              }
+
+              if (updatedResult[x].ISBN === null || updatedResult[x].ISBN === '' || !updatedResult[x].ISBN) {
+                console.log('no ISBN ', updatedResult[x].item_no)
+                updatedResult[x].ISBN = 'unknown'
+              }
+
+              if (updatedResult[x].access_no === null || updatedResult[x].access_no === '' || !updatedResult[x].access_no) {
+                console.log('no access_no ', updatedResult[x].item_no)
+                updatedResult[x].access_no = 'unknown'
+              }
+              
+
+              if (updatedResult[x].author_name === null || updatedResult[x].author_name === '' || !updatedResult[x].author_name) {
+                // console.log('no author ', x)
+                updatedResult[x].author_name = 'unknown'
+              }
+
+              if (updatedResult[x].genre === null || updatedResult[x].genre === '' || !updatedResult[x].genre) {
+                // console.log('no genre ', x)
+                updatedResult[x].genre = 'unknown'
+              }
+
+              if (updatedResult[x].quantity === null || updatedResult[x].quantity === '' || !updatedResult[x].quantity) {
+                updatedResult[x].quantity = 0
+              }else {
+                updatedResult[x].quantity = parseInt(updatedResult[x].quantity)
+              }
+
+              if (updatedResult[x].amount === null || updatedResult[x].amount === '' || !updatedResult[x].amount) {
+                updatedResult[x].amount = 0
+              }else {
+                updatedResult[x].amount = parseInt(updatedResult[x].amount)
+              }
+
+              if (updatedResult[x].total_value === null || updatedResult[x].total_value === '' || !updatedResult[x].total_value) {
+                updatedResult[x].total_value = 0
+              }else {
+                updatedResult[x].total_value = parseInt(updatedResult[x].total_value)
+              }
+
+              if (updatedResult[x].date_acquired === null || updatedResult[x].date_acquired === '' || !updatedResult[x].date_acquired) {
+                updatedResult[x].date_acquired = null
+              }
+
+              if (updatedResult[x].publication === null || updatedResult[x].publication === '' || !updatedResult[x].publication) {
+                updatedResult[x].publication = null
+              }
+
+              if (userDetails?.branch !== 'any') {
+                updatedResult[x].branch = userDetails?.branch
+              }else{
+                if (updatedResult[x].branch === null || updatedResult[x].branch === '' || !updatedResult[x].branch) {
+                  updatedResult[x].branch = userDetails?.branch
+                }
+              }
+
+
             }
+            
 
             console.log('updatedResult', updatedResult)
 
@@ -147,6 +210,8 @@ const ImportMenuComponents = () => {
     let success = 0
     let failed = 0 
     let current_message = ''  
+
+    console.log(dataList)
 
     const sendRequestsSequentially = async () => {
 

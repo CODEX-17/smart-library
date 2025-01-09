@@ -1,8 +1,9 @@
 import axios from "axios"
 
-const BASE_URL = 'http://82.112.236.213:5001'
+const BASE_URL = 'http://localhost:5001'
 
 export const getBooks = async () => {
+    console.log('asd')
     try {
         const result = await axios.get(`${BASE_URL}/book/getBooks`)
         

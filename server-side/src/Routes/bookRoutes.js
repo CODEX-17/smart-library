@@ -53,8 +53,6 @@ router.post('/addBook', (req, res) => {
         date_acquired, 
         publication 
     } = req.body
-    
-    console.log(req.body)
 
     const query = `INSERT INTO books(
     item_no, ISBN, 
@@ -141,5 +139,21 @@ router.post('/updateBooks', (req, res) => {
         }
     })
 })
+
+router.get('/getAccounts', (req, res) => {
+    console.log('asdasd')
+    const query = 'SELECT * FROM accounts'
+    
+    db.query(query, (error, data, field) => {
+        if (error) {
+            console.error(error)
+            res.status(404).send(error)
+        } else {
+            console.log('Successfully get all accounts.')
+            res.status(200).json(data)
+        }
+    })
+  
+});
 
 module.exports = router

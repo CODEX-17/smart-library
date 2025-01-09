@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import style from './SidebarCatalogue.module.css'
 import { HiFilter } from "react-icons/hi";
-import { getGenre } from '../../../../services/genreServices'
 import { getBranch } from '../../../../services/branchServices'
+import { getBooks } from '../../../../services/bookServices';
 
 const SidebarCatalogue = ({ setSelectedBranch, setSelectedGenre, selectedGenre, setSelectDateAcquired }) => {
 
   const [genreList , setGenreList] = useState([])
   const [branchList, setBranchList] = useState([])
  
-  
 
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const dataGenre = await getGenre()
             const dataBranch = await getBranch()
+            const dataBook = await getBooks()
 
-            if (dataGenre && dataBranch) {
-                setGenreList(dataGenre)
+            if (dataBranch && dataBook) {
                 setBranchList(dataBranch)
+
+                setGenreList(() => {
+                    const updated = dataBook.map((data) => data.genre)
+                    return [...new Set(updated)]
+                })
             }
 
         } catch (error) {
@@ -35,7 +38,7 @@ const SidebarCatalogue = ({ setSelectedBranch, setSelectedGenre, selectedGenre, 
         if (selectedGenre.length === genreList.length) {
             setSelectedGenre([])
         } else {
-            setSelectedGenre(genreList.map((genre) => genre.genre_name))
+            setSelectedGenre(genreList)
         }
     } else {
         if (selectedGenre.includes(data)) {
@@ -89,8 +92,8 @@ const SidebarCatalogue = ({ setSelectedBranch, setSelectedGenre, selectedGenre, 
             {
                 genreList.map((data, index) => (
                     <div className='d-flex gap-2' style={{ width: '50%', }} key={index}>
-                        <input id={style.checkbox} type="checkbox" checked={selectedGenre.includes(data.genre_name)} onClick={() => handleSelectGenre(data.genre_name)}/>
-                        <p>{data.genre_name}</p>
+                        <input id={style.checkbox} type="checkbox" checked={selectedGenre.includes(data)} onClick={() => handleSelectGenre(data)}/>
+                        <p>{data}</p>
                     </div>
                 ))
             }

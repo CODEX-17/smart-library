@@ -3,15 +3,18 @@ import style from './AddBookComponents.module.css'
 import axios from 'axios'
 import { useForm } from 'react-hook-form';
 import { addBook } from '../services/bookServices';
+import { bookGenres } from '../data/genreListData';
 
 const AddBookComponents = ({ handleCloseForm, handleNoticationConfig, selectedBranch }) => {
 
 const [branchList, setBranchList] = useState([])
-const [genreList, setGenreList] = useState([])
+
 
 const {
   register,
   handleSubmit,
+  watch,
+  setValue,
   formState: { errors },
 } = useForm({
   defaultValues: {
@@ -23,12 +26,8 @@ const {
 
 useEffect(() => {
 
-  axios.get('http://82.112.236.213:5001/branch/getBranch')
+  axios.get('http://localhost:5001/branch/getBranch')
   .then((res) => {setBranchList(res.data)})
-  .catch((err) => console.log(err))
-
-  axios.get('http://82.112.236.213:5001/genre/getGenre')
-  .then((res) => {setGenreList(res.data)})
   .catch((err) => console.log(err))
 
 },[])
@@ -102,20 +101,17 @@ const handleClose = () => {
           </div>
 
           <div className='d-flex gap-2 w-100 mb-2'>
+            
             <div className='d-flex flex-column w-100'>
-              <label>Genre <b>*</b></label>
-              <select 
-                {...register('genre', { required: 'Genre is required.' })}
-              >
-                <option value="">Select genre</option>
-                {
-                  genreList.map((genre, index) => (
-                    <option value={genre.genre_name} key={index}>{genre.genre_name}</option>
-                  )) 
-                }
-              </select>
-              {errors.genre && <p>{errors.genre.message}</p>}
+                <label>Genre <b>*</b></label>
+                <input 
+                  type='text'
+                  placeholder='ex.Drama'
+                  {...register('genre', { required: 'Genre is required.' })}
+                />
+                {errors.genre && <p>{errors.genre.message}</p>}
             </div>
+   
             <div className='d-flex flex-column w-100 mb-2'>
               <label>ISBN <b>*</b></label>
               <input 

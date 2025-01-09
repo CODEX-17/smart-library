@@ -314,10 +314,10 @@ router.post('/reset-password/:token', async (req, res) => {
     }
 });
 
-router.get('/getAccounts', async (req, res) => {
+router.get('/getAccounts', (req, res) => {
 
     const query = 'SELECT * FROM accounts'
-
+    console.log('asdasd')
     db.query(query, (error, data, field) => {
         if (error) {
             console.error(error)
