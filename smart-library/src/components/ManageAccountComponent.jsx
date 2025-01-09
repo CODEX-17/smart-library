@@ -9,6 +9,7 @@ import { CgArrowsExchange } from "react-icons/cg";
 import { useForm } from 'react-hook-form';
 import { RiLockPasswordFill } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom'
+import { Select } from 'antd';
 
 const ManageAccountComponent = () => {
 
@@ -426,11 +427,16 @@ const ManageAccountComponent = () => {
                     {errors.birthdate && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.birthdate.message}</p>}
                   </div>
                   <div className='w-100 d-flex flex-column mt-2'>
-                    <label>Gender</label>
-                    <input 
-                        type="gender"
-                        {...register('gender', { required: 'Contact Number is required.' })}
-                      />
+                    <label>Sex</label>
+                    <select 
+                      {...register('gender', { required: 'Gender is required.' })}
+                    >
+                      <option value="">Select gender</option>
+                      <option value="male" >Male</option>
+                      <option value="female" >Female</option>
+                      <option value="Prefer not to say" >Prefer not to say</option>
+                    </select>
+                      
                       {errors.gender && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.gender.message}</p>}
                   </div>
                   <div className='w-100 d-flex flex-column mt-2'>

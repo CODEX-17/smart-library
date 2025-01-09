@@ -443,7 +443,7 @@ const CreateAccount = () => {
 
                       <div className='d-flex flex-column w-100 mb-2'>
                         <div className="input-group mb-2">
-                            <span className="input-group-text">Gender</span>
+                            <span className="input-group-text">Sex</span>
                             <select 
                               className='form-select'
                               {...register('gender', { required: 'Gender is required.' })}
@@ -451,6 +451,7 @@ const CreateAccount = () => {
                               <option value="">Select gender</option>
                               <option value="male" >Male</option>
                               <option value="female" >Female</option>
+                              <option value="Prefer not to say" >Prefer not to say</option>
                             </select>
                         </div>
                         {errors.gender && <p id={style.errorMessage}>{errors.gender.message}</p>}
