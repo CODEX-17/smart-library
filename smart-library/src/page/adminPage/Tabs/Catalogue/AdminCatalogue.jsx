@@ -214,24 +214,24 @@ const AdminCatalogue = () => {
           <IoSearch size={25}/>
         </div>
         <div className={style.tableDiv}>
-        <ConfigProvider
-          theme={{
-            components: {
-              Table: {
-                headerBg: '#38b6ff7c', // Custom header background color
-                cellFontSize: 11,
+          <ConfigProvider
+            theme={{
+              components: {
+                Table: {
+                  headerBg: '#38b6ff7c', // Custom header background color
+                  cellFontSize: '1em',
+                },
               },
-            },
-          }}
-        >
-        <Table 
-            className={style.table} 
-            headerBg={'#38b6ff'}
-            columns={column} 
-            dataSource={filteredData} 
-            pagination={{ pageSize: 5 }} 
-        />
-        </ConfigProvider>
+            }}
+          >
+          <Table 
+              className={style.table} 
+              headerBg={'#38b6ff'}
+              columns={column} 
+              dataSource={filteredData} 
+              pagination={{ pageSize: 5 }} 
+          />
+          </ConfigProvider>
         </div>
       </div>
     </div>

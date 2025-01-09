@@ -135,30 +135,20 @@ const AdminPage = () => {
                         </div>
 
                         {
+                            user?.acctype === 'super' && 
                             (activeMenu === 'tables' || activeMenu === 'tableGenre' || activeMenu === 'tableBranch' ) &&
                             <div className={style.divDropDown}>
                                 <div 
-                                    className={activeMenu === 'tableGenre' ? style.cardActive : style.card}
-                                    onClick={() => setActiveMenu('tableGenre')}
+                                    className={activeMenu === 'tableBranch' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('tableBranch')}
                                 >
-                                    <BiCategory size={25} color='#38b6ff'/>
-                                    <p>Genre</p>
+                                    <PiGitBranchBold size={25} color='#38b6ff'/>
+                                    <p>Branch</p>
                                 </div>
-
-                                {
-                                    user.acctype === 'super' && 
-                                    <div 
-                                        className={activeMenu === 'tableBranch' ? style.cardActive : style.card}
-                                        onClick={() => setActiveMenu('tableBranch')}
-                                    >
-                                        <PiGitBranchBold size={25} color='#38b6ff'/>
-                                        <p>Branch</p>
-                                    </div>
-                                }
-                                
 
                             </div>
                         }
+                        
 
                         <div 
                             className={activeMenu === 'catalogue' ? style.cardActive : style.card}

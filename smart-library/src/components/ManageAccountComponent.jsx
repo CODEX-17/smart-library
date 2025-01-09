@@ -340,10 +340,14 @@ const ManageAccountComponent = () => {
               <div className={style.left}>
                     <div className='w-100 d-flex flex-column gap-3 align-items-center justify-content-center'>
                       <div className={style.imageDiv}>
-                        <UserProfile 
-                          imageID={imageID} 
-                          firstname={'rumar'}
-                        />
+                        {
+                          image ? <img src={URL.createObjectURL(image)} alt="profile" /> :
+                            <UserProfile 
+                              imageID={imageID}
+                              firstname={'rumar'}
+                            />
+                        }
+                        
                       </div>
                       <p 
                         style={{ cursor: 'pointer', gap: 10 }} 
