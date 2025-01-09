@@ -57,7 +57,7 @@
     border-radius: 5px;
   }
 
-  input {
+  input, select {
     height: 40px;
     background-color: rgba(128, 128, 128, 0.147);
     border: none;
