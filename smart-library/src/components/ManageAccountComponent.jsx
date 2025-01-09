@@ -435,7 +435,7 @@ const ManageAccountComponent = () => {
                     <select 
                       {...register('gender', { required: 'Gender is required.' })}
                     >
-                      <option value="">Select gender</option>
+                      <option value="">Select Sex</option>
                       <option value="male" >Male</option>
                       <option value="female" >Female</option>
                       <option value="Prefer not to say" >Prefer not to say</option>
