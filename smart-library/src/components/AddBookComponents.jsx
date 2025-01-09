@@ -26,7 +26,7 @@ const {
 
 useEffect(() => {
 
-  axios.get('http://localhost:5001/branch/getBranch')
+  axios.get('http://82.112.236.213:5001/branch/getBranch')
   .then((res) => {setBranchList(res.data)})
   .catch((err) => console.log(err))
 

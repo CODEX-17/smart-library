@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const TableEditModalComponents = ({ currentTable, selectedData, setIssShowEditModal, notificationConfig }) => {
 
-    const url = 'http://localhost:5001'
+    const url = 'http://82.112.236.213:5001'
 
     const {
         handleSubmit,

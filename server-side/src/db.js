@@ -11,7 +11,7 @@ const pool = mysql.createPool(
     // }
     {
         connectionLimit: 10,
-        host: 'localhost',
+        host: '82.112.236.213',
         user: 'root',
         password: '',
         database: 'smart-library'
