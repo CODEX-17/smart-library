@@ -4,9 +4,9 @@ const pool = mysql.createPool(
     {
         connectionLimit: 10,
         host: 'sql12.freesqldatabase.com',
-        user: 'sql12755402',
-        password: 'CF7wM3dXGL',
-        database: 'sql12755402',
+        user: 'sql12756965',
+        password: '5kC76xvCzA',
+        database: 'sql12756965',
         port: 3306,
     }
     // {
