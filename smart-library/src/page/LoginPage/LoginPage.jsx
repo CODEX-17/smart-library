@@ -110,9 +110,9 @@ const LoginPage = () => {
                     <h1>{loginType === 'admin' ? 'Admin Login' : 'Guest Login'}</h1>
                     <input className={style.inputBox} type="email" placeholder='Enter email' onChange={(e) => setEmail(e.target.value)}/>
                     <input className={style.inputBox} type={isShowPassword ? "text" : "password"} placeholder='Enter password' onChange={(e) => setPassword(e.target.value)}/>
-                    <div className='d-flex gap-2 mb-2'>
+                    <div className='d-flex gap-2 mb-2 align-items-center'>
                         <input type="checkbox" value={false} onClick={() => setIsShowPassword(!isShowPassword)}/>
-                        <p>Show password</p>
+                        <p className='m-0'>Show password</p>
                     </div>
                     <button onClick={handleLogin} disabled={enableButton}>Login</button>
                     <div className='d-flex w-100 align-items-center justify-content-around'> 

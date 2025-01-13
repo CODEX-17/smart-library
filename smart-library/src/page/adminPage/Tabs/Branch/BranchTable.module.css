@@ -44,22 +44,7 @@
     color: #38b6ff;
 }
 
-.head input {
-    height: 40px;
-    border: none;
-    color: #38b6ff;
-    font-size: small;
-    font-family: bold;
-    padding-left: 10px;
-    width: 100%;
-    border-radius: 5px;
-    outline: none;
-}
 
-.head input::placeholder {
-    color: #38b6ff;
-    opacity: 0.5;
-}
 
 .head button {
   width: 100px;
@@ -73,16 +58,28 @@
     align-items: center;
     justify-content: center;
     padding-right: 10px;
-    border: 2px solid #38b6ff;
+    background-color: rgba(128, 128, 128, 0.133);
     width: 100%;
     border-radius: 5px;
 }
 
+.searchBar input {
+  height: 40px;
+  border: none;
+  font-size: small;
+  font-family: bold;
+  padding-left: 10px;
+  width: 100%;
+  border-radius: 5px;
+  outline: none;
+  background-color: transparent;
+}
+
+
 .content {
-    border: 2px solid #38b6ff;
     border-radius: 5px;
-    padding: 10px;
     width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 #btnAction {

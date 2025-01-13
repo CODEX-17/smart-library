@@ -89,28 +89,25 @@ const ImportMenuComponents = () => {
               updatedResult[x].quantity = parseInt(updatedResult[x].quantity)
               
               if (updatedResult[x].title === null || updatedResult[x].title === '' || !updatedResult[x].title) {
-                console.log('no title ', updatedResult[x].item_no)
                 updatedResult[x].title = 'no title'
               }
 
               if (updatedResult[x].ISBN === null || updatedResult[x].ISBN === '' || !updatedResult[x].ISBN) {
-                console.log('no ISBN ', updatedResult[x].item_no)
                 updatedResult[x].ISBN = 'unknown'
               }
 
               if (updatedResult[x].access_no === null || updatedResult[x].access_no === '' || !updatedResult[x].access_no) {
-                console.log('no access_no ', updatedResult[x].item_no)
                 updatedResult[x].access_no = 'unknown'
               }
               
 
               if (updatedResult[x].author_name === null || updatedResult[x].author_name === '' || !updatedResult[x].author_name) {
-                // console.log('no author ', x)
+          
                 updatedResult[x].author_name = 'unknown'
               }
 
               if (updatedResult[x].genre === null || updatedResult[x].genre === '' || !updatedResult[x].genre) {
-                // console.log('no genre ', x)
+              
                 updatedResult[x].genre = 'unknown'
               }
 

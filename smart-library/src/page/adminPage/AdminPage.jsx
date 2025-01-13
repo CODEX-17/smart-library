@@ -6,7 +6,7 @@ import ImportMenuComponents from '../../components/ImportMenuComponents'
 import RequestBookComponent from '../../components/RequestBookComponent';
 import AdminCatalogue from './Tabs/Catalogue/AdminCatalogue';
 import LibraryBooksComponents from '../../components/LibraryBooksComponents';
-import TableViewComponents from '../../components/TableViewComponents';
+import TableViewComponents from './Tabs/Branch/BranchTable';
 import AdminFeedback from './Tabs/Feedback/AdminFeedback';
 import { BiCategory, BiBookAdd } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -26,6 +26,7 @@ import {
     MdOutlineTableChart 
 } from "react-icons/md";
 import ManageAccountComponent from '../../components/ManageAccountComponent';
+import BranchTable from './Tabs/Branch/BranchTable';
 
 
 
@@ -121,32 +122,15 @@ const AdminPage = () => {
                             </div>
                         }
 
-                        <div 
-                            className={
-                                (
-                                    activeMenu === 'tableGenre' ||
-                                    activeMenu === 'tableBranch'
-                                ) ? style.cardActive : style.card
-                            }
-                            onClick={() => setActiveMenu('tableGenre')}
-                        >
-                            <MdOutlineTableChart size={25} color='#38b6ff'/>
-                            <p>Tables</p>
-                        </div>
-
                         {
                             user?.acctype === 'super' && 
-                            (activeMenu === 'tables' || activeMenu === 'tableGenre' || activeMenu === 'tableBranch' ) &&
-                            <div className={style.divDropDown}>
-                                <div 
-                                    className={activeMenu === 'tableBranch' ? style.cardActive : style.card}
-                                    onClick={() => setActiveMenu('tableBranch')}
-                                >
-                                    <PiGitBranchBold size={25} color='#38b6ff'/>
-                                    <p>Branch</p>
-                                </div>
-
-                            </div>
+                            <div 
+                                className={activeMenu === 'branch' ? style.cardActive : style.card}
+                                onClick={() => setActiveMenu('branch')}
+                            >
+                                <PiGitBranchBold size={25} color='#38b6ff'/>
+                                <p>Branch</p>
+                            </div>  
                         }
                         
 
@@ -256,13 +240,7 @@ const AdminPage = () => {
 
                 activeMenu === 'feedback' && <AdminFeedback/> ||
  
-                ( 
-                    activeMenu === 'tables' ||
-                    activeMenu === 'tableGenre' || 
-                    activeMenu === 'tableBranch'
-                ) && 
-                    <TableViewComponents currentTable={activeMenu}/>
-                
+                activeMenu === 'branch' && <BranchTable/>
             }
             
         </div>
