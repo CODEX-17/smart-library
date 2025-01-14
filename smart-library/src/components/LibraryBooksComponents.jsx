@@ -175,6 +175,7 @@ const LibraryBooksComponents = () => {
 
         axios.get('http://82.112.236.213:5001/book/getBooks')
         .then((res) => {
+            console.log(res.data)
             setBookList(res.data)
             setFilteredData(res.data)
         })

@@ -65,8 +65,8 @@ router.post('/addBook', (req, res) => {
 
     db.query(query,[ 
         item_no, 
-        title, 
         ISBN, 
+        title,
         author_name, 
         access_no, 
         genre, 

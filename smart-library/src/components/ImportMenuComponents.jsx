@@ -8,6 +8,7 @@ import loadingGif from '../assets/loading.gif'
 import axios from 'axios'
 import NotificationComponents from './NotificationComponents'
 import * as XLSX from 'xlsx';
+import { Progress } from 'antd';
 
 const ImportMenuComponents = () => {
 
@@ -24,7 +25,9 @@ const ImportMenuComponents = () => {
   const [isShowNotification, setIsShowNotification] = useState(false)
   const [message, setMessage] = useState('')
   const [notifStatus, setNotifStatus] = useState(false)
-  const [dataList, setDataList] = useState([]);
+  const [dataList, setDataList] = useState([])
+
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   const userDetails = JSON.parse(localStorage.getItem('user'))
   const selectedBranch = userDetails?.branch || null
@@ -207,6 +210,7 @@ const ImportMenuComponents = () => {
     let success = 0
     let failed = 0 
     let current_message = ''  
+    let totalProcess = dataList.length
 
     console.log(dataList)
 
@@ -223,6 +227,8 @@ const ImportMenuComponents = () => {
           failed ++
           console.log(err)
         }
+
+        setUploadProgress(Math.round(((i + 1) / totalProcess) * 100))
       }
     }
     
@@ -271,6 +277,13 @@ const ImportMenuComponents = () => {
           <div className={style.loading}>
             <img src={loadingGif} alt="loading.." />
             <h1>Loading...</h1>
+            <Progress
+              className='d-flex justify-content-center mt-2'
+              percent={uploadProgress}
+              percentPosition={{ align: 'end', type: 'inner' }}
+              size={[300, 20]}
+              strokeColor="#ffa600"
+            />
           </div>
         )
       }

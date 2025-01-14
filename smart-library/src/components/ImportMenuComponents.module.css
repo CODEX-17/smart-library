@@ -43,8 +43,8 @@
 .loading h1 {
   margin: 0;
   font-family: bold;
-  color: #38b6ff;
-  font-size: 10pt;
+  color: #ffa600;
+  font-size: 2rem;
 }
 
 .dataDiv {
