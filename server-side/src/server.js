@@ -2,10 +2,13 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const http = require('http')
+const path = require('path')
 
 const corsOptions = {
-    origin: '*', 
-    credentials: true,
+    origin: '*',  // Allow the frontend origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],  // Allow these methods
+    allowedHeaders: ['Content-Type', 'Authorization'],  // Allow specific headers
+    credentials: true,  // Allow cookies or authentication headers (if necessary)
 }
 
 //middleware//
