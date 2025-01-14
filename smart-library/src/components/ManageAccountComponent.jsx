@@ -212,7 +212,11 @@ const ManageAccountComponent = () => {
         formData.append('imageID', imageID)
       }
 
-      axios.post('http://82.112.236.213:5001/account/updateAccount', formData)
+      axios.post('http://82.112.236.213:5001/account/updateAccount', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
       .then((res) => {
         const result = res.data
         const message = result.message
