@@ -56,6 +56,9 @@ router.post('/createAccount', upload.single('image'), async (req, res) => {
         city
     } = req.body;
 
+    console.log(req.body)
+    console.log(req.file)
+
     const queryAccounts = `
         INSERT INTO accounts(
             card_number, branch, firstname, middlename, lastname, contact, email, password, 
