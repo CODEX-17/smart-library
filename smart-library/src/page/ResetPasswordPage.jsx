@@ -101,7 +101,7 @@ const handleSubmit = async (e) => {
           </div>    
         ) : 
         (
-          <div className='container d-flex flex-column gap-2'>  
+          <div className='container d-flex flex-column gap-2 align-items-center justify-content-center'>  
             <form onSubmit={handleSubmit}>
               <h1>Reset Password</h1>
               <div className={style.inputPasswordDiv}>
