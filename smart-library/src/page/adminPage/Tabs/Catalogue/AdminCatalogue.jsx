@@ -16,9 +16,10 @@ const AdminCatalogue = () => {
   const [bookList, setBookList] = useState([])
   const [enableBtn, setEnableBtn] = useState(false)
   const [isShowTable, setIsShowTable] = useState(false)
+  const userDetails = JSON.parse(localStorage.getItem('user'))
 
   const [selectedGenre, setSelectedGenre] = useState([])
-  const [selectedBranch, setSelectedBranch] = useState('all')
+  const [selectedBranch, setSelectedBranch] = useState(userDetails?.branch)
   const [selectDateAcquired, setSelectDateAcquired] = useState({ start: '', end: '' })
   const [filterText, setFilterText] = useState('')
 
@@ -202,6 +203,7 @@ const AdminCatalogue = () => {
     <div className={style.container}>
       <div className={style.sidebar}>
         <SidebarCatalogue 
+          selectedBranch={selectedBranch}
           setSelectedBranch={setSelectedBranch} 
           setSelectedGenre={setSelectedGenre} 
           selectedGenre={selectedGenre}

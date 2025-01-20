@@ -427,14 +427,6 @@ const ManageAccountComponent = () => {
                       />
                   </div>
                   <div className='w-100 d-flex flex-column mt-2'>
-                    <label>Birth Date</label>
-                    <input 
-                        type="birthdate"
-                        {...register('birthdate', { required: 'Contact Number is required.' })}
-                      />
-                    {errors.birthdate && <p style={{ color: 'red', fontSize: '0.7rem', margin: 0 }}>{errors.birthdate.message}</p>}
-                  </div>
-                  <div className='w-100 d-flex flex-column mt-2'>
                     <label>Sex</label>
                     <select 
                       {...register('gender', { required: 'Gender is required.' })}

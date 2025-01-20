@@ -104,12 +104,6 @@ const LibraryBooksComponents = () => {
                     style={{ backgroundColor: 'rgb(56, 127, 57)'}}
                     onClick={() => handleEdit(data)}
                 ><MdEditSquare size={15}/></button>
-
-                <button 
-                    id={style.btnAction} 
-                    title='delete' 
-                    onClick={() => handleDelete(data.book_id)}
-                ><AiFillDelete size={15}/></button>
             </div>,
         },
     ]

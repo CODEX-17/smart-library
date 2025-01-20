@@ -4,7 +4,7 @@ import { HiFilter } from "react-icons/hi";
 import { getBranch } from '../../../../services/branchServices'
 import { getBooks } from '../../../../services/bookServices';
 
-const SidebarCatalogue = ({ setSelectedBranch, setSelectedGenre, selectedGenre, setSelectDateAcquired }) => {
+const SidebarCatalogue = ({ selectedBranch, setSelectedBranch, setSelectedGenre, selectedGenre, setSelectDateAcquired }) => {
 
   const [genreList , setGenreList] = useState([])
   const [branchList, setBranchList] = useState([])
@@ -60,7 +60,7 @@ const SidebarCatalogue = ({ setSelectedBranch, setSelectedGenre, selectedGenre, 
       
       <div className='d-flex flex-column w-100 gap-2'>
         <label>Branch</label>
-        <select onChange={(e) => setSelectedBranch(e.target.value)}>
+        <select value={selectedBranch} onChange={(e) => setSelectedBranch(e.target.value)}>
             <option value='all'>All Branch</option>
             {
                 branchList.map((branch, index) => (

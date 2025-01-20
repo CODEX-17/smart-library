@@ -152,7 +152,6 @@ const CreateAccount = () => {
         formData.append('acctype', type)
         formData.append('gender', data.gender)
         formData.append('street_address', data.street_address)
-        formData.append('birthdate', data.birthdate)
         formData.append('city', data.city)
         formData.append('image', image)
 
@@ -417,7 +416,7 @@ const CreateAccount = () => {
 
                         <div className='d-flex flex-column w-100 mb-2'>
                           {
-                            type !== 'guest' &&
+                            (type === 'guest' || type === 'super') &&
                             <div className="input-group mb-2">
                                 <span className="input-group-text">Branch</span>
                                 <select 
@@ -541,19 +540,7 @@ const CreateAccount = () => {
                           </div>
                           {errors.city && <p id={style.errorMessage}>{errors.city.message}</p>}
                         </div>
-                          {
-                            type === 'admin' &&
-                              <div className='d-flex flex-column w-100 mb-2'>
-                                <div className="input-group mb-2">
-                                  <span className="input-group-text">Birthdate</span>
-                                  <input 
-                                    className="form-control" 
-                                    type='date'
-                                    {...register('birthdate')}
-                                  ></input>
-                                </div>
-                              </div>
-                          }
+        
                         
                     </div>
       

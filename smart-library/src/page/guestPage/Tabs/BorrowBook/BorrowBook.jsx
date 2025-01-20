@@ -170,7 +170,7 @@ const BorrowBook = () => {
         <div className='d-flex flex-column w-100 h-100 align-items-center justify-content-center'>
             <div className='container d-flex flex-column gap-2'>
                 <div className='w-100 d-flex justify-content-between'>
-                    <h3>Borrow Books</h3>
+                    <h3>Search Books</h3>
                     <input 
                         type="text" 
                         className='w-50'

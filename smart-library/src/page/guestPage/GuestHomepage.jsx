@@ -85,24 +85,7 @@ const GuestHomePage = () => {
   },[message])
 
 
-  const handleDeleteReq = (id) => {
 
-    setReqList(reqList.filter((req) => req.id !== id))
-
-    axios.post('http://localhost:5001/borrow/deleteReq', {id})
-    .then((res) => {
-      const result = res.data
-      const message = result.message
-
-      setToastMessage(message)
-      setIsToast(false)
-
-      setTimeout(() => {
-        setIsToast(false)
-      }, 5000);
-
-    }).catch((err) => console.log(err))
-  }
 
   const [filterText, setFilterText] = useState('');
   
@@ -341,61 +324,11 @@ const GuestHomePage = () => {
           }
 
           {
-            activeBtn === 'feedback' && <FeedbackComponents/>  &&
-              <div className={style.tableDiv}>
-                <div className={style.titleDiv}>
-                  <h1>{activeBtn === 'borrow' ? 'Borrow Book' : 'Request List'}</h1>
-                </div>
-                {
-                  activeBtn === 'borrow' && (
-                    <div className={style.searchBarDiv}>
-                        <input
-                          id={style.searchBar}
-                          type="text"
-                          placeholder="Type any key word..."
-                          value={filterText}
-                          onChange={(e) => setFilterText(e.target.value)}
-                        />
-                        <FaFilter size={25} color='white'/>
-                        <select onChange={(e) => setFilterBranch(e.target.value)}>
-                          <option value='all'>All</option>
-                          {
-                            branchList.map((branch, index) => (
-                              <option value={branch.branch_name} key={index}>{branch.branch_name}</option>
-                            ))
-                          }
-                        </select>
-                    </div>
-                  ) 
-                }
-                  <ConfigProvider
-                      theme={{
-                          components: {
-                          Table: {
-                              headerBg: '#38b6ff7c', // Custom header background color
-                              cellFontSize: '.8em',
-                          },
-                          },
-                      }}
-                  >
-                      <Table 
-                          className={style.table} 
-                          headerBg={'#38b6ff'}
-                          columns={ activeBtn === 'borrow' ? borrowColumns : requestColumns }
-                          dataSource={activeBtn === 'borrow' ? filteredData : reqList } 
-                          pagination={{ pageSize: 5 }} 
-                          bordered
-                          scroll={{ x: '1000px' }}
-                      />
-                  </ConfigProvider>
-              </div>
-       
-            || 
+            activeBtn === 'feedback' && <FeedbackComponents/> || 
             activeBtn === 'borrow' && <BorrowBook/> ||
             activeBtn === 'request' && <RequestList/> ||
             activeBtn === 'manageAccount' && <ManageAccountComponent/> ||
             activeBtn === 'catalogue' && <Catalogue/>
-
           }
 
         </div>
