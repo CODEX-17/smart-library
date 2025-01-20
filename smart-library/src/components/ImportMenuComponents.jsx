@@ -32,7 +32,7 @@ const ImportMenuComponents = () => {
   const userDetails = JSON.parse(localStorage.getItem('user'))
   const selectedBranch = userDetails?.branch || null
 
-  const url = 'http://82.112.236.213:5001/'
+  const url = 'http://localhost:5001/'
 
   useEffect(() => {
     axios.get(`${url}branch/getBranch`)

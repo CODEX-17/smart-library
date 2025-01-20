@@ -27,6 +27,7 @@ const bookRoutes = require('./Routes/bookRoutes')
 const borrow = require('./Routes/borrowRoutes')
 const genre = require('./Routes/genreRoutes')
 const feedback = require('./Routes/feedbackRoutes')
+const transaction = require('./Routes/transactionRoutes')
 
 app.use('/account', accountRoutes)
 app.use('/image', imageRoutes)
@@ -35,6 +36,7 @@ app.use('/book', bookRoutes)
 app.use('/borrow', borrow)
 app.use('/genre', genre)
 app.use('/feedback', feedback)
+app.use('/transaction', transaction)
 
 // database connection//
 const port = process.env.PORT || 5001

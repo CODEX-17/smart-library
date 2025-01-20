@@ -12,7 +12,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState('')
     const [isShowPassword, setIsShowPassword] = useState(false)
     const [enableButton, setEnableButton] = useState(true)
-    const [loginType, setLoginType] = useState('admin')
+    const [loginType, setLoginType] = useState('guest')
     const [loadingState, setLoadingState] = useState(false)
     const [isShowErrorMessage, setisShowErrorMessage] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -46,7 +46,7 @@ const LoginPage = () => {
     const handleLogin = async () => {
       console.log('asds')
         try {
-           const result = await axios.post('http://82.112.236.213:5001/account/checkAccount', {email, password})
+           const result = await axios.post('http://localhost:5001/account/checkAccount', {email, password})
 
            if (result) {
                 let userData = result.data
@@ -54,9 +54,9 @@ const LoginPage = () => {
                 const imageID = userData.imageID
 
                 if (imageID !== 'default') {
-                        const fetchData = await axios.get('http://82.112.236.213:5001/image/getImageByImageID/' + imageID)
+                        const fetchData = await axios.get('http://localhost:5001/image/getImageByImageID/' + imageID)
                         const imageDetail = fetchData.data[0]
-                        userData.image = 'http://82.112.236.213:5001/' + imageDetail.filename
+                        userData.image = 'http://localhost:5001/' + imageDetail.filename
                 }
 
                 if (userData.acctype === loginType || userData.acctype === 'super' && loginType === 'admin') {
@@ -97,13 +97,13 @@ const LoginPage = () => {
 
     return (
         <div className={style.container}>
-                {
-                    loadingState && (
-                    <div className={style.loading}>
-                        <LoadingComponents/>
-                    </div>
-                    )
-                }
+            {
+                loadingState && (
+                <div className={style.loading}>
+                    <LoadingComponents/>
+                </div>
+                )
+            }
 
             <div className={style.content}>
                 <div className={ loginType === 'admin' ? style.adminModal : style.studentModal}>

@@ -1,0 +1,70 @@
+@font-face {
+    font-family: bold;
+    src: url('../assets/fonts/Montserrat-Bold.ttf');
+}
+
+@font-face {
+    font-family: normal;
+    src: url('../assets/fonts/Montserrat-Regular.ttf');
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: normal;
+}
+
+#btnBorrow {
+    border-radius: 5px;
+    font-family: bold;
+    font-size: .8rem;
+}
+
+.loading {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    position: absolute;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.loading img {
+    width: 100px;
+    height: 100px;
+}
+
+.loading h1 {
+    font-family: bold;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.container input {
+  background-color: white;
+}
+
+.container h3 {
+  font-family: bold;
+  color: white;
+}
+
+
+
+
+
+@keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }

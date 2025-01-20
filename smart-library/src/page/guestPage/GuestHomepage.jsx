@@ -24,6 +24,9 @@ import {
   getCurrentDateString,
   getCurrentTimeString
 } from '../../utils/dateUtils';
+import BorrowBook from './Tabs/BorrowBook/BorrowBook';
+import notificationStore from '../../Store/notificationStore';
+import RequestList from './Tabs/Request List/RequestList';
 
 
 const GuestHomePage = () => {
@@ -41,11 +44,12 @@ const GuestHomePage = () => {
   const [bookList, setBookList] = useState([])
   const [reqList, setReqList] = useState([])
 
-  const [isShowNotification, setIsShowNotification] = useState(false)
   const [message, setMessage] = useState('')
   const [notifStatus, setNotifStatus] = useState(true)
 
   const [isLoading, setIsLoading] = useState(false)
+
+  const { isShowNotification } = notificationStore()
 
 
   const { handleSubmit, register, formState: { errors } } = useForm()
@@ -56,7 +60,7 @@ const GuestHomePage = () => {
   }
 
   useEffect(() => {
-
+  
     if (!localStorage.getItem('user')) {
       navigate('/')
     }else {
@@ -66,67 +70,26 @@ const GuestHomePage = () => {
       }
     }
 
-    axios.get('http://82.112.236.213:5001/branch/getBranch')
+    axios.get('http://localhost:5001/branch/getBranch')
     .then((res) => {setBranchList(res.data)})
     .catch((error) => console.log(error))
 
-      axios.get('http://82.112.236.213:5001/book/getBooks')
-      .then((res) => setBookList(res.data))
-      .catch((error) => console.log(error))
+    axios.get('http://localhost:5001/book/getBooks')
+    .then((res) => setBookList(res.data))
+    .catch((error) => console.log(error))
 
-    axios.get('http://82.112.236.213:5001/borrow/getBorrowByAcctID/' + userAccount.id)
+    axios.get('http://localhost:5001/borrow/getBorrowByAcctID/' + userAccount.id)
     .then((res) => {setReqList(res.data)})
     .catch((error) => console.log(error))
 
   },[message])
 
 
-  const notificationConfig = ( message, status ) => {
-    setMessage(message)
-    setNotifStatus(status)
-    setIsShowNotification(true)
-
-    setTimeout(() => {
-      setIsShowNotification(false)
-      setMessage('')
-    }, 3000);
-  }
-
-  const handleBorrow = (row) => {
-
-      if (isLoading) return
-      setIsLoading(true)
-
-      const finalData = {
-        book_id: row.book_id,
-        title: row.title,
-        author_name: row.author_name,
-        acct_id: userAccount.id,
-        acct_name: getCurrentUserFullname(),
-        date: getCurrentDateString(),
-        time: getCurrentTimeString(),
-        status: 'pending',
-        book_quantity: row.quantity,
-      }
-
-      axios.post('http://82.112.236.213:5001/borrow/addBorrowBooks', finalData)
-      .then((res) => {
-          const result = res.data
-          const message = result.message
-          setTimeout(() => {
-            setIsLoading(false)
-            notificationConfig(message, true)
-          }, 3000);
-          
-      })
-    
-  }
-
   const handleDeleteReq = (id) => {
 
     setReqList(reqList.filter((req) => req.id !== id))
 
-    axios.post('http://82.112.236.213:5001/borrow/deleteReq', {id})
+    axios.post('http://localhost:5001/borrow/deleteReq', {id})
     .then((res) => {
       const result = res.data
       const message = result.message
@@ -351,7 +314,7 @@ const GuestHomePage = () => {
               activeBtn === 'borrow' && '#38b6ff' || 
               activeBtn === 'request' && '#ffa600' ||
               activeBtn === 'catalogue' && 'white' ||
-              activeBtn === 'feedback' && 'white',
+              activeBtn === 'feedback' && 'white'
           }}
         >
           {
@@ -369,6 +332,7 @@ const GuestHomePage = () => {
               <button style={{ backgroundColor: '#C7253E', color: 'white' }} onClick={handleLogout}><IoMdLogOut size={20} color='white'/> Logout</button>
             </div>
           }
+
           {
             isShowNotification && 
             <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
@@ -377,8 +341,7 @@ const GuestHomePage = () => {
           }
 
           {
-            activeBtn === 'feedback' && <FeedbackComponents/> || 
-            ( activeBtn === 'request' || activeBtn === 'borrow' ) &&
+            activeBtn === 'feedback' && <FeedbackComponents/>  &&
               <div className={style.tableDiv}>
                 <div className={style.titleDiv}>
                   <h1>{activeBtn === 'borrow' ? 'Borrow Book' : 'Request List'}</h1>
@@ -425,9 +388,11 @@ const GuestHomePage = () => {
                           scroll={{ x: '1000px' }}
                       />
                   </ConfigProvider>
-                </div>
+              </div>
        
             || 
+            activeBtn === 'borrow' && <BorrowBook/> ||
+            activeBtn === 'request' && <RequestList/> ||
             activeBtn === 'manageAccount' && <ManageAccountComponent/> ||
             activeBtn === 'catalogue' && <Catalogue/>
 

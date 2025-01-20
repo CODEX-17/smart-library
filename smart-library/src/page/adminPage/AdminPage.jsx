@@ -3,12 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import style from './AdminPage.module.css'
 import AnalyticsComponents from '../../components/AnalyticsComponents';
 import ImportMenuComponents from '../../components/ImportMenuComponents'
-import RequestBookComponent from '../../components/RequestBookComponent';
 import AdminCatalogue from './Tabs/Catalogue/AdminCatalogue';
 import LibraryBooksComponents from '../../components/LibraryBooksComponents';
-import TableViewComponents from './Tabs/Branch/BranchTable';
 import AdminFeedback from './Tabs/Feedback/AdminFeedback';
-import { BiCategory, BiBookAdd } from "react-icons/bi";
+import { BiBookAdd } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { GrDashboard } from "react-icons/gr";
 import { FiBookOpen } from "react-icons/fi";
@@ -16,6 +14,7 @@ import { LiaBookSolid } from "react-icons/lia";
 import { IoSync } from "react-icons/io5";
 import { MdManageAccounts } from "react-icons/md";
 import { IoMdLogOut, IoMdArrowDropdownCircle } from "react-icons/io";
+import { FaHistory } from "react-icons/fa";
 import { 
     PiGitBranchBold,
     PiBooksLight
@@ -27,6 +26,12 @@ import {
 } from "react-icons/md";
 import ManageAccountComponent from '../../components/ManageAccountComponent';
 import BranchTable from './Tabs/Branch/BranchTable';
+import RequestBooks from './Tabs/Circulation/RequestBooks/RequestBooks';
+import ModalLoading from '../../components/ModalLoading';
+import loadingStore from '../../Store/loadingStore';
+import notificationStore from '../../Store/notificationStore';
+import NotificationComponents from '../../components/NotificationComponents';
+import TransactionHistory from './Tabs/TransactionHistory/TransactionHistory';
 
 
 
@@ -37,19 +42,25 @@ const AdminPage = () => {
   const [user, setUser] = useState(null)
   const [isShowSetting, setIsShowSetting] = useState(false)
   const navigate = useNavigate()
-  
+  const { isShowLoading } = loadingStore()
+  const { isShowNotification } = notificationStore()
 
-  useEffect(() => {
+
+  useEffect(() => { 
+
     if (!localStorage.getItem('user')) {
         navigate('/')
     }else {
         const data = JSON.parse(localStorage.getItem('user'))
-        if (data.acctype !== 'admin' && data.acctype !== 'super') {
-            navigate('/')
-        }
+
+        if (data.acctype === 'super') setActiveMenu('branch') 
+
+        if (data.acctype !== 'admin' && data.acctype !== 'super') navigate('/')
+        
     }
     
     setUser(JSON.parse(localStorage.getItem('user')))
+    
   },[])
 
   const handleLogout = () => {
@@ -80,98 +91,103 @@ const AdminPage = () => {
                     
                     <div className={style.menuContainer}>                        
 
-                        <div 
-                            className={activeMenu === 'dashboard' ? style.cardActive : style.card}
-                            onClick={() => setActiveMenu('dashboard')}
-                        >
-                            <GrDashboard size={25} color='#38b6ff'/>
-                            <p>Dashboard</p>
-                        </div>
-
-                        <div 
-                            className={
-                                (
-                                    activeMenu === 'circulation' || 
-                                    activeMenu === 'addBook' || 
-                                    activeMenu === 'reqBook'
-                                ) ? style.cardActive : style.card}
-                            onClick={() => setActiveMenu('addBook')}
-                        >
-                            <IoSync size={25} color='#38b6ff'/>
-                            <p>Circulation</p>
-                        </div>
-
                         {
-                            (activeMenu === 'circulation' || activeMenu === 'addBook' || activeMenu === 'reqBook') &&
-                            <div className={style.divDropDown}>
+                            user?.acctype === 'super' ?
+                            <>
                                 <div 
-                                    className={activeMenu === 'addBook' ? style.cardActive : style.card}
+                                    className={activeMenu === 'branch' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('branch')}
+                                >
+                                    <PiGitBranchBold size={25} color='#38b6ff'/>
+                                    <p>Branch</p>
+                                </div>  
+                                
+                                <div 
+                                    className={activeMenu === 'createAccountAdmin' ? style.cardActive : style.card}
+                                    onClick={() => {setActiveMenu('createAccountAdmin', navigate('/createAccount', { state: { type: 'admin' }}))}}
+                                >
+                                    <MdOutlineSupervisorAccount size={25} color='#38b6ff'/>
+                                    <p>Create Admin Account</p>
+                                </div>
+                            </>
+                            :
+                            <>
+                                <div 
+                                    className={activeMenu === 'dashboard' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('dashboard')}
+                                >
+                                    <GrDashboard size={25} color='#38b6ff'/>
+                                    <p>Dashboard</p>
+                                </div>
+
+                                <div 
+                                    className={
+                                        (
+                                            activeMenu === 'circulation' || 
+                                            activeMenu === 'addBook' || 
+                                            activeMenu === 'reqBook'
+                                        ) ? style.cardActive : style.card}
                                     onClick={() => setActiveMenu('addBook')}
                                 >
-                                    <BiBookAdd size={25} color='#38b6ff'/>
-                                    <p>Add Books</p>
+                                    <IoSync size={25} color='#38b6ff'/>
+                                    <p>Circulation</p>
+                                </div>
+
+                                {
+                                    (activeMenu === 'circulation' || activeMenu === 'addBook' || activeMenu === 'reqBook') &&
+                                    <div className={style.divDropDown}>
+                                        <div 
+                                            className={activeMenu === 'addBook' ? style.cardActive : style.card}
+                                            onClick={() => setActiveMenu('addBook')}
+                                        >
+                                            <BiBookAdd size={25} color='#38b6ff'/>
+                                            <p>Add Books</p>
+                                        </div>
+
+                                        <div 
+                                            className={activeMenu === 'reqBook' ? style.cardActive : style.card}
+                                            onClick={() => setActiveMenu('reqBook')}
+                                        >
+                                            <LiaBookSolid size={25} color='#38b6ff'/>
+                                            <p>Request Books</p>
+                                        </div>
+                                    </div>
+                                }
+        
+
+                                <div 
+                                    className={activeMenu === 'catalogue' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('catalogue')}
+                                >
+                                    <FiBookOpen size={25} color='#38b6ff'/>
+                                    <p>Catalogue</p>
                                 </div>
 
                                 <div 
-                                    className={activeMenu === 'reqBook' ? style.cardActive : style.card}
-                                    onClick={() => setActiveMenu('reqBook')}
+                                    className={activeMenu === 'libBook' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('libBook')}
                                 >
-                                    <LiaBookSolid size={25} color='#38b6ff'/>
-                                    <p>Request Books</p>
+                                    <PiBooksLight size={25} color='#38b6ff'/>
+                                    <p>Library Books</p>
                                 </div>
-                            </div>
-                        }
 
-                        {
-                            user?.acctype === 'super' && 
-                            <div 
-                                className={activeMenu === 'branch' ? style.cardActive : style.card}
-                                onClick={() => setActiveMenu('branch')}
-                            >
-                                <PiGitBranchBold size={25} color='#38b6ff'/>
-                                <p>Branch</p>
-                            </div>  
-                        }
+                                <div 
+                                    className={activeMenu === 'feedback' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('feedback')}
+                                >
+                                    <MdOutlineFeedback size={25} color='#38b6ff'/>
+                                    <p>Feedback</p>
+                                </div>
+                                <div 
+                                    className={activeMenu === 'history' ? style.cardActive : style.card}
+                                    onClick={() => setActiveMenu('history')}
+                                >
+                                    <FaHistory size={20} color='#38b6ff'/>
+                                    <p>Transaction History</p>
+                                </div>
+                            </>
                         
-
-                        <div 
-                            className={activeMenu === 'catalogue' ? style.cardActive : style.card}
-                            onClick={() => setActiveMenu('catalogue')}
-                        >
-                            <FiBookOpen size={25} color='#38b6ff'/>
-                            <p>Catalogue</p>
-                        </div>
-
-                        
-
-                        <div 
-                            className={activeMenu === 'libBook' ? style.cardActive : style.card}
-                            onClick={() => setActiveMenu('libBook')}
-                        >
-                            <PiBooksLight size={25} color='#38b6ff'/>
-                            <p>Library Books</p>
-                        </div>
-
-                        <div 
-                            className={activeMenu === 'feedback' ? style.cardActive : style.card}
-                            onClick={() => setActiveMenu('feedback')}
-                        >
-                            <MdOutlineFeedback size={25} color='#38b6ff'/>
-                            <p>Feedback</p>
-                        </div>
-
-                        {
-                            user?.acctype === 'super' &&
-                            <div 
-                                className={activeMenu === 'createAccountAdmin' ? style.cardActive : style.card}
-                                onClick={() => {setActiveMenu('createAccountAdmin', navigate('/createAccount', { state: { type: 'admin' }}))}}
-                            >
-                                <MdOutlineSupervisorAccount size={25} color='#38b6ff'/>
-                                <p>Create Admin Account</p>
-                            </div>
-                        }
-                        
-                       
+                    }
 
                     </div>
                 </div>
@@ -198,8 +214,8 @@ const AdminPage = () => {
                     activeMenu === 'catalogue' && 'Catalogue' ||
                     activeMenu === 'libBook' && 'Library Books' ||
                     activeMenu === 'feedback' && 'Feedbacks' ||
-                    activeMenu === 'tableGenre' && 'Table / Genre' ||
-                    activeMenu === 'tableBranch' && 'Table / Branch'
+                    activeMenu === 'branch' && 'Branch List' ||
+                    activeMenu === 'history' && 'Transaction History'
                 }</h1>
        
             
@@ -215,6 +231,20 @@ const AdminPage = () => {
         </div>
 
         <div className={style.content}>
+            {
+                isShowLoading && 
+                <div className='d-flex w-100 h-100 position-absolute' style={{ zIndex: 20 }}>
+                    <ModalLoading/>
+                </div>
+            }
+
+            {
+                isShowNotification &&
+                <div style={{ position: 'absolute', top: 10, right: 10 }}>
+                    <NotificationComponents/>
+                </div>
+            }
+
             {
                 isShowSetting &&
                 <div className={style.settingCard}>
@@ -232,13 +262,15 @@ const AdminPage = () => {
 
                 activeMenu === 'addBook' && <ImportMenuComponents/> ||
 
-                activeMenu === 'reqBook' && <RequestBookComponent/> ||
+                activeMenu === 'reqBook' && <RequestBooks/> ||
 
                 activeMenu === 'catalogue' && <AdminCatalogue/> ||
 
                 activeMenu === 'libBook' && <LibraryBooksComponents/> ||
 
                 activeMenu === 'feedback' && <AdminFeedback/> ||
+
+                activeMenu === 'history' && <TransactionHistory/> ||
  
                 activeMenu === 'branch' && <BranchTable/>
             }

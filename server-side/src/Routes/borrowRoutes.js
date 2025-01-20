@@ -22,10 +22,11 @@ router.post('/addBorrowBooks', limiter, async (req, res) => {
         acct_name,
         date,time,
         status,
-        book_quantity
+        branch,
     } =  req.body
 
-    const insertQuery = 'INSERT INTO borrow_books(book_id,title,author_name,acct_id,acct_name,date,time,status) VALUES(?,?,?,?,?,?,?,?)'
+
+    const insertQuery = 'INSERT INTO borrow_books(book_id,title,author_name,acct_id,acct_name,date,time,status,branch) VALUES(?,?,?,?,?,?,?,?,?)'
 
     const insertDatas = [
         book_id,
@@ -35,6 +36,7 @@ router.post('/addBorrowBooks', limiter, async (req, res) => {
         acct_name,
         date,time,
         status,
+        branch
     ]
 
 
@@ -56,17 +58,32 @@ router.post('/addBorrowBooks', limiter, async (req, res) => {
 //API add borrow books
 router.post('/updateReq', async (req, res) => {
 
-    const { response, id, book_id } =  req.body
+    const { response, id, book_id, name, branch, title } = req.body
+
     const queryUpdateBorrow = 'UPDATE borrow_books SET status = ? WHERE id=?'
+    const transactionQuery = `INSERT INTO transaction_history(
+    book_id, title, transaction, name, branch, date, time) VALUES(?,?,?,?,?, CURDATE(), CURTIME())`
     const queryUpdateBook = 
             response === 'approved' ? 
             'UPDATE books SET quantity = quantity - 1 WHERE book_id=?' :
             'UPDATE books SET quantity = quantity + 1 WHERE book_id=?'
 
     try {
-        
+
         const updateBorrowBooks = await new Promise((resolve, reject) => {
             db.query(queryUpdateBorrow, [response, id], (error, data, field) => {
+                if (error) {
+                    console.log('Error in updating the borrow table:', error)
+                    reject(error)
+                }
+
+                console.log('Successfully update borrow_book.')
+                resolve('Successfully update borrow_book.')
+            })
+        })
+
+        const addTransactionHistory = await new Promise((resolve, reject) => {
+            db.query(transactionQuery, [book_id, title, response, name, branch, title], (error, data, field) => {
                 if (error) {
                     console.log('Error in updating the borrow table:', error)
                     reject(error)
@@ -89,7 +106,7 @@ router.post('/updateReq', async (req, res) => {
         })
         
 
-        await Promise.all([updateBorrowBooks, updateBook])
+        await Promise.all([updateBorrowBooks, updateBook, addTransactionHistory])
 
         res.status(200).json({
             message: 'Successfully update book.'

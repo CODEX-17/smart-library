@@ -12,13 +12,17 @@ import { IoMdHome } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import NotificationComponents from '../components/NotificationComponents';
+import { verifyEmail } from '../services/accountServices';
+import EmailVerifyModal from './LoginPage/Modal/EmailVerifyModal';
+import { MdVerifiedUser } from "react-icons/md";
+
 
 const CreateAccount = () => {
 
   const [maxCardNumber, setMaxCardNumber] = useState(0)
   const [accountList, setAccountList] = useState([])
   const [branchList, setBranchList] = useState([])
-  const url = 'http://82.112.236.213:5001'
+  const url = 'http://localhost:5001'
 
   const cityArray = [
     "ALFONSO",
@@ -53,6 +57,9 @@ const CreateAccount = () => {
   const [isDoneProcess, setIsDoneProcess] = useState(false)
   const [message, setMessage] = useState('')
   const [notifStatus, setNotifStatus] = useState(true)
+  const [hashCode, setHashCode] = useState(null)
+  const [verified, setVerified] = useState(false)
+
 
   const navigate = useNavigate()
 
@@ -60,13 +67,15 @@ const CreateAccount = () => {
   const location = useLocation()
   const { type } = location.state || {};
   const [showPassword, setIsShowPassword] = useState(false)
-
+  const [isShowModalVerification, setIsShowModalVerification] = useState(true)
+  
   const {
     handleSubmit,
     register,
     reset,
     watch,
     setValue,
+    setError,
     formState: { errors }
   } = useForm({
     defaultValues: {
@@ -103,6 +112,7 @@ const CreateAccount = () => {
   },[])
 
   const password = watch('password')
+  const email = watch('email')
 
   const validatePassword = (value) => {
     const validLength = value.length >= 12;
@@ -123,9 +133,11 @@ const CreateAccount = () => {
 
   const onSubmit = (data) => {
 
-    setLoadingState(true)
+    if (verified) {
 
-    if (password) {
+      if (password) {
+
+        setLoadingState(true)
 
         const formData = new FormData
 
@@ -144,7 +156,7 @@ const CreateAccount = () => {
         formData.append('city', data.city)
         formData.append('image', image)
 
-        axios.post('http://82.112.236.213:5001/account/createAccount', formData)
+        axios.post('http://localhost:5001/account/createAccount', formData)
         .then((res) => {
             const data = res.data
             const message = data.message
@@ -161,7 +173,12 @@ const CreateAccount = () => {
             console.log(error)
         })
 
+      }
+    }else {
+      setError('email', { type: 'manual', message: 'Verify email first.' });
     }
+
+
   }
 
   const handleFileUpload = (e) => {
@@ -186,6 +203,20 @@ const CreateAccount = () => {
     navigate('/login')
   }
 
+  const handleVerifyEmail = async () => {
+
+    if (email) {
+      const result = await verifyEmail(email)
+
+      if (result) {
+        setHashCode(result.code)
+        setIsShowModalVerification(true)
+      }
+
+    }else {
+      setError('email', { type: 'manual', message: 'Please input an email.' })
+    }
+  }
   
 
   return (
@@ -204,6 +235,17 @@ const CreateAccount = () => {
             <NotificationComponents message={message} status={notifStatus}/>
           </div>
         )
+      }
+
+      {
+        (isShowModalVerification && hashCode) &&
+        <div style={{ position: 'absolute', width: '100%', height: '100%', zIndex: 20}}>
+          <EmailVerifyModal 
+            hashCode={hashCode} 
+            setIsShowModalVerification={setIsShowModalVerification}
+            setVerified={setVerified}
+          />
+        </div>
       }
 
       {
@@ -246,17 +288,27 @@ const CreateAccount = () => {
                 <div className={style.contentTop}>
                   <div className={style.left}>
                     <div className='d-flex flex-column w-100 mb-2'>
-                      <div className="input-group">
+                      <div className="input-group d-flex align-items-center">
                           <span className="input-group-text">Email Address</span>
                           <input 
                             className="form-control" 
-                            type='email' 
+                            type='email'
+                            disabled={verified} 
                             {...register('email', { 
                               required: 'Email is required.',
-                              validate: validateEmail 
+                              validate: validateEmail
                             })}
                           ></input>
+                          {
+                            verified ? <MdVerifiedUser color='green' size={25} className='m-2'/> :
+                            <div 
+                              id={style.btnVerify}
+                              onClick={handleVerifyEmail}
+                            >Verify Email</div>
+                          }
+                          
                       </div>
+                      
                       {errors.email && <p id={style.errorMessage}>{errors.email.message}</p>}
                     </div>
                     

@@ -19,7 +19,6 @@ export const convertDateFormatIntoString = (date) => {
           month === '11' && 'Nov' || 
           month === '12' && 'Dec' 
 
-          console.log(`${month}. ${day}, ${year}`)
         return `${month}. ${day}, ${year}`
       }
       

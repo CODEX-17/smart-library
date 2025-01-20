@@ -1,21 +1,22 @@
 import React from 'react'
 import { AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 import style from './NotificationComponents.module.css'
+import notificationStore from '../Store/notificationStore';
 
-const NotificationComponents = ({ message, status }) => {
+const NotificationComponents = () => {
 
-  const color = status ? '#1F4529' : '#AF1740' || '#AF1740'
-  const statusContent = status || false
-  const content = message || 'no content.'
+  const { message, notifStatus } = notificationStore()
+
+  const color = notifStatus ? '#1F4529' : '#AF1740' || '#AF1740'
 
   return (
     <div className={style.card} style={{ backgroundColor: color }}>
         {
-            statusContent ?
+            notifStatus ?
                 <AiFillCheckCircle size={25} color='white'/> :
                 <AiFillCloseCircle size={25} color='white'/>
         }
-        <p>{content}</p>
+        <p>{message}</p>
     </div>
   )
 }

@@ -136,7 +136,7 @@ const ManageAccountComponent = () => {
 
   const handleCheckPassword = () => {
 
-    axios.post('http://82.112.236.213:5001/account/checkAccount', {email, password:currentPassword})
+    axios.post('http://localhost:5001/account/checkAccount', {email, password:currentPassword})
     .then((res) => {
       const result = res.data
   
@@ -164,7 +164,7 @@ const ManageAccountComponent = () => {
 
   const handleChangePassword = () => {
 
-    axios.post('http://82.112.236.213:5001/account/changePassword', {email, newPassword})
+    axios.post('http://localhost:5001/account/changePassword', {email, newPassword})
     .then((res) => {
       const result = res.data
       const message = result.message
@@ -212,7 +212,7 @@ const ManageAccountComponent = () => {
         formData.append('imageID', imageID)
       }
 
-      axios.post('http://82.112.236.213:5001/account/updateAccount', formData, {
+      axios.post('http://localhost:5001/account/updateAccount', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -421,9 +421,9 @@ const ManageAccountComponent = () => {
                   <div className='w-100 d-flex flex-column mt-2'>
                       <label>Designated Branch</label>
                       <input 
-                        type="text" 
+                        type="text"
+                        disabled 
                         {...register('branch')}
-                        disabled
                       />
                   </div>
                   <div className='w-100 d-flex flex-column mt-2'>
