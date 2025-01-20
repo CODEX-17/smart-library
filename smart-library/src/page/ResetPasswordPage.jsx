@@ -44,7 +44,7 @@ useEffect(() => {
 
   if (password && token) {
 
-    if (password.length > 12) {
+    if (password.length >= 12) {
       setValidLenghtChar(true)
     }else {
       setValidLenghtChar(false)
@@ -110,9 +110,9 @@ const handleSubmit = async (e) => {
           </div>    
         ) : 
         (
-          <div className='w-100 d-flex flex-column gap-2 align-items-center justify-content-center'>  
+          <div className='container d-flex flex-column gap-2 align-items-center justify-content-center'>  
             <form onSubmit={handleSubmit}>
-              <div className='w-50 h-100 d-flex flex-column align-items-center justify-content-center'>
+              <div className='w-100 p-5 h-100 d-flex flex-column align-items-center justify-content-center'>
                 <div className='w-100 d-flex flex-column align-items-start justify-content-center'>
                   <label>Reset Password</label>
                   <div className={style.inputPasswordDiv}>
@@ -152,10 +152,10 @@ const handleSubmit = async (e) => {
                           required 
                       />
                       {
-                        isShowPassword ? 
-                          <IoMdEyeOff size={25} cursor={'pointer'} color='gray' onClick={() => setIsShowRePassword(!isShowPassword)}/>
+                        isShowRePassword ? 
+                          <IoMdEyeOff size={25} cursor={'pointer'} color='gray' onClick={() => setIsShowRePassword(!isShowRePassword)}/>
                           :
-                          <IoMdEye size={25} cursor={'pointer'} color='gray' onClick={() => setIsShowRePassword(!isShowPassword)}/>
+                          <IoMdEye size={25} cursor={'pointer'} color='gray' onClick={() => setIsShowRePassword(!isShowRePassword)}/>
                       }
                     </div>
                     {errorMessage && <p id={style.errorMessage}>{errorMessage}</p>}

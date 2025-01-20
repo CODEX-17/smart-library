@@ -49,13 +49,15 @@ const ForgetPasswordPage = () => {
                 <h1>Forget Password</h1>
                 <p>Enter your email below to receive the reset link.</p>
               </div>
-              <input 
-                type="email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                placeholder="Enter your email" 
-                required 
-              />
+              <div className='d-flex w-100 flex-column mb-2'>
+                <input 
+                  type="email" 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
+                  placeholder="Enter your email" 
+                  required 
+                />
+              </div>
               <div className='w-100 d-flex flex-column gap-3 justify-content-center'>
                 <button type="submit">Send Reset Link</button>
                 <p 

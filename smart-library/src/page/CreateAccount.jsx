@@ -416,7 +416,7 @@ const CreateAccount = () => {
 
                         <div className='d-flex flex-column w-100 mb-2'>
                           {
-                            (type === 'guest' || type === 'super') &&
+                            (type === 'guest' || type === 'admin') &&
                             <div className="input-group mb-2">
                                 <span className="input-group-text">Branch</span>
                                 <select 
