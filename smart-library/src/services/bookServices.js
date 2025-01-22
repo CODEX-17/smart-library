@@ -27,6 +27,7 @@ export const addBook = async (data) => {
         
         if (result) {
             console.log('Successfully added books.')
+            console.log(result.data)
             return result.data
         }
 

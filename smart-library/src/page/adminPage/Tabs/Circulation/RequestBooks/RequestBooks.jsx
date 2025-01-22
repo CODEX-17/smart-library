@@ -19,6 +19,7 @@ const RequestBooks = () => {
   const [isShowNotification, setIsShowNotification] = useState(false)
   const [filterText, setFilterText] = useState('')
   const [filterData, setFilterData] = useState([])
+  const userDetails = JSON.parse(localStorage.getItem('user'))
 
   const { notificationConfig } = notificationStore()
   const { handleConfigLoading } = loadingStore()
@@ -42,8 +43,7 @@ const RequestBooks = () => {
         const quantity = books
           .filter((book) => book.book_id == req.book_id)
           .map((book) => book.quantity)
-          console.log('quantity loop', quantity)
-        req.quantity = quantity[0]
+          req.quantity = quantity[0]
       })
 
       setReqList(request.sort((a, b) => {
@@ -51,13 +51,13 @@ const RequestBooks = () => {
         const dateTimeA = new Date(`${a.date}T${a.time}`);
         const dateTimeB = new Date(`${b.date}T${b.time}`);
         return dateTimeB - dateTimeA
-    }))
+    }).filter((book) => book.branch === userDetails?.branch))
       setFilterData(request.sort((a, b) => {
         // Combine date and time into a single Date object
         const dateTimeA = new Date(`${a.date}T${a.time}`);
         const dateTimeB = new Date(`${b.date}T${b.time}`);
         return dateTimeB - dateTimeA
-    }))
+    }).filter((book) => book.branch === userDetails?.branch))
 
       } catch (error) {
         console.log(error)

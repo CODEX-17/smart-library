@@ -89,6 +89,7 @@ const TransactionHistory = () => {
             theme={{
                 components: {
                 Table: {
+                    headerBg: '#38b6ff7c', // Custom header background color
                     cellFontSize: '.8em',
                     margin: 10,
                 },

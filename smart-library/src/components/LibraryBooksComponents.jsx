@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 
 import { Table, ConfigProvider, Button } from 'antd';
 import { convertDateFormatIntoString } from '../utils/dateUtils';
+import { getBooks } from '../services/bookServices';
 
 const LibraryBooksComponents = () => {
 
@@ -90,22 +91,22 @@ const LibraryBooksComponents = () => {
             sorter: (a, b) => new Date(a.publication) - new Date(b.publication),
             responsive: ['xs', 'sm', 'md', 'lg'],
         },
-        {
-            title: 'Action',
-            key: 'action',
-            fixed: 'right',
-            width: 150,
-            responsive: ['xs', 'sm', 'md', 'lg'],
-            render: (data) => 
-            <div className='d-flex gap-2'>
-                <button 
-                    id={style.btnAction}    
-                    title='edit' 
-                    style={{ backgroundColor: 'rgb(56, 127, 57)'}}
-                    onClick={() => handleEdit(data)}
-                ><MdEditSquare size={15}/></button>
-            </div>,
-        },
+        // {
+        //     title: 'Action',
+        //     key: 'action',
+        //     fixed: 'right',
+        //     width: 150,
+        //     responsive: ['xs', 'sm', 'md', 'lg'],
+        //     render: (data) => 
+        //     <div className='d-flex gap-2'>
+        //         <button 
+        //             id={style.btnAction}    
+        //             title='edit' 
+        //             style={{ backgroundColor: 'rgb(56, 127, 57)'}}
+        //             onClick={() => handleEdit(data)}
+        //         ><MdEditSquare size={15}/></button>
+        //     </div>,
+        // },
     ]
 
     const [bookList, setBookList] = useState([])
@@ -114,6 +115,7 @@ const LibraryBooksComponents = () => {
     const [isShowEditModal, setIsShowEditModal] = useState(false)
     const [isToast, setIsToast] = useState(false)
     const [toastMessage, setToastMessage] = useState('')
+    const userDetails = JSON.parse(localStorage.getItem('user'))
 
     const [selectedBook, setSelectedBook]= useState(null)
     const [filterText, setFilterText] = useState('')
@@ -167,25 +169,23 @@ const LibraryBooksComponents = () => {
 
     useEffect(() => {
 
-        axios.get('http://localhost:5001/book/getBooks')
-        .then((res) => {
-            console.log(res.data)
-            setBookList(res.data)
-            setFilteredData(res.data)
-        })
-        .catch((error) => console.log(error))
+        const fetchData = async () => {
+            try {
+                
+                const result = await getBooks()
 
-        axios.get('http://localhost:5001/genre/getGenre')
-        .then((res) => {
-            setGenreList(res.data)
-        })
-        .catch((error) => console.log(error))
+                if (result) {
+                    const updated = result.filter((book) => book.branch === userDetails?.branch)
+                    setBookList(updated)
+                    setFilteredData(updated)
+                }
 
-        axios.get('http://localhost:5001/branch/getBranch')
-        .then((res) => {
-            setBranchList(res.data)
-        })
-        .catch((error) => console.log(error))
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        fetchData()
 
     },[])
 

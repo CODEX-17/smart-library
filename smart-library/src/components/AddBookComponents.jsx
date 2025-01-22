@@ -17,7 +17,7 @@ const {
   formState: { errors },
 } = useForm({
   defaultValues: {
-    quantity: 0,
+    quantity: 1,
     call_no: 0,
     total_value: 0,
   }
@@ -38,8 +38,8 @@ const onSubmit = async (data)  => {
   try {
     const result = await addBook(updated)
     if (result) {
-      const message = result.message
-      handleNoticationConfig(message, true)
+      console.log(result.message)
+      handleNoticationConfig(result.message, true)
       handleCloseForm(false)
     }
 
@@ -134,7 +134,7 @@ const handleClose = () => {
             
             <div className='d-flex flex-column w-100'>
               <label>Quantity <p id={style.optional}>(optional)</p></label>
-              <input type="number" {...register('quantity')}/>
+              <input type="number" {...register('quantity', { required: 'Quantity is required.' })}/>
             </div>
           </div>
           <div className='d-flex w-100 gap-2 mb-2'>
