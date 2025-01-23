@@ -60,7 +60,11 @@ const SidebarCatalogue = ({ selectedBranch, setSelectedBranch, setSelectedGenre,
       
       <div className='d-flex flex-column w-100 gap-2'>
         <label>Branch</label>
-        <select value={selectedBranch} onChange={(e) => setSelectedBranch(e.target.value)}>
+        <select 
+            value={selectedBranch} 
+            onChange={(e) => setSelectedBranch(e.target.value)}
+            disabled
+        >
             <option value='all'>All Branch</option>
             {
                 branchList.map((branch, index) => (

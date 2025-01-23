@@ -35,9 +35,11 @@ const AdminCatalogue = () => {
       const dataGenre = await getGenre()
 
       if (dataBooks) {
-        setBookList(dataBooks)
-        setFilteredData(dataBooks)
+        const updated = dataBooks.filter((data) => data.branch === userDetails?.branch)
+        setBookList(updated)
+        setFilteredData(updated)
       }
+      
       if (dataGenre) setGenreList(dataGenre)
       
     } catch (error) {
