@@ -23,6 +23,15 @@
     color: #38b6ff;
 }
 
+#btnAddQuantity {
+  border-radius: 5px;
+  width: fit-content;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-family: bold;
+  font-size: .8rem;
+}
+
 .toast {
   background-color: #387F39;
   position: absolute;
@@ -53,6 +62,9 @@
   background-color: #EE4E4E;
   height: 40px;
   color: white;
+  gap: 5px;
+  font-size: 0.8rem;
+  font-family: bold;
 }
 
 .searchBar {

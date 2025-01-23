@@ -85,6 +85,7 @@ const TransactionHistory = () => {
 
   return (
     <div className={style.container}>
+      <h3>Transaction History</h3>
       <ConfigProvider
             theme={{
                 components: {

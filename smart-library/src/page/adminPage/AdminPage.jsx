@@ -4,7 +4,6 @@ import style from './AdminPage.module.css'
 import AnalyticsComponents from '../../components/AnalyticsComponents';
 import ImportMenuComponents from '../../components/ImportMenuComponents'
 import AdminCatalogue from './Tabs/Catalogue/AdminCatalogue';
-import LibraryBooksComponents from '../../components/LibraryBooksComponents';
 import AdminFeedback from './Tabs/Feedback/AdminFeedback';
 import { BiBookAdd } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -32,6 +31,7 @@ import loadingStore from '../../Store/loadingStore';
 import notificationStore from '../../Store/notificationStore';
 import NotificationComponents from '../../components/NotificationComponents';
 import TransactionHistory from './Tabs/TransactionHistory/TransactionHistory';
+import LibraryBooks from './Tabs/LibraryBooks/LibraryBooks';
 
 
 
@@ -266,7 +266,7 @@ const AdminPage = () => {
 
                 activeMenu === 'catalogue' && <AdminCatalogue/> ||
 
-                activeMenu === 'libBook' && <LibraryBooksComponents/> ||
+                activeMenu === 'libBook' && <LibraryBooks/> ||
 
                 activeMenu === 'feedback' && <AdminFeedback/> ||
 

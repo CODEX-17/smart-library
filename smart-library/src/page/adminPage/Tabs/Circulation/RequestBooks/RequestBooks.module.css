@@ -87,6 +87,22 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.statusBox {
+  padding: 5px;
+  color: white;
+  background-color: #38b6ff;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+  font-family: bold;
+  width: fit-content;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+}
+
+
 @media (max-width: 425px) {
   .content p {
       font-size: 8pt;

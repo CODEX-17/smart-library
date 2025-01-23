@@ -22,6 +22,10 @@
     position: relative;
 }
 
+.container h3 {
+    font-family: bold;
+}
+
 @keyframes pop {
     0% {
       transform: scale(0.5);

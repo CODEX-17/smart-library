@@ -34,9 +34,6 @@ const RequestBooks = () => {
         getRequestBooks(),
       ])
 
-      console.log('books result', books)
-      console.log('req result', request)
-
       setBookList(books)
 
       request.forEach((req) => {
@@ -119,8 +116,6 @@ const RequestBooks = () => {
     
         setReqList(reqList)
         setFilterData(reqList)
-
-        console.log(result.message)
         notificationConfig(result.message, true)
       }
 
@@ -151,6 +146,24 @@ const RequestBooks = () => {
   }
 
   const column = [
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+        sorter: (a, b) => a.status.localeCompare(b.status),
+        render: (data) => (
+          <div 
+            className={style.statusBox}
+            style={{ 
+              backgroundColor: 
+                  data === 'approved' && '#20c997' ||
+                  data === 'returned' && '#dc3545' ||
+                  data === 'pending' && '#fd7e14'
+            }}
+          >{data}</div>
+        ),
+        responsive: ['xs', 'sm', 'md', 'lg'],
+      },
       {
         title: 'Book ID',
         dataIndex: 'book_id',
@@ -198,13 +211,6 @@ const RequestBooks = () => {
         render: (data) => convertTimeTo12HourFormat(data.time),
         key: 'date',
         sorter: (a, b) => new Date(`1970-01-01T${a.time}`) - new Date(`1970-01-01T${b.time}`),
-        responsive: ['xs', 'sm', 'md', 'lg'],
-      },
-      {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
-        sorter: (a, b) => a.status.localeCompare(b.status),
         responsive: ['xs', 'sm', 'md', 'lg'],
       },
       {

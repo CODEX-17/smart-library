@@ -46,12 +46,6 @@ const AnalyticsComponents = () => {
     ["December", 0, 0, 0, 0],
   ]);
 
-  let currentDate = new Date().toDateString('en-US', { 
-    year: 'numeric', 
-    month: 'short', 
-    day: 'numeric',
-    weekday: 'short' 
-  })
 
   useEffect(() => {
     
@@ -91,9 +85,6 @@ const AnalyticsComponents = () => {
           
         }
 
-        console.log(updatedPieData)
-        console.log(updatedBarData)
-
         setBarData(updatedBarData);
         setPieData(updatedPieData);
       }
@@ -101,7 +92,7 @@ const AnalyticsComponents = () => {
     .catch((err) => console.log(err))
 
     axios.get('http://localhost:5001/account/getAccounts')
-    .then((res) => {console.log('accounts',res.data), setAcctList(res.data)})
+    .then((res) => setAcctList(res.data))
     .catch((err) => console.log(err))
     
   },[])
