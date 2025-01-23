@@ -13,6 +13,7 @@ const FeedbackComponents = () => {
   const [notifStatus, setNotifStatus] = useState(true)
   const [message, setMessage] = useState('')
   const [isShowNotification, setIsShowNotification] = useState(false)
+  const userDetails = JSON.parse(localStorage.getItem('user'))
   
   const date = getCurrentDateString()
   const time = getCurrentTimeString()
@@ -41,12 +42,13 @@ const FeedbackComponents = () => {
   }
 
   const onSubmit = async (data) => {
-    let updated = data
-    if (data.username === '') updated.username = 'anonymous'
-
-    console.log(updated)
-
+  
     try {
+
+      let updated = data
+      updated.branch = userDetails?.branch
+      if (data.username === '') updated.username = 'anonymous'
+
       const result = await addFeedback(updated)
       
       if (result) {

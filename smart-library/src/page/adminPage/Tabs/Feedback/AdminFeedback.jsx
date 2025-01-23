@@ -14,6 +14,7 @@ const AdminFeedback = () => {
   const [message, setMessage] = useState('')
   const [notifStatus, setNotifStatus] = useState(true)
   const [selectedData, setSelectedData] = useState(null)
+  const userDetails = JSON.parse(localStorage.getItem('user'))
 
   useEffect(() => {
 
@@ -22,7 +23,8 @@ const AdminFeedback = () => {
         const result = await getFeedbacks()
         
         if (result) {
-          setFeedbackList(result)
+          const updated = result.filter((data) => data.branch === userDetails?.branch)
+          setFeedbackList(updated)
         }
 
       } catch (error) {
@@ -81,16 +83,20 @@ const AdminFeedback = () => {
       }
       <div className={style.cardList}>
         {
-          feedbackList.map((data, index) => (
-            <div className={style.card} key={index}>
-              <div className='d-flex w-100 align-items-center justify-content-between mb-4'>
-                <h3>{data.username}</h3>
-                <MdDelete size={25} color='#AF1740' title='delete' cursor={'pointer'} onClick={() => handleDelete(data)}/> 
+          feedbackList.length > 0 ?
+            feedbackList.map((data, index) => (
+              <div className={style.card} key={index}>
+                <div className='d-flex w-100 align-items-center justify-content-between mb-4'>
+                  <h3>{data.username}</h3>
+                  <MdDelete size={25} color='#AF1740' title='delete' cursor={'pointer'} onClick={() => handleDelete(data)}/> 
+                </div>
+                <p>{data.message}</p>
+                <p style={{ fontSize: '0.8rem', fontStyle: 'italic' }}>{`${convertDateFormatIntoString(data.date)} (${convertTimeTo12HourFormat(data.time)})`}</p>
               </div>
-              <p>{data.message}</p>
-              <p style={{ fontSize: '0.8rem', fontStyle: 'italic' }}>{`${convertDateFormatIntoString(data.date)} (${convertTimeTo12HourFormat(data.time)})`}</p>
+            )) :
+            <div className='d-flex w-100 h-100 align-items-center justify-content-center position-absolute'>
+              <p className='fs-2 fs-bold' style={{ fontFamily: 'bold' }}>No Feedback Data.</p>
             </div>
-          ))
         }
 
       

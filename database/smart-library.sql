@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 20, 2025 at 10:31 AM
+-- Generation Time: Jan 23, 2025 at 04:05 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -54,10 +54,10 @@ CREATE TABLE `accounts` (
 INSERT INTO `accounts` (`id`, `card_number`, `branch`, `firstname`, `middlename`, `lastname`, `birthdate`, `street_address`, `city`, `contact`, `gender`, `email`, `password`, `acctype`, `imageID`, `reset_token`, `reset_token_expires`) VALUES
 (1, 0, 'GENERAL TRIAS BRANCH', 'MARK', 'HERERA', 'FERNANDEZ', '2024-11-27', '#3', 'NAIC', '09760202655', 'MALE', 'admin@gmail.com', 'sha1$893f4e91$1$008377225482295454a3298cd0070e8c1c9600f7', 'admin', 'default', '4617c4369e2e74938f42655fb96fce85cbe9c03b4172a479796c18d0f342c3cf', '0000-00-00 00:00:00'),
 (36, 0, 'any', 'ROMARs', 'reyes', 'CENA', '2024-09-27', 'SAN GABRIEL', 'NAIC', '09760202622', 'male', 'admin1@gmail.com', 'sha1$893f4e91$1$008377225482295454a3298cd0070e8c1c9600f7', 'super', '2a579c99-6', NULL, NULL),
-(42, 0, 'GENERAL TRIAS BRANCH', 'pamparor', 'c', 'reyes', '2024-11-27', 'undefined', 'NOVELETA', '09760202655', 'male', 'pamparor1@gmail.com', 'sha1$b7233466$1$0c66a06f63b183bdff3c5ff13ed2d36f42e625cc', 'admin', 'default', NULL, NULL),
-(46, 0, 'GENERAL TRIAS BRANCH', 'JS', 'RI', 'REYES', '2024-12-20', '#3 calamansi street', 'MENDEZ', '09760203882', 'male', 'ash.ampart179@gmail.com', 'sha1$db4309c7$1$a17c6fbf89ef96a995c517931dd6a37211878ff1', 'admin', '2a579c99-6', NULL, NULL),
+(42, 0, 'GENERAL TRIAS BRANCH', 'admin', 'c', 'gentri', '2024-11-27', 'undefined', 'NOVELETA', '09760202655', 'male', 'admin_gentri@gmail.com', 'sha1$b7233466$1$0c66a06f63b183bdff3c5ff13ed2d36f42e625cc', 'admin', 'default', NULL, NULL),
+(46, 0, 'NAIC BRANCH', 'JS', 'RI', 'REYES', '2024-12-20', '#3 calamansi street', 'MENDEZ', '09760203882', 'male', 'admin_naic@gmail.com', 'sha1$db4309c7$1$a17c6fbf89ef96a995c517931dd6a37211878ff1', 'admin', '2a579c99-6', NULL, NULL),
 (48, 1009, 'GENERAL TRIAS BRANCH', 'Rumar', 'capoquian', 'pamparo', 'undefined', '3calamansi', 'MARAGONDON', '09760202622', 'male', 'pamparor99@gmail.com', 'sha1$8383e853$1$5c01d4a159eced857972091af39a538ad6d2152f', 'guest', 'lxktmThX', NULL, NULL),
-(49, 1010, 'GENERAL TRIAS BRANCH', 'dasd', 'reyes', 'asd', 'undefined', '3calamansi', 'MENDEZ', '09760202622', 'male', 'pamparor@gmail.com', 'sha1$d603c986$1$baab9d4aa4f86ac30a7551ccf73737d43aeb6163', 'guest', 'default', '5bf2b20238837a37cfd2e8e6aa68416c11f9c0d21bcd97995dcb305a5a205547', '2025-01-20 16:18:41');
+(49, 1010, 'GENERAL TRIAS BRANCH', 'dasd', 'reyes', 'asd', 'undefined', '3calamansi', 'MENDEZ', '09760202622', 'male', 'pamparor@gmail.com', 'sha1$d603c986$1$baab9d4aa4f86ac30a7551ccf73737d43aeb6163', 'guest', 'default', '56de181a7ada0a4328239422d8ea31f7a0e88c2fe028302787ae84033ac2f933', '2025-01-20 22:41:47');
 
 -- --------------------------------------------------------
 
@@ -86,7 +86,11 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`book_id`, `item_no`, `ISBN`, `title`, `author_name`, `access_no`, `genre`, `branch`, `quantity`, `amount`, `total_value`, `date_acquired`, `publication`) VALUES
-(1, '12', '123-990', 'sample book', 'sample authr', '123', 'classic', 'GENERAL TRIAS BRANCH', 7, '90', '10', '2025-01-01', NULL);
+(1, '12', '123-990', 'sample book', NULL, '123', 'classic', 'GENERAL TRIAS BRANCH', 11, '90', '10', '2025-01-01', NULL),
+(2, '23123', '123-990', 'naic book', 'dasds', '231231', 'drama', 'NAIC BRANCH', 3, '222', '0', '2025-01-23', '2025-01-23'),
+(3, '23123', '123-990', 'asdasd', 'asdasd', '2312312', 'drama', 'NAIC BRANCH', 1, '', '0', '2025-01-30', '2025-01-30'),
+(4, '3123', '123-990', 'dasdsad', 'asdddd', '123', 'drama', 'NAIC BRANCH', 1, '', '0', '2025-01-16', '2025-02-04'),
+(5, '3213', '123-990', 'asd', 'asd', '2312312', 'sample', 'NAIC BRANCH', 1, '', '0', '', '');
 
 -- --------------------------------------------------------
 
@@ -116,7 +120,7 @@ INSERT INTO `borrow_books` (`id`, `book_id`, `title`, `author_name`, `branch`, `
 (18, '1', 'sample book', 'sample authr', 'GENERAL TRIAS BRANCH', 48, 'RUMAR PAMPARO', '2025-01-20', '11:21', 'approved'),
 (19, '1', 'sample book', 'sample authr', 'GENERAL TRIAS BRANCH', 49, 'DASD ASD', '2025-01-20', '17:11', 'approved'),
 (20, '1', 'sample book', 'sample authr', 'GENERAL TRIAS BRANCH', 49, 'DASD ASD', '2025-01-20', '17:01', 'returned'),
-(21, '1', 'sample book', 'sample authr', 'GENERAL TRIAS BRANCH', 49, 'DASD ASD', '2025-01-20', '17:28', 'approved');
+(21, '1', 'sample book', 'sample authr', 'NAIC BRANCH', 49, 'DASD ASD', '2025-01-20', '17:28', 'approved');
 
 -- --------------------------------------------------------
 
@@ -147,6 +151,7 @@ INSERT INTO `branch` (`id`, `branch_name`) VALUES
 CREATE TABLE `feedback` (
   `id` int(10) NOT NULL,
   `username` varchar(255) NOT NULL,
+  `branch` varchar(255) NOT NULL,
   `message` longtext NOT NULL,
   `date` varchar(255) NOT NULL,
   `time` time NOT NULL
@@ -156,11 +161,18 @@ CREATE TABLE `feedback` (
 -- Dumping data for table `feedback`
 --
 
-INSERT INTO `feedback` (`id`, `username`, `message`, `date`, `time`) VALUES
-(1, 'anonymous', 'sample feedback', '2024-11-01', '12:55:00'),
-(16, 'anonymous', 'dasdasdasdas', '2024-12-05', '14:20:00'),
-(17, 'anonymous', 'dasdasdsa', '2024-12-05', '14:23:00'),
-(18, 'ako to si mar', 'ganda ng ui nyo', '2024-12-05', '14:23:00');
+INSERT INTO `feedback` (`id`, `username`, `branch`, `message`, `date`, `time`) VALUES
+(1, 'anonymous', 'GENERAL TRIAS BRANCH', 'sample feedback', '2024-11-01', '12:55:00'),
+(16, 'anonymous', 'GENERAL TRIAS BRANCH', 'dasdasdasdas', '2024-12-05', '14:20:00'),
+(17, 'anonymous', 'GENERAL TRIAS BRANCH', 'dasdasdsa', '2024-12-05', '14:23:00'),
+(18, 'ako to si mar', 'NAIC BRANCH', 'ganda ng ui nyo', '2024-12-05', '14:23:00'),
+(19, 'sample gentri', '', 'sample comments', '2025-01-23', '11:00:00'),
+(20, 'sample gentri', '', 'sadasdsa', '2025-01-23', '11:00:00'),
+(21, 'sample gentri', '', 'asdasd', '2025-01-23', '11:00:00'),
+(22, 'dasda', '', 'dasd', '2025-01-23', '11:00:00'),
+(23, 'sample gentri', '', 'asdasd', '2025-01-23', '11:00:00'),
+(24, 'sample gentri', 'GENERAL TRIAS BRANCH', 'asdasd', '2025-01-23', '11:00:00'),
+(25, 'sample gentri1', 'GENERAL TRIAS BRANCH', 'dasda', '2025-01-23', '11:00:00');
 
 -- --------------------------------------------------------
 
@@ -329,7 +341,7 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `book_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `book_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `borrow_books`
@@ -347,7 +359,7 @@ ALTER TABLE `branch`
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `genre`
