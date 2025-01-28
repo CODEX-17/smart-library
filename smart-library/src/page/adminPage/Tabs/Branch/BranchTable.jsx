@@ -10,11 +10,13 @@ import NotificationComponents from '../../../../components/NotificationComponent
 import DeleteNotifComponents from '../../../../components/DeleteNotifComponents';
 import { FaPlus } from "react-icons/fa";
 import LoadingComponents from '../../../../components/LoadingComponents';
-import { getBranch } from '../../../../services/branchServices';
+import { deleteBranch, getBranch } from '../../../../services/branchServices';
 import BranchModal from './Modal/BranchModal';
 
 
 const BranchTable = ({ currentTable }) => {
+
+  const userDetails = JSON.parse(localStorage.getItem('user'))
 
   const column = [
       {
@@ -31,35 +33,33 @@ const BranchTable = ({ currentTable }) => {
         sorter: (a, b) => a.branch_name - b.branch_name,
         responsive: ['xs', 'sm', 'md', 'lg'],
       },
-      {
-        title: 'Action',
-        key: 'action',
-        fixed: 'right',
-        width: 200,
-        responsive: ['xs', 'sm', 'md', 'lg'],
-        render: (data) => 
-          <div className='d-flex gap-2 p-2'>
-            <button 
-              id={style.btnAction} 
-              style={{ backgroundColor: '#387F39' }} 
-              onClick={() => {setSelectedData(data), setIsShowModal(true)}}
-            >
-                <MdEditSquare size={20} title='edit'/>
-            </button>
-            <button 
-              id={style.btnAction} 
-              onClick={() => handleDelete(data)}
-            >
-              <AiFillDelete 
-                size={20} 
-                title='delete'
-              />
-            </button>
-          </div>        
-      }
+      // {
+      //   title: 'Action',
+      //   key: 'action',
+      //   fixed: 'right',
+      //   width: 200,
+      //   responsive: ['xs', 'sm', 'md', 'lg'],
+      //   render: (data) => 
+      //     <div className='d-flex gap-2 p-2'>
+      //       <button 
+      //         id={style.btnAction} 
+      //         style={{ backgroundColor: '#387F39' }} 
+      //         onClick={() => {setSelectedData(data), setIsShowModal(true)}}
+      //       >
+      //           <MdEditSquare size={20} title='edit'/>
+      //       </button>
+      //       <button 
+      //         id={style.btnAction} 
+      //         onClick={() => handleDelete(data)}
+      //       >
+      //         <AiFillDelete 
+      //           size={20} 
+      //           title='delete'
+      //         />
+      //       </button>
+      //     </div>    
+      // }
   ]
-
-  const url = 'http://localhost:5001'
 
   const [branchList, setBranchList] = useState([])
   const [filterData, setFilterData] = useState([])
@@ -97,7 +97,7 @@ const BranchTable = ({ currentTable }) => {
 
     gettingDatas()
 
-  },[url, message])
+  },[message])
 
   useEffect(() => {
     if (filterText != '' && filterData.length > 0) {
@@ -129,22 +129,27 @@ const BranchTable = ({ currentTable }) => {
     setIsShowDeleteNotification(true)
   }
 
-  const handleDeleteResponse = (data) => {
+  const handleDeleteResponse =  async (data) => {
 
     if (data && selectedData) {
 
-      const id = selectedData?.id
+      try {
 
-      axios.post(`${url}/branch/deleteBranch`, { id })
-      .then((res) => {
-        const result = res.data
-        setMessage(result.message)
-        notificationConfig(result.message, true)
-        setIsShowDeleteNotification(false)
-      })
-      .catch(err => console.log(err))
+        const id = selectedData?.id
 
-    }
+        const result = await deleteBranch(id)
+        
+        if (result) {
+          setMessage(result.message)
+          notificationConfig(result.message, true)
+          setIsShowDeleteNotification(false)
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+
+  }
 }
 
 

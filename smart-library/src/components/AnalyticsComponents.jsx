@@ -13,6 +13,10 @@ import { IoExpandSharp } from "react-icons/io5";
 import axios from 'axios';
 import { Chart } from "react-google-charts";
 import SummaryModal from './modal/SummaryModal';
+import { getBooks } from '../services/bookServices';
+import { getRequestBooks } from '../services/borrowBookServices';
+import { getAccounts } from '../services/accountServices';
+import { filter } from 'rxjs';
 Chart.version = "current"; 
 
 const AnalyticsComponents = () => {
@@ -22,13 +26,14 @@ const AnalyticsComponents = () => {
   const [bookList, setBookList] = useState([])
   const [reqList, setReqList] = useState([])
   const [acctList, setAcctList] = useState([])
+  const userDetails = JSON.parse(localStorage.getItem('user'))
   const [pieData, setPieData] = useState([
     ["Status", "Total"],
     ["Approved", 0],
     ["Returned", 0],
     ["Pending", 0],
     ["Rejected", 0],
-  ]);
+  ])
 
   const [barData, setBarData] = useState([
     ["Month", "Approved", "Returned", "Pending", "Rejected"],
@@ -44,56 +49,71 @@ const AnalyticsComponents = () => {
     ["October", 0, 0, 0, 0],
     ["November", 0, 0, 0, 0],
     ["December", 0, 0, 0, 0],
-  ]);
-
+  ])
 
   useEffect(() => {
     
-    axios.get('http://localhost:5001/book/getBooks')
-    .then((res) => {setBookList(res.data)})
-    .catch((err) => console.log(err))
-
-    axios.get('http://localhost:5001/borrow/getBorrow')
-    .then((res) => {
-      const result = res.data
-      setReqList(res.data)
-
-      if (result.length > 0) {
-
-        let updatedPieData = [...pieData]
-        let updatedBarData = [...barData]
-       
-        for (let i = 0; i < result.length; i++) {
-
-          const [year, month, days] = result[i].date.split('-')
-
-          const monthIndex = parseInt(month)
-
-          if (result[i].status === "approved") {
-            updatedPieData[1][1] += 1
-            updatedBarData[monthIndex][1] += 1
-          } else if (result[i].status === "returned") {
-            updatedPieData[2][1] += 1
-            updatedBarData[monthIndex][2] += 1
-          } else if (result[i].status === "pending") {
-            updatedPieData[3][1] += 1
-            updatedBarData[monthIndex][3] += 1
-          } else if (result[i].status === "rejected") {
-            updatedPieData[4][1] += 1
-            updatedBarData[monthIndex][4] += 1
-          }
-          
+    const fetchData = async () => {
+      try {
+        
+        const [ books, requests, accounts ] = await Promise.all([
+          getBooks(),
+          getRequestBooks(),
+          getAccounts(),
+        ])
+        
+        if (books) {
+          const updated = books.filter( books => books.branch === userDetails?.branch)
+          setBookList(updated)
         }
 
-        setBarData(updatedBarData);
-        setPieData(updatedPieData);
-      }
-    })
-    .catch((err) => console.log(err))
+        if (requests) {
+          const updated = requests.filter( req => req.branch === userDetails?.branch)
+          setReqList(updated)
 
-    axios.get('http://localhost:5001/account/getAccounts')
-    .then((res) => setAcctList(res.data))
-    .catch((err) => console.log(err))
+          //Compulation for Bar graph and Pie Chart
+          let updatedPieData = [...pieData]
+          let updatedBarData = [...barData]
+        
+          for (let i = 0; i < updated.length; i++) {
+
+            const [year, month, days] = updated[i].date.split('-')
+
+            const monthIndex = parseInt(month)
+
+            if (updated[i].status === "approved") {
+              updatedPieData[1][1] += 1
+              updatedBarData[monthIndex][1] += 1
+            } else if (updated[i].status === "returned") {
+              updatedPieData[2][1] += 1
+              updatedBarData[monthIndex][2] += 1
+            } else if (updated[i].status === "pending") {
+              updatedPieData[3][1] += 1
+              updatedBarData[monthIndex][3] += 1
+            } else if (updated[i].status === "rejected") {
+              updatedPieData[4][1] += 1
+              updatedBarData[monthIndex][4] += 1
+            }
+            
+          }
+
+          setBarData(updatedBarData);
+          setPieData(updatedPieData);
+        }
+
+        if (accounts) {
+          const updated = accounts.filter( acct => acct.branch === userDetails?.branch)
+          setAcctList(updated)
+        }
+
+
+      } catch (error) {
+        console.log(error)
+      }
+
+    }
+
+    fetchData()
     
   },[])
 

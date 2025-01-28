@@ -46,3 +46,18 @@ export const updateBranch = async (data) => {
         return null
     }
 }
+
+export const deleteBranch = async (id) => {
+    try {
+        const result = await axios.post(`${BASE_URL}/branch/deleteBranch`, { id })
+
+        if (result) {
+            console.log('Successfully delete branch.')
+            return result.data
+        }
+
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}

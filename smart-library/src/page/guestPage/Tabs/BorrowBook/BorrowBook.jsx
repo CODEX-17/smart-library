@@ -91,13 +91,14 @@ const BorrowBook = () => {
             const finalData = {
                 book_id: data.book_id,
                 title: data.title,
-                author_name: data.author_name,
+                author_name: data.author_name || 'no author',
                 acct_id: userDetails.id,
                 acct_name: getCurrentUserFullname(),
                 date: getCurrentDateString(),
                 time: getCurrentTimeString(),
                 status: 'pending',
                 branch: data.branch,
+                email: userDetails?.email,
             }
 
             const result = await addBorrowBook(finalData)

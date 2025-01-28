@@ -30,3 +30,18 @@ export const verifyCode = async (data) => {
         return null
     }
 }
+
+export const getAccounts = async () => {
+    try {
+        const result = await axios.get(`${BASE_URL}/account/getAccounts`)
+
+        if (result) {
+            console.log('Successfully get all accounts.')
+            return result.data
+        }
+
+    } catch (error) {
+        console.log(`Server error: `, error)
+        return null
+    }
+}

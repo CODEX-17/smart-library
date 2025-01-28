@@ -13,7 +13,7 @@ const AddCopyModal = ({ selectedBook, setIsShowModalAddCopy, setToastMessage, se
         formState: {errors} 
     } = useForm({
         defaultValues: {
-            quantity: selectedBook?.quantity
+            quantity: 1,
         }
     })
 
@@ -28,7 +28,7 @@ const AddCopyModal = ({ selectedBook, setIsShowModalAddCopy, setToastMessage, se
         try {
 
             let updatedData = currentBook
-            updatedData.quantity = parseInt(data?.quantity)
+            updatedData.quantity += parseInt(data?.quantity)
           
             const result = await updateBook(updatedData)
 
@@ -58,12 +58,12 @@ const AddCopyModal = ({ selectedBook, setIsShowModalAddCopy, setToastMessage, se
                         style={{ position: 'absolute', top: 0, right: 0 }}
                         onClick={() => setIsShowModalAddCopy(false)}
                     />
-                    <h1>Modified Copies</h1>
+                    <h1>Add Copies</h1>
                     <p><b>Book Title:</b> sample</p>
                 </div>
                 <input 
                     type="number" 
-                    min="0"
+                    min="1"
                     {...register('quantity', { required: 'Quantity is required.' })}
                 />
                 {errors.quantity && <p style={{ color: 'red', fontSize: '.7rem' }}>{errors.quantity?.message}</p>}

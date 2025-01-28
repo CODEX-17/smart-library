@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react'
 import style from './AddBookComponents.module.css'
 import axios from 'axios'
 import { useForm } from 'react-hook-form';
-import { addBook } from '../services/bookServices';
+import { addBook, getBooks } from '../services/bookServices';
+import { getBranch } from '../services/branchServices';
 import { bookGenres } from '../data/genreListData';
 
 const AddBookComponents = ({ handleCloseForm, handleNoticationConfig, selectedBranch }) => {
 
 const [branchList, setBranchList] = useState([])
+const [bookList, setBookList] = useState([])
+const userDetails = JSON.parse(localStorage.getItem('user'))
+
 
 const {
   register,
@@ -21,9 +25,34 @@ const {
     call_no: 0,
     total_value: 0,
   }
-});
+})
+
+const title = watch('title')
 
 useEffect(() => {
+
+  const fetchData = async () => {
+    try {
+      
+      const [ branch, books ] = await Promise.all([ getBranch(), getBooks() ]) 
+
+      if (branch) {
+        setBranchList(branch)
+      }
+
+      if (books) {
+        const updated = books.filter( books => books.branch === userDetails?.branch)
+        console.log(updated)
+        setBookList(updated)
+      }
+
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  fetchData()
 
   axios.get('http://localhost:5001/branch/getBranch')
   .then((res) => {setBranchList(res.data)})
@@ -38,8 +67,7 @@ const onSubmit = async (data)  => {
   try {
     const result = await addBook(updated)
     if (result) {
-      console.log(result.message)
-      handleNoticationConfig(result.message, true)
+      handleNoticationConfig('Successfully added book.', true)
       handleCloseForm(false)
     }
 
@@ -50,6 +78,14 @@ const onSubmit = async (data)  => {
 
 const handleClose = () => {
   handleCloseForm(false)
+}
+
+const handleCheckBookTitle = () => {
+  if (title) {
+    if (bookList.some( books => books.title === title)) {
+      return 'Book title is already exist.'
+    }
+  }
 }
 
   return (
@@ -84,7 +120,10 @@ const handleClose = () => {
             <input 
               type="text" 
               placeholder='Alamat ng saging' 
-              {...register('title', { required: 'Book title is required.'})}
+              {...register('title', { 
+                required: 'Book title is required.',
+                validate: handleCheckBookTitle,
+              })}
             />
             {errors.title && <p>{errors.title.message}</p>}
           </div>
@@ -103,11 +142,16 @@ const handleClose = () => {
             
             <div className='d-flex flex-column w-100'>
                 <label>Genre <b>*</b></label>
-                <input 
-                  type='text'
-                  placeholder='ex.Drama'
-                  {...register('genre', { required: 'Genre is required.' })}
-                />
+                <select 
+                {...register('genre', { required: 'Genre is required.' })}
+                >
+                  <option value="">Select Genre</option>
+                  {
+                    bookGenres.map(genre => (
+                      <option value={genre}>{genre}</option>
+                    ))
+                  }
+                </select>
                 {errors.genre && <p>{errors.genre.message}</p>}
             </div>
    

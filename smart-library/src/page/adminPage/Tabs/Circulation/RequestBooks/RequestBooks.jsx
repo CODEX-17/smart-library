@@ -102,6 +102,7 @@ const RequestBooks = () => {
         name: data.acct_name,
         branch: data.branch,
         title: data.title,
+        email: data.email
       }
 
       const result = await updateBorrowBoook(finalData)
@@ -110,7 +111,7 @@ const RequestBooks = () => {
         reqList.forEach((req) => {
           if (req.id == data.id) {
             req.status = response
-            req.quantity = response === 'approved' ? req.quantity -= 1 : req.quantity += 1
+            if (response === 'approved') req.quantity -= 1
           }
         })
     
@@ -157,7 +158,8 @@ const RequestBooks = () => {
             style={{ 
               backgroundColor: 
                   data === 'approved' && '#20c997' ||
-                  data === 'returned' && '#dc3545' ||
+                  data === 'rejected' && '#dc3545' ||
+                  data === 'returned' && '#ffc300' ||
                   data === 'pending' && '#fd7e14'
             }}
           >{data}</div>
@@ -190,6 +192,13 @@ const RequestBooks = () => {
         dataIndex: 'acct_name',
         key: 'acct_name',
         sorter: (a, b) => a.acct_name.localeCompare(b.acct_name),
+        responsive: ['xs', 'sm', 'md', 'lg'],
+      },
+      {
+        title: 'Email',
+        dataIndex: 'email',
+        key: 'email',
+        sorter: (a, b) => a.email.localeCompare(b.email),
         responsive: ['xs', 'sm', 'md', 'lg'],
       },
       {

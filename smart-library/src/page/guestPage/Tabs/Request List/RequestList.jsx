@@ -56,6 +56,13 @@ const RequestList = () => {
           responsive: ['xs', 'sm', 'md', 'lg'],
         },
         {
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'email',
+            sorter: (a, b) => a.email.localeCompare(b.email),
+            responsive: ['xs', 'sm', 'md', 'lg'],
+        },
+        {
             title: 'Branch',
             dataIndex: 'branch',
             key: 'branch',

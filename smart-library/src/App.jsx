@@ -8,8 +8,30 @@ import CreateAccount from './page/CreateAccount';
 import ForgetPasswordPage from './page/ForgetPasswordPage';
 import ResetPasswordPage from './page/ResetPasswordPage';
 import { useEffect } from 'react';
+import { checkSchedules } from './services/scheduleServices';
 
 function App() {
+
+  useEffect(() => {
+    
+    const sendRequest = async () => {
+      try {
+        const result = await checkSchedules()
+
+        if (result) {
+          console.log(result?.message)
+          console.log(result?.obj)
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    sendRequest()
+
+   
+  },[])
 
   return (
     <>

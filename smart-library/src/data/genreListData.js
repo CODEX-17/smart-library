@@ -1,6 +1,5 @@
 
 export const bookGenres = [
-    "Select Genre",
     "Fantasy",
     "Science Fiction",
     "Mystery",
