@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 23, 2025 at 04:05 AM
+-- Generation Time: Jan 28, 2025 at 02:21 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -86,7 +86,7 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`book_id`, `item_no`, `ISBN`, `title`, `author_name`, `access_no`, `genre`, `branch`, `quantity`, `amount`, `total_value`, `date_acquired`, `publication`) VALUES
-(1, '12', '123-990', 'sample book', NULL, '123', 'classic', 'GENERAL TRIAS BRANCH', 11, '90', '10', '2025-01-01', NULL),
+(1, '12', '123-990', 'sample book', NULL, '123', 'classic', 'GENERAL TRIAS BRANCH', 9, '90', '10', '2025-01-01', NULL),
 (2, '23123', '123-990', 'naic book', 'dasds', '231231', 'drama', 'NAIC BRANCH', 3, '222', '0', '2025-01-23', '2025-01-23'),
 (3, '23123', '123-990', 'asdasd', 'asdasd', '2312312', 'drama', 'NAIC BRANCH', 1, '', '0', '2025-01-30', '2025-01-30'),
 (4, '3123', '123-990', 'dasdsad', 'asdddd', '123', 'drama', 'NAIC BRANCH', 1, '', '0', '2025-01-16', '2025-02-04'),
@@ -106,8 +106,11 @@ CREATE TABLE `borrow_books` (
   `branch` varchar(255) NOT NULL,
   `acct_id` int(11) NOT NULL,
   `acct_name` varchar(50) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `date` varchar(50) NOT NULL,
   `time` varchar(50) NOT NULL,
+  `dueDate` varchar(255) NOT NULL,
+  `dueTime` varchar(255) NOT NULL,
   `status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -115,12 +118,13 @@ CREATE TABLE `borrow_books` (
 -- Dumping data for table `borrow_books`
 --
 
-INSERT INTO `borrow_books` (`id`, `book_id`, `title`, `author_name`, `branch`, `acct_id`, `acct_name`, `date`, `time`, `status`) VALUES
-(17, '1', 'sample book', 'sample authr', 'GENERAL TRIAS BRANCH', 48, 'RUMAR PAMPARO', '2025-01-20', '10:50', 'returned'),
-(18, '1', 'sample book', 'sample authr', 'GENERAL TRIAS BRANCH', 48, 'RUMAR PAMPARO', '2025-01-20', '11:21', 'approved'),
-(19, '1', 'sample book', 'sample authr', 'GENERAL TRIAS BRANCH', 49, 'DASD ASD', '2025-01-20', '17:11', 'approved'),
-(20, '1', 'sample book', 'sample authr', 'GENERAL TRIAS BRANCH', 49, 'DASD ASD', '2025-01-20', '17:01', 'returned'),
-(21, '1', 'sample book', 'sample authr', 'NAIC BRANCH', 49, 'DASD ASD', '2025-01-20', '17:28', 'approved');
+INSERT INTO `borrow_books` (`id`, `book_id`, `title`, `author_name`, `branch`, `acct_id`, `acct_name`, `email`, `date`, `time`, `dueDate`, `dueTime`, `status`) VALUES
+(26, '1', 'sample book', 'no author', 'GENERAL TRIAS BRANCH', 49, 'DASD ASD', 'pamparor@gmail.com', '2025-01-24', '16:04', '2025-01-27', '16:04:51', 'returned'),
+(27, '1', 'sample book', 'no author', 'GENERAL TRIAS BRANCH', 49, 'DASD ASD', 'pamparor@gmail.com', '2025-01-27', '19:31', '2025-01-30', '19:31:52', 'rejected'),
+(28, '1', 'sample book', 'no author', 'GENERAL TRIAS BRANCH', 49, 'DASD ASD', 'pamparor@gmail.com', '2025-01-27', '19:55', '2025-01-30', '19:55:48', 'rejected'),
+(29, '1', 'sample book', 'no author', 'GENERAL TRIAS BRANCH', 49, 'DASD ASD', 'pamparor@gmail.com', '2025-01-27', '19:57', '2025-01-30', '19:57:44', 'rejected'),
+(30, '1', 'sample book', 'no author', 'GENERAL TRIAS BRANCH', 49, 'DASD ASD', 'pamparor@gmail.com', '2025-01-27', '19:59', '2025-01-30', '19:59:11', 'rejected'),
+(31, '1', 'sample book', 'no author', 'GENERAL TRIAS BRANCH', 49, 'DASD ASD', 'pamparor@gmail.com', '2025-01-27', '19:59', '2025-01-30', '19:59:31', 'approved');
 
 -- --------------------------------------------------------
 
@@ -273,7 +277,16 @@ INSERT INTO `transaction_history` (`id`, `book_id`, `title`, `transaction`, `nam
 (6, 1, 'sample book', 'approved', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-20', '17:12:10'),
 (7, 1, 'sample book', 'approved', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-20', '17:18:06'),
 (8, 1, 'sample book', 'returned', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-20', '17:18:33'),
-(9, 1, 'sample book', 'approved', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-20', '17:30:39');
+(9, 1, 'sample book', 'approved', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-20', '17:30:39'),
+(10, 1, 'sample book', 'approved', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-24', '16:07:30'),
+(11, 1, 'sample book', 'approved', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-24', '16:08:58'),
+(12, 1, 'sample book', 'approved', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-24', '16:10:10'),
+(13, 1, 'sample book', 'returned', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-27', '19:31:27'),
+(14, 1, 'sample book', 'rejected', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-27', '19:32:01'),
+(15, 1, 'sample book', 'rejected', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-27', '19:56:07'),
+(16, 1, 'sample book', 'rejected', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-27', '19:57:57'),
+(17, 1, 'sample book', 'rejected', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-27', '19:59:20'),
+(18, 1, 'sample book', 'approved', 'DASD ASD', 'GENERAL TRIAS BRANCH', '2025-01-27', '19:59:38');
 
 --
 -- Indexes for dumped tables
@@ -347,13 +360,13 @@ ALTER TABLE `books`
 -- AUTO_INCREMENT for table `borrow_books`
 --
 ALTER TABLE `borrow_books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `branch`
 --
 ALTER TABLE `branch`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `feedback`
@@ -377,7 +390,7 @@ ALTER TABLE `image`
 -- AUTO_INCREMENT for table `transaction_history`
 --
 ALTER TABLE `transaction_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
