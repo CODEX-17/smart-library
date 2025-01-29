@@ -16,7 +16,6 @@ import SummaryModal from './modal/SummaryModal';
 import { getBooks } from '../services/bookServices';
 import { getRequestBooks } from '../services/borrowBookServices';
 import { getAccounts } from '../services/accountServices';
-import { filter } from 'rxjs';
 Chart.version = "current"; 
 
 const AnalyticsComponents = () => {

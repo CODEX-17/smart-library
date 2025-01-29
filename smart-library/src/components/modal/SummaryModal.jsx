@@ -49,17 +49,17 @@
         const itemDate = new Date(item.date);
     
         // Check if the date is today
-        if (item.date === todayStr) {
+        if (item.date === todayStr && item.status === 'approved') {
           counts.today++
         }
     
         // Check if the date is within this week
-        if (itemDate >= startOfWeek && itemDate <= endOfWeek) {
+        if (itemDate >= startOfWeek && itemDate <= endOfWeek && item.status === 'approved') {
           counts.thisWeek++
         }
     
         // Check if the date is within this month
-        if (itemDate.getMonth() === thisMonth && itemDate.getFullYear() === thisYear) {
+        if (itemDate.getMonth() === thisMonth && itemDate.getFullYear() === thisYear && item.status === 'approved') {
           counts.thisMonth++
         }
       })

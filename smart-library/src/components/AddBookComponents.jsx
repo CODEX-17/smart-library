@@ -5,13 +5,14 @@ import { useForm } from 'react-hook-form';
 import { addBook, getBooks } from '../services/bookServices';
 import { getBranch } from '../services/branchServices';
 import { bookGenres } from '../data/genreListData';
+import notificationStore from '../Store/notificationStore';
 
-const AddBookComponents = ({ handleCloseForm, handleNoticationConfig, selectedBranch }) => {
+const AddBookComponents = ({ handleCloseForm, selectedBranch }) => {
 
 const [branchList, setBranchList] = useState([])
 const [bookList, setBookList] = useState([])
 const userDetails = JSON.parse(localStorage.getItem('user'))
-
+const { notificationConfig } = notificationStore()
 
 const {
   register,
@@ -67,7 +68,7 @@ const onSubmit = async (data)  => {
   try {
     const result = await addBook(updated)
     if (result) {
-      handleNoticationConfig('Successfully added book.', true)
+      notificationConfig('Successfully added book.', true)
       handleCloseForm(false)
     }
 
