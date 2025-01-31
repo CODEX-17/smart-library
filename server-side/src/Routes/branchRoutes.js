@@ -59,6 +59,7 @@ router.post('/deleteBranch', (req, res) => {
 router.post('/addBranch', (req, res) => {
     
     const { branch_name } = req.body
+    console.log(branch_name)
     const query = 'INSERT INTO branch(branch_name) VALUES(?)'
 
     db.query(query,[branch_name], (error, data, field) => {

@@ -5,10 +5,13 @@ const db = require('../db')
 //API get branch
 router.post('/addFeedback', (req, res) => {
 
-    const { username, message, date, time } = req.body
-    const query = 'INSERT INTO feedback(username, message, date, time) VALUES(?,?,?,?)'
+    const { username, branch, message, date, time } = req.body
 
-    db.query(query,[username, message, date, time], (error, data, field) => {
+    console.log(req.body)
+
+    const query = 'INSERT INTO feedback(username, branch, message, date, time) VALUES(?,?,?,?,?)'
+
+    db.query(query,[username, branch, message, date, time], (error, data, field) => {
         if (error) {
             console.error(error)
             res.status(404).send(error)
