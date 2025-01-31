@@ -120,12 +120,25 @@ router.post('/addBorrowBooks', limiter, (req, res) => {
 //API add borrow books
 router.post('/updateReq', async (req, res) => {
 
-    const { response, id, book_id, name, branch, title, email } = req.body
+    const { response, id, book_id, name, branch, title, email, quantity } = req.body
 
     const queryUpdateBorrow = 'UPDATE borrow_books SET status = ? WHERE id=?'
     const transactionQuery = `INSERT INTO transaction_history(
     book_id, title, transaction, name, branch, date, time) VALUES(?,?,?,?,?, CURDATE(), CURTIME())`
-    const queryUpdateBook = 'UPDATE books SET quantity = quantity - 1 WHERE book_id=?'
+    
+    let queryUpdateBook;
+    switch (response) {
+        case 'approved':
+            queryUpdateBook = `UPDATE books SET quantity = quantity - 1 WHERE book_id=?`;
+            break;
+        case 'returned':
+            queryUpdateBook = `UPDATE books SET quantity = quantity + 1 WHERE book_id=?`;
+            break;
+        default:
+            queryUpdateBook = `UPDATE books SET quantity = ${quantity} WHERE book_id=?`;
+            break;
+    }
+
 
     //Functions
     const sendingEmail = async (email, name) => {
@@ -192,17 +205,15 @@ router.post('/updateReq', async (req, res) => {
 
         const addTransactionHistory = executeQuery(transactionQuery, [book_id, title, response, name, branch, title])
         
-        let promiseVariable = [
+ 
+        const updateBook = executeQuery(queryUpdateBook, [book_id])
+        
+
+        await Promise.all([
             updateBorrowBooks, 
             addTransactionHistory, 
-            sendingEmail(email, name)
-        ]
-
-        if (response === 'approved') {
-            promiseVariable.push(executeQuery(queryUpdateBook, [book_id]))
-        }
-
-        await Promise.all(promiseVariable)
+            updateBook,
+            sendingEmail(email, name)])
 
         res.status(200).json({
             message: 'Successfully update book.'

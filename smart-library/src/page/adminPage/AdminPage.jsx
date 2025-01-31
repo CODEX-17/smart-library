@@ -17,7 +17,7 @@ import { FaHistory } from "react-icons/fa";
 import { 
     PiGitBranchBold,
     PiBooksLight
-} from "react-icons/pi";s
+} from "react-icons/pi";
 import { 
     MdOutlineFeedback, 
     MdOutlineSupervisorAccount 
