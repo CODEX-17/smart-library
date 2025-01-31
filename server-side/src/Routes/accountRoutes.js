@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: 'librarysmart69@gmail.com',
-      pass: 'sokb hpyq oevl gmkl',
+      pass: emailPassword
     }
   });
 
@@ -55,9 +55,6 @@ router.post('/createAccount', upload.single('image'), async (req, res) => {
         birthdate, 
         city
     } = req.body;
-
-    console.log(req.body)
-    console.log(req.file)
 
     const queryAccounts = `
         INSERT INTO accounts(
@@ -169,85 +166,13 @@ router.post('/updateAccount', upload.single('file'), async (req, res) => {
 });
 
 
-//Verification
-router.post('/verifyEmail', async (req, res) => {
-    console.log('asds')
-    const { email } = req.body
-
-    try {
-
-        const otp = Math.floor(100000 + Math.random() * 900000).toString()
-        
-        const mailOptions = {
-            to: email,
-            from: 'librarysmart69@gmail.com',
-            subject: 'Verification Code',
-            text: `Your OTP code is: ${otp}. It will expire in 2 minutes.`
-        }
-      
-        const hashCode = passwordHash.generate(otp)
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-              console.log(error)
-              return res.status(500).json({ message: 'Error sending email' });
-            }
-    
-            console.log('OTP code sent email successfully.')
-            res.status(200).json({ 
-                message: 'OTP code sent email',
-                code: hashCode,
-            })
-        })
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: 'Server error sending email' })
-    }
-
-    
-
-   
-})
-
-router.post('/verifyCode', async (req, res) => {
-
-    const { code, hashCode } = req.body
-    console.log(req.body)
-    try {
-
-        if (passwordHash.verify(code, hashCode)) {
-            console.log('Successfully Verified.')
-            res.status(200).json({ 
-                message: 'Successfully Verified.',
-                status: true,
-            })
-        }else {
-            res.status(200).json({ 
-                message: 'Failed Verification.',
-                status: false,
-            })
-        }
-        
-
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: 'Server error verifiying the code.' })
-    }
-
-    
-
-   
-})
-
-
 //Check Hash
 router.post('/checkAccount', async (req, res) => {
 
     const {email, password} = req.body
-   
+    console.log(email, password)
     const query = 'SELECT * FROM accounts WHERE email=?'
-
+    console.log('asdas')
     try {
         const [user] = await new Promise((resolve, reject) => {
             db.query(query, [email], (error, data, field) => {
@@ -255,7 +180,10 @@ router.post('/checkAccount', async (req, res) => {
                 resolve(data)
             })
         })
- 
+
+        console.log([user])
+
+        
         if (user) {
            const hashPassword = user.password 
        
@@ -333,7 +261,7 @@ router.post('/forgotPassword', async (req, res) => {
       await db.query('UPDATE accounts SET reset_token = ?, reset_token_expires = ? WHERE email = ?', [resetToken, resetTokenExpires, email]);
   
       // Send reset email
-      const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+      const resetUrl = `http://82.112.236.213:5173/reset-password/${resetToken}`;
       const mailOptions = {
         to: email,
         from: 'librarysmart69@gmail.com',
@@ -389,10 +317,10 @@ router.post('/reset-password/:token', async (req, res) => {
     }
 });
 
-router.get('/getAccounts', (req, res) => {
+router.get('/getAccounts', async (req, res) => {
 
     const query = 'SELECT * FROM accounts'
-    console.log('asdasd')
+
     db.query(query, (error, data, field) => {
         if (error) {
             console.error(error)

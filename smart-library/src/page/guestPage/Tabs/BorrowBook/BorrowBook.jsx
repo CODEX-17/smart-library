@@ -85,7 +85,7 @@ const BorrowBook = () => {
 
         if (isLoading) return
         setIsLoading(true)
-        
+        console.log(data)
         try {
 
             const finalData = {
