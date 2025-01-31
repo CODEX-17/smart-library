@@ -19,9 +19,14 @@
 }
 
 #btnBorrow {
-    border-radius: 5px;
-    font-family: bold;
-    font-size: .8rem;
+  border-radius: 5px;
+  font-family: bold;
+  font-size: .8rem;
+  background-color: rgb(136, 0, 0);
+}
+
+#btnBorrow:disabled {
+  background-color: gray;
 }
 
 .loading {

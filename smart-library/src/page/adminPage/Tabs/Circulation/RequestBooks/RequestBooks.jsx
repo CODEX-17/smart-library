@@ -112,6 +112,7 @@ const RequestBooks = () => {
           if (req.id == data.id) {
             req.status = response
             if (response === 'approved') req.quantity -= 1
+            if (response === 'returned') req.quantity += 1
           }
         })
     

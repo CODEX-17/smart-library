@@ -1,0 +1,90 @@
+[33m861ae41[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m fix
+[33me8a01e6[m fix bugs
+[33m9c698ce[m update db
+[33ma7b3854[m final commit
+[33me30e534[m fix issues
+[33m43e9ee4[m fix issues
+[33m1e34f73[m add addcopy funtion
+[33m7efc5c7[m update changes
+[33m1c03953[m fix bugs
+[33m675d2f9[m fix errors
+[33m7212dab[m final commit
+[33m75696b7[m fix css
+[33m4189d40[m fix position
+[33m75e89c9[m show pass
+[33mc4d6347[m change
+[33m30ed37f[m input header
+[33mc4b7bf8[m change
+[33ma5f554f[m change
+[33mf8997ed[m change
+[33m320e627[m add progress bar in import books
+[33mc226aa1[m final commit
+[33ma757e81[m change db1
+[33md07789b[m change db
+[33mf4f338a[m update gender to sex
+[33mad5765c[m update server fix responsive table
+[33ma363974[m css select
+[33m7f02f1c[m change gender into sex
+[33m86ba31c[m update db
+[33mbf41810[m change ip
+[33m4d4c161[m Fix bugs
+[33m6205eaa[m change server
+[33m58496af[m[33m ([m[1;31morigin/local-development[m[33m, [m[1;32mlocal-development[m[33m)[m fix errors
+[33mfa1441f[m change ip
+[33mee719f4[m change server
+[33m7fe7ccb[m update local
+[33me302e54[m change ip in server
+[33md09e6ea[m fix forget pass
+[33m97d2419[m fix duplicate req for server
+[33m28bbc62[m final change
+[33m41b22c9[m change ip in server
+[33m6f1d34b[m redesign managemanent of account
+[33m366178f[m Update db.js
+[33mffe644b[m update ip
+[33m8feb040[m Update db.js
+[33m5594139[m Update db.js
+[33m977063d[m Update db.js
+[33ma24c42d[m Update db.js
+[33m17e9e7e[m update db info
+[33m1f5342d[m modified designs
+[33m4f82f3c[m replace server ip
+[33mdc0c56a[m change db
+[33m8659e93[m updated version
+[33m5141ef9[m Update db.js
+[33maf1eec0[m name to large
+[33m7902892[m back up db
+[33m67a524a[m add limitation for admin, fix manual adding of books
+[33md5e8684[m back up db, responsive catalogue
+[33m0027122[m update port
+[33mb4d4f00[m fix something
+[33mbdc3e40[m fix tables
+[33md47fd1f[m fix all recoms
+[33m2afd4b4[m fix and re design book list
+[33mb376c9c[m add excell format, fix the text in footer and header
+[33mbe0da27[m excel format
+[33medfdb88[m fix reset
+[33m0d77e6d[m db backup
+[33mcdacac4[m modify feedback and fix the catalogue page add some filter funtions
+[33m67e1351[m customizing the catalogue page in admin panel
+[33m80d9487[m back up database
+[33m50d4925[m Update AnalyticsComponents.jsx
+[33mcc8191a[m fixed
+[33mf46d99e[m fix design in dashboard
+[33m922378a[m back up database
+[33md559b49[m adding charts and fix add buttons
+[33m2beb40a[m fixing update funtion in tables and adding notificatiion components in table view page
+[33m531a9c3[m add table mebu in admin page also table view contents
+[33mb8df509[m add react hook form
+[33m5adab41[m update gmail app  key in env
+[33m89837b7[m FINAL  FIX WITH DB BACKUP
+[33m75355bc[m fix name display in admin page
+[33maa28d98[m add manage accounts
+[33m00f24b5[m re-layout student homepage
+[33m1dfa9d6[m revamp create account
+[33m1b7e447[m fix bugs
+[33m2242cf0[m adding forget password funtion in server-side
+[33mfbd477f[m create loading state
+[33ma145a3e[m Update server.js
+[33m43cc362[m adding server-side
+[33m8969968[m initial design
+[33m16ee363[m Initial commit

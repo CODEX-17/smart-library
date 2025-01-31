@@ -20,8 +20,7 @@ import {
 } from "react-icons/pi";
 import { 
     MdOutlineFeedback, 
-    MdOutlineSupervisorAccount,
-    MdOutlineTableChart 
+    MdOutlineSupervisorAccount 
 } from "react-icons/md";
 import ManageAccountComponent from '../../components/ManageAccountComponent';
 import BranchTable from './Tabs/Branch/BranchTable';

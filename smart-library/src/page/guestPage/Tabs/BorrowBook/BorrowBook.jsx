@@ -99,6 +99,7 @@ const BorrowBook = () => {
                 status: 'pending',
                 branch: data.branch,
                 email: userDetails?.email,
+                quantity: data.quantity,
             }
 
             const result = await addBorrowBook(finalData)

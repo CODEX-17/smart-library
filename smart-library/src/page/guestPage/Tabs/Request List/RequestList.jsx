@@ -89,11 +89,11 @@ const RequestList = () => {
           fixed: 'right',
           width: 150,
           render: (data) => 
-            <button 
-              id={style.btnBorrow} 
-              style={{ backgroundColor: '#A02334' }} 
-              onClick={() => handleDeleteReq(data.id)}>
-              Delete
+             <button 
+                id={style.btnBorrow} 
+                disabled={ data.status === 'approved' ? true : false }
+                onClick={() => handleDeleteReq(data.id)}>
+                Delete
             </button>
         },
     ]
