@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import style from './RequestBooks.module.css'
 import { Table, ConfigProvider } from 'antd';
 import { IoSearch } from "react-icons/io5";
@@ -10,6 +10,7 @@ import { deleteBorrowBoook, getRequestBooks, updateBorrowBoook } from '../../../
 import { getBooks } from '../../../../../services/bookServices';
 import notificationStore from '../../../../../Store/notificationStore';
 import loadingStore from '../../../../../Store/loadingStore';
+import { NotificationContext } from '../../../../../context/notificationContext';
 
 
 const RequestBooks = () => {
@@ -21,7 +22,7 @@ const RequestBooks = () => {
   const [filterData, setFilterData] = useState([])
   const userDetails = JSON.parse(localStorage.getItem('user'))
 
-  const { notificationConfig } = notificationStore()
+  const { notify } = useContext(NotificationContext)
   const { handleConfigLoading } = loadingStore()
 
   useEffect(() => {
@@ -63,7 +64,7 @@ const RequestBooks = () => {
 
     fetchData()
 
-  },[handleConfigLoading, notificationConfig])
+  },[handleConfigLoading])
 
   useEffect(() => {
     
@@ -102,12 +103,16 @@ const RequestBooks = () => {
         name: data.acct_name,
         branch: data.branch,
         title: data.title,
-        email: data.email
+        email: data.email,
+        quantity: data.quantity
       }
 
       const result = await updateBorrowBoook(finalData)
 
+      console.log(result)
+
       if (result) {
+
         reqList.forEach((req) => {
           if (req.id == data.id) {
             req.status = response
@@ -118,7 +123,7 @@ const RequestBooks = () => {
     
         setReqList(reqList)
         setFilterData(reqList)
-        notificationConfig(result.message, true)
+        notify(result.message, true)
       }
 
     } catch (error) {
@@ -138,7 +143,7 @@ const RequestBooks = () => {
 
         Promise.all([setFilterData(updatedData), setReqList(updatedData)])
         handleConfigLoading('Deleting Request...')
-        notificationConfig(result.message, true)
+        notify(result.message, true)
       }
 
     } catch (error) {

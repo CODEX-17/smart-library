@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Table, ConfigProvider } from 'antd';
 import style from './BorrowBook.module.css'
 import { getBooks } from '../../../../services/bookServices';
@@ -10,7 +10,7 @@ import {
 import { getCurrentUserFullname } from '../../../../utils/userNameUtil';
 import { addBorrowBook } from '../../../../services/borrowBookServices';
 import loadingAnim from '../../../../assets/loading.gif'
-import notificationStore from '../../../../Store/notificationStore';
+import { NotificationContext } from '../../../../context/notificationContext';
 
 
 const BorrowBook = () => {
@@ -18,7 +18,7 @@ const BorrowBook = () => {
     const [bookList, setBookList] = useState([])
     const userDetails = JSON.parse(localStorage.getItem('user')) || null
     const [isLoading, setIsLoading] = useState(false)
-    const { notificationConfig } = notificationStore()
+    const { notify } = useContext(NotificationContext)
     const [filterData, setFilterData] = useState([])
     const [filterText, setFilterText] = useState('')
 
@@ -107,7 +107,7 @@ const BorrowBook = () => {
             if (result) {
                 setTimeout(() => {
                     setIsLoading(false)
-                    notificationConfig(result.message, true)
+                    notify(result.message, true)
                 }, 3000)
             }
             

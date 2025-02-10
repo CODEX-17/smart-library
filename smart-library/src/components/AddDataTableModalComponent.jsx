@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import style from './AddDataTableModalComponent.module.css'
 import { IoMdClose } from "react-icons/io";
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { NotificationContext } from '../context/notificationContext';
 
 
-const AddDataTableModalComponent = ({ currentTable, setisShowAddModal, notificationConfig }) => {
+
+const AddDataTableModalComponent = ({ currentTable, setisShowAddModal, notify }) => {
+
+  const { notify } = useContext(NotificationContext) 
 
   const {
     handleSubmit,
@@ -21,7 +25,7 @@ const AddDataTableModalComponent = ({ currentTable, setisShowAddModal, notificat
         .then((res) => {
             const result = res.data
             setisShowAddModal(false)
-            notificationConfig(result.message, true)
+            notify(result.message, true)
         })
         .catch(err => console.log(err))
     }else if (currentTable === 'tableBranch') {
@@ -29,7 +33,7 @@ const AddDataTableModalComponent = ({ currentTable, setisShowAddModal, notificat
         .then((res) => {
             const result = res.data
             setisShowAddModal(false)
-            notificationConfig(result.message, true)
+            notify(result.message, true)
         })
         .catch(err => console.log(err))
     }

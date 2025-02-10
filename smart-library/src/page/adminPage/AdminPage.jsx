@@ -31,7 +31,7 @@ import notificationStore from '../../Store/notificationStore';
 import NotificationComponents from '../../components/NotificationComponents';
 import TransactionHistory from './Tabs/TransactionHistory/TransactionHistory';
 import LibraryBooks from './Tabs/LibraryBooks/LibraryBooks';
-
+import { ToastContainer } from 'react-toastify';
 
 
 const AdminPage = () => {
@@ -70,6 +70,7 @@ const AdminPage = () => {
 
   return (
     <div className={style.container}>
+        <ToastContainer/>
         {
             isShowSideBar && (
                 <div className={style.sidebar}>

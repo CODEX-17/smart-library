@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import style from './TableEditModalComponents.module.css'
 import { useForm } from 'react-hook-form'
 import { IoMdClose } from "react-icons/io";
 import axios from 'axios';
+import { NotificationContext } from '../context/notificationContext';
 
 const TableEditModalComponents = ({ currentTable, selectedData, setIssShowEditModal, notificationConfig }) => {
 
     const url = 'http://localhost:5001'
+
+    const { notify } = useContext(NotificationContext)
 
     const {
         handleSubmit,
@@ -27,7 +30,7 @@ const TableEditModalComponents = ({ currentTable, selectedData, setIssShowEditMo
         .then((res) => {
             const result = res.data
             setIssShowEditModal(false)
-            notificationConfig(result.message, true)
+            notify(result.message, true)
         })
         .catch(err => console.log(err))
     }else if (currentTable === 'tableGenre') {
@@ -35,7 +38,7 @@ const TableEditModalComponents = ({ currentTable, selectedData, setIssShowEditMo
         .then((res) => {
             const result = res.data
             setIssShowEditModal(false)
-            notificationConfig(result.message, true)
+            notify(result.message, true)
         })
         .catch(err => console.log(err))
     }

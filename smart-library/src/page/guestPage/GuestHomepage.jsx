@@ -1,16 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import style from './GuestHomePage.module.css'
 import bookLogo from '../../assets/logo-yellow.png'
 import axios from 'axios';
 import FeedbackComponents from '../../components/FeedbackComponents';
 import ManageAccountComponent from '../../components/ManageAccountComponent';
 import NotificationComponents from '../../components/NotificationComponents';
-import Catalogue from '../../page/adminPage/Tabs/Catalogue/AdminCatalogue'
 import LoadingComponents from '../../components/LoadingComponents'
 import { VscGitPullRequestNewChanges } from "react-icons/vsc";
 import { LuBookPlus } from "react-icons/lu";
 import { FiBookOpen } from "react-icons/fi";
-import { FaFilter } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { MdManageAccounts, MdOutlineFeedback } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -21,12 +19,13 @@ import { getCurrentUserFullname } from '../../utils/userNameUtil'
 import { 
   convertDateFormatIntoString, 
   convertTimeTo12HourFormat,
-  getCurrentDateString,
-  getCurrentTimeString
 } from '../../utils/dateUtils';
 import BorrowBook from './Tabs/BorrowBook/BorrowBook';
 import notificationStore from '../../Store/notificationStore';
 import RequestList from './Tabs/Request List/RequestList';
+import AdminCatalogue from '../../page/adminPage/Tabs/Catalogue/AdminCatalogue';
+import { ToastContainer } from 'react-toastify';
+import { NotificationContext } from '../../context/notificationContext';
 
 
 const GuestHomePage = () => {
@@ -54,6 +53,8 @@ const GuestHomePage = () => {
 
   const { handleSubmit, register, formState: { errors } } = useForm()
 
+  const { notify } = useContext(NotificationContext)
+
   const handleLogout = () => {  
     localStorage.clear()
     navigate('/')
@@ -61,6 +62,8 @@ const GuestHomePage = () => {
 
   useEffect(() => {
   
+    notify('dasdsa', true)
+
     if (!localStorage.getItem('user')) {
       navigate('/')
     }else {
@@ -227,7 +230,7 @@ const GuestHomePage = () => {
 
   return (
     <div className={style.container}>
-
+      <ToastContainer/>
       {
         isShowSidebar && (
           <div className={style.left}>
@@ -328,7 +331,7 @@ const GuestHomePage = () => {
             activeBtn === 'borrow' && <BorrowBook/> ||
             activeBtn === 'request' && <RequestList/> ||
             activeBtn === 'manageAccount' && <ManageAccountComponent/> ||
-            activeBtn === 'catalogue' && <Catalogue/>
+            activeBtn === 'catalogue' && <AdminCatalogue/>
           }
 
         </div>

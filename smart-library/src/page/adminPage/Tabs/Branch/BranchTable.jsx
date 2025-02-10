@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import style from './BranchTable.module.css'
 import axios from 'axios'
 import { Table, ConfigProvider } from 'antd';
@@ -12,11 +12,12 @@ import { FaPlus } from "react-icons/fa";
 import LoadingComponents from '../../../../components/LoadingComponents';
 import { deleteBranch, getBranch } from '../../../../services/branchServices';
 import BranchModal from './Modal/BranchModal';
+import { NotificationContext } from '../../../../context/notificationContext';
 
 
 const BranchTable = ({ currentTable }) => {
 
-  const userDetails = JSON.parse(localStorage.getItem('user'))
+  const { notify } = useContext(NotificationContext)
 
   const column = [
       {
@@ -113,16 +114,6 @@ const BranchTable = ({ currentTable }) => {
     }
   },[filterText])
 
-  const notificationConfig = ( message, status) => {
-    setMessage(message)
-    setNotifStatus(status)
-    setIsShowNotification(true)
-
-    setTimeout(() => {
-      setIsShowNotification(false)
-      setMessage('')
-    }, 3000);
-  }
 
   const handleDelete = (data) => {
     setSelectedData(data)
@@ -141,7 +132,7 @@ const BranchTable = ({ currentTable }) => {
         
         if (result) {
           setMessage(result.message)
-          notificationConfig(result.message, true)
+          notify(result.message, true)
           setIsShowDeleteNotification(false)
         }
 
@@ -173,7 +164,6 @@ const BranchTable = ({ currentTable }) => {
             <BranchModal 
               setIsShowModal={setIsShowModal} 
               selectedData={selectedData}
-              notificationConfig={notificationConfig}
             />
           </div>
         )

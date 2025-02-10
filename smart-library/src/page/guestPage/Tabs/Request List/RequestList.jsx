@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Table, ConfigProvider } from 'antd';
 import style from './RequestList.module.css'
 import { 
@@ -8,6 +8,7 @@ import {
 import { deleteBorrowBoook, getRequestBooks } from '../../../../services/borrowBookServices';
 import loadingAnim from '../../../../assets/loading.gif'
 import notificationStore from '../../../../Store/notificationStore';
+import { NotificationContext } from '../../../../context/notificationContext';
 
 
 const RequestList = () => {
@@ -15,7 +16,7 @@ const RequestList = () => {
     const [requestList, setRequestList] = useState([])
     const userDetails = JSON.parse(localStorage.getItem('user')) || null
     const [isLoading, setIsLoading] = useState(false)
-    const { notificationConfig } = notificationStore()
+    const { notify } = useContext(NotificationContext)
     const [filterData, setFilterData] = useState([])
     const [filterText, setFilterText] = useState('')
 
@@ -129,7 +130,7 @@ const RequestList = () => {
             const result = await deleteBorrowBoook(id)
 
             if (result) {
-                notificationConfig(result.message, true)
+                notify(result.message, true)
                 setIsLoading(false)
             }
 

@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import style from './FeedbackComponents.module.css'
-import axios from 'axios'
 import { VscFeedback } from "react-icons/vsc";
 import { useForm } from "react-hook-form";
 import { addFeedback } from '../services/feedbackServices';
 import { getCurrentDateString, getCurrentTimeString } from '../utils/dateUtils';
 import NotificationComponents from './NotificationComponents'
+import { NotificationContext } from '../context/notificationContext';
 
 
 const FeedbackComponents = () => {
 
-  const [notifStatus, setNotifStatus] = useState(true)
-  const [message, setMessage] = useState('')
   const [isShowNotification, setIsShowNotification] = useState(false)
   const userDetails = JSON.parse(localStorage.getItem('user'))
+
+  const { notify } = useContext(NotificationContext)
   
   const date = getCurrentDateString()
   const time = getCurrentTimeString()
@@ -30,16 +30,6 @@ const FeedbackComponents = () => {
     }
   })
 
-  const notificationConfig = (message, status) => {
-    setMessage(message)
-    setNotifStatus(status)
-    setIsShowNotification(true)
-    
-    setTimeout(() => {
-      setIsShowNotification(false)
-      setMessage('')
-    }, 3000);
-  }
 
   const onSubmit = async (data) => {
   
@@ -52,7 +42,7 @@ const FeedbackComponents = () => {
       const result = await addFeedback(updated)
       
       if (result) {
-        notificationConfig(result.message, true)
+        notify('Feedback successfully submitted.', true)
         reset()
       }
 

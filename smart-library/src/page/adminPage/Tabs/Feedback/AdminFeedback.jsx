@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import style from './AdminFeedback.module.css'
 import { MdDelete } from "react-icons/md";
 import { deleteFeedback, getFeedbacks } from '../../../../services/feedbackServices.js';
 import { convertDateFormatIntoString, convertTimeTo12HourFormat } from '../../../../utils/dateUtils.js'
 import DeleteNotifComponents from '../../../../components/DeleteNotifComponents.jsx';
 import NotificationComponents from '../../../../components/NotificationComponents.jsx';
+import { NotificationContext } from '../../../../context/notificationContext.jsx';
 
 const AdminFeedback = () => {
 
@@ -12,9 +13,10 @@ const AdminFeedback = () => {
   const [isShowDeleteNotification, setIsShowDeleteNotification] = useState(false)
   const [isShowNotification, setIsShowNotification] = useState(false)
   const [message, setMessage] = useState('')
-  const [notifStatus, setNotifStatus] = useState(true)
   const [selectedData, setSelectedData] = useState(null)
   const userDetails = JSON.parse(localStorage.getItem('user'))
+
+  const { notify } = useContext(NotificationContext)
 
   useEffect(() => {
 
@@ -42,7 +44,7 @@ const AdminFeedback = () => {
       try {
         const result = await deleteFeedback(id)
         setIsShowDeleteNotification(false)
-        notificationConfig(result.message, true)
+        notify(result.message, true)
       } catch (error) {
         console.log(error)
       }
@@ -56,16 +58,6 @@ const AdminFeedback = () => {
     setIsShowDeleteNotification(true)
   }
 
-  const notificationConfig = (message, status) => {
-    setNotifStatus(status)
-    setMessage(message)
-    setIsShowNotification(true)
-
-    setTimeout(() => {
-      setMessage('')
-      setIsShowNotification(false)
-    }, 3000);
-  }
   
   return (
     <div className={style.container}>

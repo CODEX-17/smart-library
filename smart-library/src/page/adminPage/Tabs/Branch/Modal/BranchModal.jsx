@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import style from './BranchModal.module.css'
 import { RiCloseLargeLine } from "react-icons/ri";
 import { useForm } from 'react-hook-form';
 import { addBranch, updateBranch } from '../../../../../services/branchServices';
+import { NotificationContext } from '../../../../../context/notificationContext';
 
-const BranchModal = ({ setIsShowModal, selectedData, notificationConfig }) => {
+const BranchModal = ({ setIsShowModal, selectedData }) => {
+
+  const { notify } = useContext(NotificationContext)
 
   const { 
     handleSubmit, 
@@ -23,7 +26,7 @@ const onSubmitData = async (data) => {
     const result = selectedData ? await updateBranch(data) : await addBranch(data)
    
     if (result) {
-        notificationConfig(result.message, true)
+      notify(result.message, true)
     }
 
     setIsShowModal(false)

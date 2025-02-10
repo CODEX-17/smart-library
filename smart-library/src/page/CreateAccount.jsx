@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import style from './CreateAccount.module.css'
 import logo from '../assets/logo-yellow.png'
 import axios from 'axios'
@@ -15,6 +15,7 @@ import NotificationComponents from '../components/NotificationComponents';
 import { verifyEmail } from '../services/accountServices';
 import EmailVerifyModal from './LoginPage/Modal/EmailVerifyModal';
 import { MdVerifiedUser } from "react-icons/md";
+import { NotificationContext } from '../context/notificationContext';
 
 
 const CreateAccount = () => {
@@ -23,6 +24,8 @@ const CreateAccount = () => {
   const [accountList, setAccountList] = useState([])
   const [branchList, setBranchList] = useState([])
   const url = 'http://localhost:5001'
+
+  const { notify } = useContext(NotificationContext)
 
   const cityArray = [
     "ALFONSO",
@@ -162,7 +165,7 @@ const CreateAccount = () => {
             
             setTimeout(() => {
               setLoadingState(false)
-              notificationConfig(message, true)
+              notify(message, true)
               reset()
               setIsDoneProcess(true)
             }, 3000);
@@ -185,16 +188,6 @@ const CreateAccount = () => {
     setImage(file)
   }
 
-  const notificationConfig = (message, status) => {
-    setMessage(message)
-    setNotifStatus(status)
-    setIsShowNotification(true)
-
-    setTimeout(() => {
-     setIsShowNotification(false)
-     setMessage('')
-    }, 3000);
-  }
 
   const handleLogin = () => {
     console.log('clcik')

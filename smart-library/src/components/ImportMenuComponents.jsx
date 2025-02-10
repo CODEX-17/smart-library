@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import style from './ImportMenuComponents.module.css'
 import { FaFile } from "react-icons/fa"
 import { IoAddCircleSharp } from "react-icons/io5"
@@ -9,11 +9,16 @@ import axios from 'axios'
 import NotificationComponents from './NotificationComponents'
 import * as XLSX from 'xlsx';
 import { Progress } from 'antd';
+import { NotificationContext } from '../context/notificationContext'
+import { getBranch } from '../services/branchServices'
+import { getBooks } from '../services/bookServices'
+import Fuse from "fuse.js"
 
 const ImportMenuComponents = () => {
 
 
   const [branchList, setBranchList] = useState([])
+  const [bookList, setBookList] = useState(null)
   const [fileAcceptable, setFileAcceptable] = useState(false)
   const [file, setFile] = useState(null)
 
@@ -32,31 +37,34 @@ const ImportMenuComponents = () => {
   const userDetails = JSON.parse(localStorage.getItem('user'))
   const selectedBranch = userDetails?.branch || null
 
+  const { notify } = useContext(NotificationContext)
+
   const url = 'http://localhost:5001/'
 
   useEffect(() => {
-    axios.get(`${url}branch/getBranch`)
-    .then((res) => {
-      const result = res.data
-      if (result) setBranchList(result)
-    })
-    .catch(err => console.log(err))
-  },[])
 
-  const handleNoticationConfig = (message, status) => {
-    console.log('mes',message)
-    setMessage(message)
-    setNotifStatus(status)
-    setIsShowNotification(true)
-    setTimeout(() => {
-      setIsShowNotification(false)
-    }, 3000);
-  }
+    const fetchData = async () => {
+      try {
+        const [ branch, books ] = await Promise.all([
+          getBranch(), getBooks()
+        ])
+
+        if (branch) setBranchList(branch)
+        if (books) setBookList(books)
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchData()
+
+  },[])
 
   const handleFileUpload = (e) => {
     const data = e.target.files[0]
     const reader = new FileReader();
-    console.log(data)
+
     if (data) {
       if (
         data.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
@@ -71,15 +79,12 @@ const ImportMenuComponents = () => {
           const binaryStr = e.target.result;
           const workbook = XLSX.read(binaryStr, { type: 'binary' });
           const numberOfSheets = workbook.SheetNames.length
-          
-          console.log(numberOfSheets)
 
           let finalData = []
 
           for (let i = 0; i < numberOfSheets; i++) {
             const sheetName = workbook.SheetNames[i];
             let worksheet = workbook.Sheets[sheetName];
-            console.log('worksheet', worksheet)
 
             const result = XLSX.utils.sheet_to_json(worksheet, {
               raw: false, // Forces date parsing
@@ -150,9 +155,6 @@ const ImportMenuComponents = () => {
 
 
             }
-            
-
-            console.log('updatedResult', updatedResult)
 
             updatedResult.forEach((data) => {
               const updatedData = { ...data };
@@ -180,13 +182,15 @@ const ImportMenuComponents = () => {
           }
 
           if (finalData.length <= 0) {
-            handleNoticationConfig('Excel file has no data.', false)
+            notify('Excel file has no data.', false)
+            return
           }
 
-          finalData = [...new Set(finalData)]
+          const unique = finalData.filter((book) => !bookList.some(a => a.title.trim().toLowerCase() == book.title.trim().toLowerCase()))
+
+          finalData = [...new Set(unique)]
           setDataList(finalData)
           setIsShowImportedData(true)
-          console.log("finalData", finalData)
           setIsLoading(false)
         };
 
@@ -195,12 +199,12 @@ const ImportMenuComponents = () => {
       }else {
         setFileAcceptable(false)
         const message = "Invalid file upload."
-        handleNoticationConfig(message, false)
+        notify(message, false)
       }
     }else {
       setFileAcceptable(false)
       const message = "Failed to upload file."
-      handleNoticationConfig(message, false)
+      notify(message, false)
     }
     
   }
@@ -236,11 +240,11 @@ const ImportMenuComponents = () => {
     setIsLoading(false)
 
     if (dataList.length == success) {
-      handleNoticationConfig(current_message, true)
+      notify(current_message, true)
       setIsShowModal(false)
       setIsShowImportedData(false)
     }else {
-      handleNoticationConfig(`Failed to add ${failed} books, ${success} books added.`, false)
+      notify(`Failed to add ${failed} books, ${success} books added.`, false)
     }
 
   }
@@ -347,7 +351,10 @@ const ImportMenuComponents = () => {
 
       {isShowForm && (
           <div className={style.formDiv}>
-            <AddBookComponents handleCloseForm={handleCloseForm} handleNoticationConfig={handleNoticationConfig} selectedBranch={selectedBranch}/>
+            <AddBookComponents 
+              handleCloseForm={handleCloseForm} 
+              selectedBranch={selectedBranch}
+            />
           </div>
       )}
       

@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import style from './AddBookComponents.module.css'
 import axios from 'axios'
 import { useForm } from 'react-hook-form';
 import { addBook, getBooks } from '../services/bookServices';
 import { getBranch } from '../services/branchServices';
 import { bookGenres } from '../data/genreListData';
-import notificationStore from '../Store/notificationStore';
+import { NotificationContext } from '../context/notificationContext';
+
 
 const AddBookComponents = ({ handleCloseForm, selectedBranch }) => {
 
 const [branchList, setBranchList] = useState([])
 const [bookList, setBookList] = useState([])
 const userDetails = JSON.parse(localStorage.getItem('user'))
-const { notificationConfig } = notificationStore()
+
+const { notify } = useContext(NotificationContext)
 
 const {
   register,
@@ -68,7 +70,7 @@ const onSubmit = async (data)  => {
   try {
     const result = await addBook(updated)
     if (result) {
-      notificationConfig('Successfully added book.', true)
+      notify('Successfully added book.', true)
       handleCloseForm(false)
     }
 

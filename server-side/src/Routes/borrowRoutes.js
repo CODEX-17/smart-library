@@ -216,7 +216,7 @@ router.post('/updateReq', async (req, res) => {
             sendingEmail(email, name)])
 
         res.status(200).json({
-            message: 'Successfully update book.'
+            message: `Successfully ${response} book.`
         })
 
     } catch (error) {
