@@ -61,8 +61,6 @@ const GuestHomePage = () => {
   }
 
   useEffect(() => {
-  
-    notify('dasdsa', true)
 
     if (!localStorage.getItem('user')) {
       navigate('/')

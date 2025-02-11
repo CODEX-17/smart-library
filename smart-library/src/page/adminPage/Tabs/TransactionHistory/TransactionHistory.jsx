@@ -7,7 +7,9 @@ import { getTransactionHistory } from '../../../../services/transactionServices'
 
 const TransactionHistory = () => {
 
-    const [transactionList, setTransactionList] = useState([])
+   const [transactionList, setTransactionList] = useState([])
+
+   const userDetails = JSON.parse(localStorage.getItem('user'))
 
    const column = [
         {
@@ -65,14 +67,19 @@ const TransactionHistory = () => {
     const fetchData = async () => {
         try {
             const result = await getTransactionHistory()
-            console.log(result)
+         
             if (result) {
-                setTransactionList(result.sort((a, b) => {
-                    // Combine date and time into a single Date object
-                    const dateTimeA = new Date(`${a.date}T${a.time}`);
-                    const dateTimeB = new Date(`${b.date}T${b.time}`);
-                    return dateTimeB - dateTimeA
-                }))
+
+              const filteredData =  result.filter(data => data.branch === userDetails?.branch)
+
+              const updated = filteredData.sort((a, b) => {
+                  // Combine date and time into a single Date object
+                  const dateTimeA = new Date(`${a.date}T${a.time}`);
+                  const dateTimeB = new Date(`${b.date}T${b.time}`);
+                  return dateTimeB - dateTimeA
+              })
+              
+              setTransactionList(updated)
             }
 
         } catch (error) {
