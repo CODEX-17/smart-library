@@ -108,11 +108,11 @@ const handleCheckBookTitle = () => {
               />
             </div>
             <div className='d-flex flex-column w-100'>
-              <label>Accession number <b>*</b></label>
+              <label>Accession number</label>
               <input 
                 type="text" 
                 placeholder='ex. 801111 pl' 
-                {...register('access_no', { required: 'Accession number is required.' })}
+                {...register('access_no')}
               />
               {errors.access_no && <p>{errors.access_no.message}</p>}
             </div>
@@ -159,11 +159,11 @@ const handleCheckBookTitle = () => {
             </div>
    
             <div className='d-flex flex-column w-100 mb-2'>
-              <label>ISBN <b>*</b></label>
+              <label>ISBN</label>
               <input 
                 type="text" 
                 placeholder='ex.978 971 508 3393'
-                {...register('ISBN', { required: 'Author name is required.' })}
+                {...register('ISBN')}
               />
               {errors.ISBN && <p>{errors.ISBN.message}</p>}
             </div>
